@@ -1,56 +1,44 @@
 
-# Don't Get Pickled — Pickleball Warm Up App
 
-A mobile-first, fully dark-themed web app with 3 screens connected by local state. No backend — all data and flow handled in React.
+# Add Exercise Completion Tracking
 
-## Design System
-- **Background:** `#0a0a0a` · **Surface:** `#111111` · **Border:** `#1e1e1e`
-- **Accent:** Lime `#C8F135` · **Phase colors:** Warm-Up `#f5a623`, Mobility `#82a0e0`, Strength `#C8F135`
-- **Fonts:** Bebas Neue (headings), DM Sans (body) — loaded via Google Fonts
-- Mobile-first, optimized for 390px width
+Let users mark each exercise complete on the dashboard, with progress reflected in the session tracker and persisted across reloads.
 
-## Routes
-- `/` — Landing (Screen 1)
-- `/onboarding` — Registration + 6-step questionnaire (Screen 2)
-- `/dashboard` — Today's session (Screen 3)
+## UX
 
-Each route gets its own `head()` metadata for SEO.
+**Per-card checkoff (primary interaction)**
+- Add a circular check button on the left of each `ExerciseCard` header (replacing or beside the number badge).
+  - Unchecked: hollow lime ring with the exercise number inside.
+  - Checked: filled lime circle with a check icon, card title gets `line-through` + dimmed opacity, card border stays subtle.
+- Tapping the circle toggles complete; it does NOT expand the card (stop event propagation). Tapping anywhere else still expands.
 
-## Screen 1 — Landing
-- **Header:** "DON'T GET PICKLED" wordmark (lime, Bebas Neue) · "Sign In" link right
-- **Hero:** Eyebrow "Free Warm Up Guide" → headline → subtext
-- **6 Exercise cards** grouped under colored phase dividers (Warm-Up, Mobility, Strength)
-  - Tap to expand: border turns lime, reveals illustration placeholder, 4 staggered instruction steps, and a tip with lime left border
-  - All 6 exercises seeded with the exact copy provided (Arm Circles, Wrist Circles, Torso Twist, Hip Circles, Knee Extensions, Heel Raises)
-- **Sticky bottom CTA bar** with lime top border → "UNLOCK FREE GUIDE" button → `/onboarding`
+**Session tracker card**
+- "X of 18 complete" updates live.
+- Lime progress bar animates to the new percentage.
+- "START SESSION" becomes "RESUME SESSION" once any exercise is complete, and "SESSION COMPLETE ✓" (disabled-look, full lime) when all real exercises are done.
+- Add a small "Reset" text-button under the progress bar (only visible when completed > 0) to clear progress for the day.
 
-## Screen 2 — Registration + Intake
-- **Top bar:** Brand left · "Skip for now" right (jumps to `/dashboard`)
-- **Mock registration:** Email + password fields (dark, lime focus ring) → "CREATE ACCOUNT" advances to questionnaire (no real auth)
-- **6-step questionnaire** with animated progress bar + 6 dots
-  - Slide-in/out transitions (right→left)
-  - Next disabled until valid selection
-  - Steps 1–4: single-select option cards (with descriptions where specified)
-  - Step 5: multi-select tags, **red** when selected, "None" clears others
-  - Step 6: multi-select up to 3, **lime** when selected
-- **Completion screen:** 🥒 · "YOU WON'T GET PICKLED" · reward card with code `PICKLED10` · "VIEW MY PLAN" → `/dashboard`
+**Placeholder cards (#7–18)**
+- Stay non-interactive — no checkoff, since they're "coming soon". Progress denominator becomes the count of real exercises (6) rather than 18, so the bar can actually reach 100%. Tracker label updates to "X of 6 complete".
 
-Selections stored in local React state (lifted to a context or passed via navigation state) so the dashboard can reference them later.
+## State & Persistence
 
-## Screen 3 — Dashboard
-- **Top bar:** Brand left · avatar circle right
-- **Welcome:** "READY TO PLAY?" + subtext
-- **Session tracker card:** "TODAY'S SESSION" · "0 of 18 complete" · lime progress bar · "START SESSION" button
-- **18 exercise cards** in 4 phase sections (colored dividers): the 6 real exercises from Screen 1, plus placeholder cards for #7–18 with "Full exercise library coming soon"
-- **Bottom nav:** Home · Schedule · Profile (icons, lime active state)
+- New hook `src/hooks/useCompletedExercises.ts`:
+  - Holds `Set<string>` of completed exercise IDs.
+  - Persists to `localStorage` under key `dgp:completed:<YYYY-MM-DD>` so progress auto-resets each new day.
+  - Exposes `{ completed, isComplete(id), toggle(id), reset() }`.
+- Dashboard consumes the hook for the tracker; `ExerciseCard` accepts optional `completed` + `onToggle` props (omitted on the landing page so nothing changes there).
 
-## Shared Pieces
-- `exercises.ts` — typed data array for all 6 exercises (reused on Screen 1 and Screen 3)
-- `ExerciseCard` component — handles expand/collapse animation and staggered steps
-- `PhaseDivider` component — colored bar with phase name
-- Tailwind theme tokens updated in `src/styles.css` to register the brand colors and fonts so utilities like `bg-background`, `text-accent`, `font-display` work everywhere
+## Files Touched
+
+- `src/hooks/useCompletedExercises.ts` — new hook (localStorage + daily reset).
+- `src/components/ExerciseCard.tsx` — add optional check button, strikethrough styling when complete, prop-driven (no behavior change when props absent, so landing page stays read-only).
+- `src/routes/dashboard.tsx` — wire hook into tracker, pass props to cards, add Reset button, dynamic CTA label, fix denominator to real exercise count.
 
 ## Out of Scope
-- Real authentication, persistence, or backend
-- Actual exercise illustrations (gray placeholder rectangles only)
-- Schedule and Profile bottom-nav destinations (visual tab only)
+
+- Server-side persistence or per-user accounts.
+- Completing individual *steps* within an exercise.
+- Streaks / weekly history (could be a follow-up).
+- Making placeholder cards completable.
+
