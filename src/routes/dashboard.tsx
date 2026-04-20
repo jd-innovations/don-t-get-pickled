@@ -1,0 +1,135 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { Home, Calendar, User } from "lucide-react";
+import { ExerciseCard } from "@/components/ExerciseCard";
+import { PhaseDivider } from "@/components/PhaseDivider";
+import { exercises, phaseColor, type Phase } from "@/data/exercises";
+
+export const Route = createFileRoute("/dashboard")({
+  head: () => ({
+    meta: [
+      { title: "Today's Session — Don't Get Pickled" },
+      {
+        name: "description",
+        content: "Your daily pickleball warm up routine. Stay loose, stay safe, stay on court.",
+      },
+    ],
+  }),
+  component: Dashboard,
+});
+
+function Dashboard() {
+  const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
+  const totalExercises = 18;
+  const completed = 0;
+  const phases: Phase[] = ["Warm-Up", "Mobility", "Strength"];
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
+      {/* Top bar */}
+      <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
+        <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
+          <span className="font-display text-lg tracking-wider text-[#C8F135]">
+            DON'T GET PICKLED
+          </span>
+          <div className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-sm font-semibold text-[#C8F135] border border-[#C8F135]/40">
+            P
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-md mx-auto px-5">
+        {/* Welcome */}
+        <section className="pt-8 pb-4">
+          <h1 className="font-display text-5xl leading-none tracking-wide text-white">
+            READY TO PLAY?
+          </h1>
+          <p className="mt-3 text-sm text-neutral-400">
+            Complete today's warm up before you hit the court.
+          </p>
+        </section>
+
+        {/* Session tracker */}
+        <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
+          <div className="flex items-center justify-between">
+            <p className="text-xs uppercase tracking-widest text-neutral-400">
+              Today's Session
+            </p>
+            <p className="text-xs text-neutral-300 font-medium">
+              {completed} of {totalExercises} complete
+            </p>
+          </div>
+          <div className="mt-3 h-2 w-full bg-[#0a0a0a] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#C8F135] transition-all"
+              style={{ width: `${(completed / totalExercises) * 100}%` }}
+            />
+          </div>
+          <button className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition">
+            START SESSION
+          </button>
+        </section>
+
+        {/* Library */}
+        {phases.map((phase) => {
+          const items = exercises.filter((e) => e.phase === phase);
+          return (
+            <div key={phase}>
+              <PhaseDivider phase={phase} />
+              <div className="space-y-3">
+                {items.map((ex) => (
+                  <ExerciseCard key={ex.id} exercise={ex} />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Coming soon placeholders */}
+        <PhaseDivider phase="Strength" label="MORE COMING SOON" />
+        <div className="grid grid-cols-2 gap-3">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className="rounded-xl border border-dashed border-[#1e1e1e] bg-[#0f0f0f] p-4 aspect-square flex flex-col items-center justify-center text-center"
+            >
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center font-display text-sm mb-2"
+                style={{ backgroundColor: "#1a1a1a", color: phaseColor("Strength") }}
+              >
+                {i + 7}
+              </div>
+              <p className="text-[10px] text-neutral-500 leading-tight">
+                Full exercise library coming soon
+              </p>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* Bottom nav */}
+      <nav className="fixed bottom-0 left-0 right-0 bg-[#0a0a0a]/98 backdrop-blur border-t border-[#1e1e1e] z-30">
+        <div className="max-w-md mx-auto px-5 py-3 flex items-center justify-around">
+          {[
+            { id: "home" as const, icon: Home, label: "Home" },
+            { id: "schedule" as const, icon: Calendar, label: "Schedule" },
+            { id: "profile" as const, icon: User, label: "Profile" },
+          ].map(({ id, icon: Icon, label }) => {
+            const active = tab === id;
+            return (
+              <button
+                key={id}
+                onClick={() => setTab(id)}
+                className="flex flex-col items-center gap-1 px-4 py-1 transition-colors"
+                style={{ color: active ? "#C8F135" : "#737373" }}
+              >
+                <Icon className="w-5 h-5" />
+                <span className="text-[10px] font-medium tracking-wide">{label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+    </div>
+  );
+}

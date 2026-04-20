@@ -1,0 +1,471 @@
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+
+export const Route = createFileRoute("/onboarding")({
+  head: () => ({
+    meta: [
+      { title: "Create Your Profile — Don't Get Pickled" },
+      {
+        name: "description",
+        content: "Build your personalized pickleball warm up plan in 6 quick steps.",
+      },
+    ],
+  }),
+  component: Onboarding,
+});
+
+type Stage = "register" | "questions" | "done";
+
+const sexOptions = ["Male", "Female", "Prefer Not to Say"];
+const ageOptions = [
+  { label: "21–35", desc: "Young adult" },
+  { label: "36–49", desc: "Prime years" },
+  { label: "50–64", desc: "Stay strong & mobile" },
+  { label: "65+", desc: "Play smart, play long" },
+];
+const fitnessOptions = [
+  { label: "Beginner", desc: "Just getting started" },
+  { label: "Moderate", desc: "Active a few times a week" },
+  { label: "Active", desc: "Workout regularly" },
+  { label: "Athlete", desc: "Train with intent" },
+];
+const frequencyOptions = [
+  { label: "Once a Week", desc: "Casual play" },
+  { label: "2–3 Times a Week", desc: "Regular player" },
+  { label: "4–5 Times a Week", desc: "Serious player" },
+  { label: "Daily / Competing", desc: "Tournament ready" },
+];
+const injuryOptions = [
+  "Elbow/Wrist",
+  "Shoulder",
+  "Lower Back",
+  "Hip",
+  "Knee",
+  "Ankle/Achilles",
+  "Neck",
+  "Hamstring",
+  "None",
+];
+const goalOptions = [
+  "Mobility & Flexibility",
+  "Core Strength",
+  "Balance & Stability",
+  "Shoulder Health",
+  "Leg Power",
+  "Injury Prevention",
+  "Shot Power",
+  "Endurance on Court",
+  "Recovery Speed",
+  "Overall Fitness",
+];
+
+function Onboarding() {
+  const navigate = useNavigate();
+  const [stage, setStage] = useState<Stage>("register");
+  const [step, setStep] = useState(0);
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
+
+  const [sex, setSex] = useState<string | null>(null);
+  const [age, setAge] = useState<string | null>(null);
+  const [fitness, setFitness] = useState<string | null>(null);
+  const [frequency, setFrequency] = useState<string | null>(null);
+  const [injuries, setInjuries] = useState<string[]>([]);
+  const [goals, setGoals] = useState<string[]>([]);
+
+  const totalSteps = 6;
+
+  const canProceed = () => {
+    switch (step) {
+      case 0:
+        return !!sex;
+      case 1:
+        return !!age;
+      case 2:
+        return !!fitness;
+      case 3:
+        return !!frequency;
+      case 4:
+        return injuries.length > 0;
+      case 5:
+        return goals.length > 0;
+      default:
+        return false;
+    }
+  };
+
+  const next = () => {
+    setDirection("forward");
+    if (step === totalSteps - 1) {
+      setStage("done");
+    } else {
+      setStep(step + 1);
+    }
+  };
+
+  const back = () => {
+    setDirection("back");
+    if (step === 0) {
+      setStage("register");
+    } else {
+      setStep(step - 1);
+    }
+  };
+
+  const toggleInjury = (val: string) => {
+    if (val === "None") {
+      setInjuries(["None"]);
+      return;
+    }
+    setInjuries((prev) => {
+      const without = prev.filter((p) => p !== "None");
+      return without.includes(val) ? without.filter((p) => p !== val) : [...without, val];
+    });
+  };
+
+  const toggleGoal = (val: string) => {
+    setGoals((prev) => {
+      if (prev.includes(val)) return prev.filter((p) => p !== val);
+      if (prev.length >= 3) return prev;
+      return [...prev, val];
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Top bar */}
+      <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
+        <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
+          <span className="font-display text-lg tracking-wider text-[#C8F135]">
+            DON'T GET PICKLED
+          </span>
+          <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
+            Skip for now
+          </Link>
+        </div>
+      </header>
+
+      <main className="max-w-md mx-auto px-5 py-8">
+        {stage === "register" && (
+          <RegistrationForm onSubmit={() => setStage("questions")} />
+        )}
+
+        {stage === "questions" && (
+          <div>
+            {/* Progress */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-3">
+                <button
+                  onClick={back}
+                  className="text-xs text-neutral-400 hover:text-white"
+                >
+                  ← Back
+                </button>
+                <span className="text-xs text-neutral-500">
+                  {step + 1} of {totalSteps}
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-[#1e1e1e] rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-[#C8F135] transition-all duration-500"
+                  style={{ width: `${((step + 1) / totalSteps) * 100}%` }}
+                />
+              </div>
+              <div className="flex justify-between mt-3">
+                {Array.from({ length: totalSteps }).map((_, i) => (
+                  <span
+                    key={i}
+                    className="w-2 h-2 rounded-full transition-colors"
+                    style={{ backgroundColor: i <= step ? "#C8F135" : "#2a2a2a" }}
+                  />
+                ))}
+              </div>
+            </div>
+
+            <div
+              key={step}
+              className="animate-slide"
+              style={{
+                animation: `${direction === "forward" ? "slideInRight" : "slideInLeft"} 0.3s ease-out`,
+              }}
+            >
+              {step === 0 && (
+                <Question title="WHAT'S YOUR BIOLOGICAL SEX?">
+                  <div className="grid grid-cols-2 gap-3">
+                    {sexOptions.slice(0, 2).map((opt) => (
+                      <OptionCard
+                        key={opt}
+                        label={opt}
+                        selected={sex === opt}
+                        onClick={() => setSex(opt)}
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-3">
+                    <OptionCard
+                      label="Prefer Not to Say"
+                      selected={sex === "Prefer Not to Say"}
+                      onClick={() => setSex("Prefer Not to Say")}
+                    />
+                  </div>
+                </Question>
+              )}
+
+              {step === 1 && (
+                <Question title="HOW OLD ARE YOU?">
+                  <div className="space-y-3">
+                    {ageOptions.map((opt) => (
+                      <OptionCard
+                        key={opt.label}
+                        label={opt.label}
+                        desc={opt.desc}
+                        selected={age === opt.label}
+                        onClick={() => setAge(opt.label)}
+                      />
+                    ))}
+                  </div>
+                </Question>
+              )}
+
+              {step === 2 && (
+                <Question title="WHAT'S YOUR FITNESS LEVEL?">
+                  <div className="space-y-3">
+                    {fitnessOptions.map((opt) => (
+                      <OptionCard
+                        key={opt.label}
+                        label={opt.label}
+                        desc={opt.desc}
+                        selected={fitness === opt.label}
+                        onClick={() => setFitness(opt.label)}
+                      />
+                    ))}
+                  </div>
+                </Question>
+              )}
+
+              {step === 3 && (
+                <Question title="HOW OFTEN DO YOU PLAY?">
+                  <div className="space-y-3">
+                    {frequencyOptions.map((opt) => (
+                      <OptionCard
+                        key={opt.label}
+                        label={opt.label}
+                        desc={opt.desc}
+                        selected={frequency === opt.label}
+                        onClick={() => setFrequency(opt.label)}
+                      />
+                    ))}
+                  </div>
+                </Question>
+              )}
+
+              {step === 4 && (
+                <Question title="ANY CURRENT INJURIES OR PAIN?" subtitle="Select all that apply">
+                  <div className="flex flex-wrap gap-2">
+                    {injuryOptions.map((opt) => {
+                      const selected = injuries.includes(opt);
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => toggleInjury(opt)}
+                          className="px-4 py-2 rounded-full text-sm font-medium border transition-colors"
+                          style={{
+                            borderColor: selected ? "#ef4444" : "#1e1e1e",
+                            backgroundColor: selected ? "#ef4444" : "#111111",
+                            color: selected ? "white" : "#d4d4d4",
+                          }}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </Question>
+              )}
+
+              {step === 5 && (
+                <Question
+                  title="WHAT WOULD YOU LIKE TO IMPROVE?"
+                  subtitle={`Pick up to 3 (${goals.length}/3)`}
+                >
+                  <div className="flex flex-wrap gap-2">
+                    {goalOptions.map((opt) => {
+                      const selected = goals.includes(opt);
+                      return (
+                        <button
+                          key={opt}
+                          onClick={() => toggleGoal(opt)}
+                          className="px-4 py-2 rounded-full text-sm font-medium border transition-colors"
+                          style={{
+                            borderColor: selected ? "#C8F135" : "#1e1e1e",
+                            backgroundColor: selected ? "#C8F135" : "#111111",
+                            color: selected ? "black" : "#d4d4d4",
+                          }}
+                        >
+                          {opt}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </Question>
+              )}
+            </div>
+
+            <button
+              onClick={next}
+              disabled={!canProceed()}
+              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition"
+            >
+              {step === totalSteps - 1 ? "FINISH" : "NEXT"}
+            </button>
+          </div>
+        )}
+
+        {stage === "done" && (
+          <div className="text-center py-8 animate-[slideInRight_0.4s_ease-out]">
+            <div className="text-7xl mb-6">🥒</div>
+            <h2 className="font-display text-4xl tracking-wide text-white">
+              YOU WON'T GET PICKLED
+            </h2>
+            <p className="mt-3 text-sm text-neutral-400">
+              Your personalized warm up plan is ready. Here's your welcome gift.
+            </p>
+
+            <div className="mt-8 rounded-xl border border-[#C8F135]/40 bg-[#111111] p-6">
+              <p className="text-xs uppercase tracking-widest text-[#C8F135] mb-2">
+                Welcome Gift
+              </p>
+              <p className="font-display text-3xl tracking-wide text-white">
+                $10 GRIP DOCTOR CREDIT
+              </p>
+              <div className="mt-4 px-4 py-3 rounded-lg bg-[#0a0a0a] border border-dashed border-[#C8F135]/50">
+                <p className="text-xs text-neutral-400 mb-1">Your code</p>
+                <p className="font-mono font-bold tracking-widest text-[#C8F135]">
+                  PICKLED10
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => navigate({ to: "/dashboard" })}
+              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            >
+              VIEW MY PLAN
+            </button>
+          </div>
+        )}
+      </main>
+
+      <style>{`
+        @keyframes slideInRight {
+          from { opacity: 0; transform: translateX(24px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+          from { opacity: 0; transform: translateX(-24px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function RegistrationForm({ onSubmit }: { onSubmit: () => void }) {
+  return (
+    <div>
+      <h2 className="font-display text-4xl tracking-wide text-white">CREATE YOUR PROFILE</h2>
+      <p className="mt-2 text-sm text-neutral-400">
+        Save your progress and unlock your personalized plan.
+      </p>
+
+      <form
+        className="mt-8 space-y-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
+      >
+        <div>
+          <label className="text-xs uppercase tracking-wider text-neutral-400">Email</label>
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            className="mt-1 w-full px-4 py-3 rounded-lg bg-[#111111] border border-[#1e1e1e] text-white placeholder:text-neutral-600 focus:outline-none focus:border-[#C8F135] transition-colors"
+          />
+        </div>
+        <div>
+          <label className="text-xs uppercase tracking-wider text-neutral-400">Password</label>
+          <input
+            type="password"
+            required
+            placeholder="••••••••"
+            className="mt-1 w-full px-4 py-3 rounded-lg bg-[#111111] border border-[#1e1e1e] text-white placeholder:text-neutral-600 focus:outline-none focus:border-[#C8F135] transition-colors"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+        >
+          CREATE ACCOUNT
+        </button>
+
+        <p className="text-center text-sm text-neutral-500">
+          Already have an account?{" "}
+          <button type="button" className="text-neutral-300 hover:text-white underline">
+            Sign in
+          </button>
+        </p>
+      </form>
+    </div>
+  );
+}
+
+function Question({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <h2 className="font-display text-3xl tracking-wide text-white leading-tight">{title}</h2>
+      {subtitle && <p className="mt-2 text-sm text-neutral-400">{subtitle}</p>}
+      <div className="mt-6">{children}</div>
+    </div>
+  );
+}
+
+function OptionCard({
+  label,
+  desc,
+  selected,
+  onClick,
+}: {
+  label: string;
+  desc?: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="w-full text-left p-4 rounded-xl border bg-[#111111] transition-colors"
+      style={{
+        borderColor: selected ? "#C8F135" : "#1e1e1e",
+        backgroundColor: selected ? "rgba(200, 241, 53, 0.08)" : "#111111",
+      }}
+    >
+      <div
+        className="font-display text-xl tracking-wide"
+        style={{ color: selected ? "#C8F135" : "white" }}
+      >
+        {label}
+      </div>
+      {desc && <div className="text-xs text-neutral-400 mt-0.5">{desc}</div>}
+    </button>
+  );
+}
