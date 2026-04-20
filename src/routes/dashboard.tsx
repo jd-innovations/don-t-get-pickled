@@ -4,6 +4,7 @@ import { Home, Calendar, User } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
+import { useCompletedExercises } from "@/hooks/useCompletedExercises";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -20,9 +21,16 @@ export const Route = createFileRoute("/dashboard")({
 
 function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
-  const totalExercises = 18;
-  const completed = 0;
+  const { completed, isComplete, toggle, reset } = useCompletedExercises();
+  const totalExercises = exercises.length;
+  const completedCount = exercises.reduce((n, e) => (completed.has(e.id) ? n + 1 : n), 0);
+  const allDone = completedCount === totalExercises && totalExercises > 0;
   const phases: Phase[] = ["Warm-Up", "Mobility", "Strength"];
+  const ctaLabel = allDone
+    ? "SESSION COMPLETE ✓"
+    : completedCount > 0
+      ? "RESUME SESSION"
+      : "START SESSION";
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
@@ -56,17 +64,28 @@ function Dashboard() {
               Today's Session
             </p>
             <p className="text-xs text-neutral-300 font-medium">
-              {completed} of {totalExercises} complete
+              {completedCount} of {totalExercises} complete
             </p>
           </div>
           <div className="mt-3 h-2 w-full bg-[#0a0a0a] rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#C8F135] transition-all"
-              style={{ width: `${(completed / totalExercises) * 100}%` }}
+              className="h-full bg-[#C8F135] transition-all duration-500"
+              style={{ width: `${(completedCount / totalExercises) * 100}%` }}
             />
           </div>
-          <button className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition">
-            START SESSION
+          {completedCount > 0 && (
+            <button
+              onClick={reset}
+              className="mt-2 text-[11px] text-neutral-500 hover:text-[#C8F135] transition-colors underline underline-offset-2"
+            >
+              Reset today's progress
+            </button>
+          )}
+          <button
+            className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:cursor-default"
+            disabled={allDone}
+          >
+            {ctaLabel}
           </button>
         </section>
 
@@ -78,7 +97,12 @@ function Dashboard() {
               <PhaseDivider phase={phase} />
               <div className="space-y-3">
                 {items.map((ex) => (
-                  <ExerciseCard key={ex.id} exercise={ex} />
+                  <ExerciseCard
+                    key={ex.id}
+                    exercise={ex}
+                    completed={isComplete(ex.id)}
+                    onToggleComplete={toggle}
+                  />
                 ))}
               </div>
             </div>

@@ -1,14 +1,17 @@
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { phaseColor, type Exercise } from "@/data/exercises";
 
 interface Props {
   exercise: Exercise;
+  completed?: boolean;
+  onToggleComplete?: (id: string) => void;
 }
 
-export function ExerciseCard({ exercise }: Props) {
+export function ExerciseCard({ exercise, completed, onToggleComplete }: Props) {
   const [open, setOpen] = useState(false);
   const color = phaseColor(exercise.phase);
+  const interactive = typeof onToggleComplete === "function";
 
   return (
     <div
@@ -22,14 +25,44 @@ export function ExerciseCard({ exercise }: Props) {
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-start gap-3 p-4 text-left"
       >
-        <div
-          className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center font-display text-lg"
-          style={{ backgroundColor: "#1a1a1a", color: "#C8F135" }}
-        >
-          {exercise.number}
-        </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="font-display text-lg leading-tight tracking-wide text-white">
+        {interactive ? (
+          <span
+            role="checkbox"
+            aria-checked={!!completed}
+            aria-label={completed ? "Mark incomplete" : "Mark complete"}
+            tabIndex={0}
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleComplete!(exercise.id);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === " " || e.key === "Enter") {
+                e.preventDefault();
+                e.stopPropagation();
+                onToggleComplete!(exercise.id);
+              }
+            }}
+            className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-display text-base transition-colors cursor-pointer"
+            style={{
+              backgroundColor: completed ? "#C8F135" : "transparent",
+              border: `2px solid #C8F135`,
+              color: completed ? "#000" : "#C8F135",
+            }}
+          >
+            {completed ? <Check className="w-4 h-4" strokeWidth={3} /> : exercise.number}
+          </span>
+        ) : (
+          <div
+            className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center font-display text-lg"
+            style={{ backgroundColor: "#1a1a1a", color: "#C8F135" }}
+          >
+            {exercise.number}
+          </div>
+        )}
+        <div className={`flex-1 min-w-0 transition-opacity ${completed ? "opacity-50" : ""}`}>
+          <h3
+            className={`font-display text-lg leading-tight tracking-wide text-white ${completed ? "line-through" : ""}`}
+          >
             {exercise.name}
           </h3>
           <p className="text-xs text-neutral-400 mt-0.5 truncate">{exercise.muscles}</p>
