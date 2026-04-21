@@ -1,44 +1,29 @@
 
 
-# Add Exercise Completion Tracking
+# Add Illustration to Arm Circles Exercise
 
-Let users mark each exercise complete on the dashboard, with progress reflected in the session tracker and persisted across reloads.
+Replace the gray "Illustration coming soon" placeholder in the Arm Circles card with the uploaded image. Build the change so future exercises can drop in their own illustrations the same way.
 
-## UX
+## Steps
 
-**Per-card checkoff (primary interaction)**
-- Add a circular check button on the left of each `ExerciseCard` header (replacing or beside the number badge).
-  - Unchecked: hollow lime ring with the exercise number inside.
-  - Checked: filled lime circle with a check icon, card title gets `line-through` + dimmed opacity, card border stays subtle.
-- Tapping the circle toggles complete; it does NOT expand the card (stop event propagation). Tapping anywhere else still expands.
+1. **Save the asset** — copy `user-uploads://IMG_4955.png` to `src/assets/exercises/arm-circles.png` so Vite bundles and optimizes it.
 
-**Session tracker card**
-- "X of 18 complete" updates live.
-- Lime progress bar animates to the new percentage.
-- "START SESSION" becomes "RESUME SESSION" once any exercise is complete, and "SESSION COMPLETE ✓" (disabled-look, full lime) when all real exercises are done.
-- Add a small "Reset" text-button under the progress bar (only visible when completed > 0) to clear progress for the day.
+2. **Extend the data model** (`src/data/exercises.ts`)
+   - Add an optional `image?: string` field to the `Exercise` interface.
+   - Import the new asset and attach it to the `arm-circles` entry only. Other exercises remain unchanged (placeholder still shows for them).
 
-**Placeholder cards (#7–18)**
-- Stay non-interactive — no checkoff, since they're "coming soon". Progress denominator becomes the count of real exercises (6) rather than 18, so the bar can actually reach 100%. Tracker label updates to "X of 6 complete".
-
-## State & Persistence
-
-- New hook `src/hooks/useCompletedExercises.ts`:
-  - Holds `Set<string>` of completed exercise IDs.
-  - Persists to `localStorage` under key `dgp:completed:<YYYY-MM-DD>` so progress auto-resets each new day.
-  - Exposes `{ completed, isComplete(id), toggle(id), reset() }`.
-- Dashboard consumes the hook for the tracker; `ExerciseCard` accepts optional `completed` + `onToggle` props (omitted on the landing page so nothing changes there).
+3. **Render the image** (`src/components/ExerciseCard.tsx`)
+   - In the expanded section, if `exercise.image` exists, render an `<img>` filling the existing `aspect-video` container (`object-cover`, rounded, alt = exercise name).
+   - If no image, keep the current "Illustration coming soon" placeholder so #2–#6 are unaffected.
 
 ## Files Touched
 
-- `src/hooks/useCompletedExercises.ts` — new hook (localStorage + daily reset).
-- `src/components/ExerciseCard.tsx` — add optional check button, strikethrough styling when complete, prop-driven (no behavior change when props absent, so landing page stays read-only).
-- `src/routes/dashboard.tsx` — wire hook into tracker, pass props to cards, add Reset button, dynamic CTA label, fix denominator to real exercise count.
+- `src/assets/exercises/arm-circles.png` — new (copied from upload)
+- `src/data/exercises.ts` — add `image` field + import for arm circles
+- `src/components/ExerciseCard.tsx` — conditionally render image vs. placeholder
 
 ## Out of Scope
 
-- Server-side persistence or per-user accounts.
-- Completing individual *steps* within an exercise.
-- Streaks / weekly history (could be a follow-up).
-- Making placeholder cards completable.
+- Illustrations for the other 5 exercises (will follow the same pattern when assets are provided).
+- Lightbox / zoom interaction on the image.
 
