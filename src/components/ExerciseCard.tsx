@@ -88,9 +88,17 @@ export function ExerciseCard({ exercise, completed, onToggleComplete }: Props) {
       >
         <div className="overflow-hidden">
           <div className="px-4 pb-4 space-y-4">
-            <div className="aspect-video w-full rounded-lg bg-neutral-800/60 flex items-center justify-center text-neutral-600 text-xs">
-              Illustration coming soon
-            </div>
+            {exercise.image ? (
+              <img
+                src={exercise.image}
+                alt={exercise.name}
+                className="aspect-video w-full rounded-lg object-cover"
+              />
+            ) : (
+              <div className="aspect-video w-full rounded-lg bg-neutral-800/60 flex items-center justify-center text-neutral-600 text-xs">
+                Illustration coming soon
+              </div>
+            )}
 
             <p className="text-sm text-neutral-300 italic">{exercise.shortBenefit}</p>
 
