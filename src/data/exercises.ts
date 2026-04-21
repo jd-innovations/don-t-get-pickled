@@ -1,3 +1,5 @@
+import armCirclesImage from "@/assets/exercises/arm-circles.png";
+
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
 export interface Exercise {
@@ -10,6 +12,7 @@ export interface Exercise {
   shortBenefit: string;
   steps: string[];
   tip: string;
+  image?: string;
 }
 
 export const exercises: Exercise[] = [
