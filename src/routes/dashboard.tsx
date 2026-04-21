@@ -67,6 +67,41 @@ function Dashboard() {
           </p>
         </section>
 
+        {/* Profile summary */}
+        {hasProfile && (
+          <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
+            <p className="text-[10px] uppercase tracking-widest text-[#C8F135] mb-3">
+              Your Profile
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <ProfileStat label="AGE" value={profile.ageRange} />
+              <ProfileStat label="FITNESS" value={profile.fitnessLevel} />
+              <ProfileStat label="PLAYS" value={profile.playFrequency} />
+              <ProfileStat label="TOP GOAL" value={profile.goals[0] ?? null} />
+            </div>
+          </section>
+        )}
+
+        {/* Weekly schedule */}
+        {hasProfile && (
+          <section className="mt-3 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4">
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-3">
+              Your Week
+            </p>
+            <div className="flex items-center justify-between">
+              {dayLabels.map((d, i) => (
+                <div key={i} className="flex flex-col items-center gap-1.5">
+                  <span className="text-[11px] font-medium text-neutral-300">{d}</span>
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: dayMask[i] ? "#C8F135" : "#2a2a2a" }}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Session tracker */}
         <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
           <div className="flex items-center justify-between">
