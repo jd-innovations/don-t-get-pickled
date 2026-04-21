@@ -147,6 +147,9 @@ function Dashboard() {
                     exercise={ex}
                     completed={isComplete(ex.id)}
                     onToggleComplete={toggle}
+                    displayDose={personalizeDose(ex.dose, profile.fitnessLevel, ex.id)}
+                    priority={getPriorityFor(ex.id, profile.injuries)}
+                    focus={getFocusFor(ex.id, profile.goals)}
                   />
                 ))}
               </div>
@@ -199,6 +202,17 @@ function Dashboard() {
           })}
         </div>
       </nav>
+    </div>
+  );
+}
+
+function ProfileStat({ label, value }: { label: string; value: string | null }) {
+  return (
+    <div>
+      <p className="text-[10px] uppercase tracking-widest text-[#C8F135] font-semibold">
+        {label}
+      </p>
+      <p className="mt-1 text-sm text-white font-medium">{value ?? "—"}</p>
     </div>
   );
 }
