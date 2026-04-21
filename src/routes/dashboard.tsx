@@ -5,6 +5,13 @@ import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
+import { useUserProfile } from "@/contexts/UserProfileContext";
+import {
+  activeDayMask,
+  getFocusFor,
+  getPriorityFor,
+  personalizeDose,
+} from "@/lib/personalize";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -22,6 +29,7 @@ export const Route = createFileRoute("/dashboard")({
 function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
+  const { profile, hasProfile } = useUserProfile();
   const totalExercises = exercises.length;
   const completedCount = exercises.reduce((n, e) => (completed.has(e.id) ? n + 1 : n), 0);
   const allDone = completedCount === totalExercises && totalExercises > 0;
@@ -31,6 +39,8 @@ function Dashboard() {
     : completedCount > 0
       ? "RESUME SESSION"
       : "START SESSION";
+  const dayMask = activeDayMask(profile.playFrequency);
+  const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
