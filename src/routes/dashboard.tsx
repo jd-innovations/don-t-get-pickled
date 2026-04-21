@@ -5,6 +5,13 @@ import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
+import { useUserProfile } from "@/contexts/UserProfileContext";
+import {
+  activeDayMask,
+  getFocusFor,
+  getPriorityFor,
+  personalizeDose,
+} from "@/lib/personalize";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -22,6 +29,7 @@ export const Route = createFileRoute("/dashboard")({
 function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
+  const { profile, hasProfile } = useUserProfile();
   const totalExercises = exercises.length;
   const completedCount = exercises.reduce((n, e) => (completed.has(e.id) ? n + 1 : n), 0);
   const allDone = completedCount === totalExercises && totalExercises > 0;
@@ -31,6 +39,8 @@ function Dashboard() {
     : completedCount > 0
       ? "RESUME SESSION"
       : "START SESSION";
+  const dayMask = activeDayMask(profile.playFrequency);
+  const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
@@ -56,6 +66,41 @@ function Dashboard() {
             Complete today's warm up before you hit the court.
           </p>
         </section>
+
+        {/* Profile summary */}
+        {hasProfile && (
+          <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
+            <p className="text-[10px] uppercase tracking-widest text-[#C8F135] mb-3">
+              Your Profile
+            </p>
+            <div className="grid grid-cols-2 gap-4">
+              <ProfileStat label="AGE" value={profile.ageRange} />
+              <ProfileStat label="FITNESS" value={profile.fitnessLevel} />
+              <ProfileStat label="PLAYS" value={profile.playFrequency} />
+              <ProfileStat label="TOP GOAL" value={profile.goals[0] ?? null} />
+            </div>
+          </section>
+        )}
+
+        {/* Weekly schedule */}
+        {hasProfile && (
+          <section className="mt-3 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4">
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-3">
+              Your Week
+            </p>
+            <div className="flex items-center justify-between">
+              {dayLabels.map((d, i) => (
+                <div key={i} className="flex flex-col items-center gap-1.5">
+                  <span className="text-[11px] font-medium text-neutral-300">{d}</span>
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: dayMask[i] ? "#C8F135" : "#2a2a2a" }}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* Session tracker */}
         <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
@@ -102,6 +147,9 @@ function Dashboard() {
                     exercise={ex}
                     completed={isComplete(ex.id)}
                     onToggleComplete={toggle}
+                    displayDose={personalizeDose(ex.dose, profile.fitnessLevel, ex.id)}
+                    priority={getPriorityFor(ex.id, profile.injuries)}
+                    focus={getFocusFor(ex.id, profile.goals)}
                   />
                 ))}
               </div>
@@ -154,6 +202,17 @@ function Dashboard() {
           })}
         </div>
       </nav>
+    </div>
+  );
+}
+
+function ProfileStat({ label, value }: { label: string; value: string | null }) {
+  return (
+    <div>
+      <p className="text-[10px] uppercase tracking-widest text-[#C8F135] font-semibold">
+        {label}
+      </p>
+      <p className="mt-1 text-sm text-white font-medium">{value ?? "—"}</p>
     </div>
   );
 }

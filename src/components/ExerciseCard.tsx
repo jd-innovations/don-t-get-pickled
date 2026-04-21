@@ -6,12 +6,23 @@ interface Props {
   exercise: Exercise;
   completed?: boolean;
   onToggleComplete?: (id: string) => void;
+  displayDose?: string;
+  priority?: boolean;
+  focus?: boolean;
 }
 
-export function ExerciseCard({ exercise, completed, onToggleComplete }: Props) {
+export function ExerciseCard({
+  exercise,
+  completed,
+  onToggleComplete,
+  displayDose,
+  priority,
+  focus,
+}: Props) {
   const [open, setOpen] = useState(false);
   const color = phaseColor(exercise.phase);
   const interactive = typeof onToggleComplete === "function";
+  const dose = displayDose ?? exercise.dose;
 
   return (
     <div
@@ -68,7 +79,23 @@ export function ExerciseCard({ exercise, completed, onToggleComplete }: Props) {
           <p className="text-xs text-neutral-400 mt-0.5 truncate">{exercise.muscles}</p>
         </div>
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
-          <span className="text-[10px] font-semibold text-neutral-300">{exercise.dose}</span>
+          {priority && (
+            <span
+              className="text-[9px] px-1.5 py-0.5 rounded font-bold tracking-wider"
+              style={{ backgroundColor: "#ef4444", color: "white" }}
+            >
+              PRIORITY
+            </span>
+          )}
+          {focus && (
+            <span
+              className="text-[9px] px-1.5 py-0.5 rounded font-bold tracking-wider"
+              style={{ backgroundColor: "#C8F135", color: "black" }}
+            >
+              FOCUS
+            </span>
+          )}
+          <span className="text-[10px] font-semibold text-neutral-300">{dose}</span>
           <span
             className="text-[10px] px-1.5 py-0.5 rounded font-medium"
             style={{ backgroundColor: `${color}22`, color }}

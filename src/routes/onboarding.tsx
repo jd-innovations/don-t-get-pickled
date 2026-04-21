@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useUserProfile } from "@/contexts/UserProfileContext";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
@@ -61,6 +62,7 @@ const goalOptions = [
 
 function Onboarding() {
   const navigate = useNavigate();
+  const { setProfile } = useUserProfile();
   const [stage, setStage] = useState<Stage>("register");
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
@@ -96,6 +98,14 @@ function Onboarding() {
   const next = () => {
     setDirection("forward");
     if (step === totalSteps - 1) {
+      setProfile({
+        gender: sex,
+        ageRange: age,
+        fitnessLevel: fitness,
+        playFrequency: frequency,
+        injuries,
+        goals,
+      });
       setStage("done");
     } else {
       setStep(step + 1);
