@@ -31,6 +31,7 @@ export const exercises: Exercise[] = [
       "Finish with 5 big sweeping circles each way.",
     ],
     tip: "Directly warms up the rotator cuff — the #1 injured shoulder structure in pickleball.",
+    image: armCirclesImage,
   },
   {
     id: "wrist-circles",
