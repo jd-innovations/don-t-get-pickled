@@ -1,4 +1,5 @@
 import armCirclesImage from "@/assets/exercises/arm-circles.png";
+import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -48,6 +49,7 @@ export const exercises: Exercise[] = [
       "Switch to left wrist and repeat.",
     ],
     tip: "Harvard Health names wrist prep as essential before any paddle session.",
+    image: wristCirclesImage,
   },
   {
     id: "torso-twist",
