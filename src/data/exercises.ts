@@ -1,4 +1,4 @@
-import armCirclesVideo from "@/assets/exercises/arm-circles.mp4";
+import armCirclesImage from "@/assets/exercises/arm-circles.png";
 import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
@@ -33,7 +33,7 @@ export const exercises: Exercise[] = [
       "Finish with 5 big sweeping circles each way.",
     ],
     tip: "Directly warms up the rotator cuff — the #1 injured shoulder structure in pickleball.",
-    video: armCirclesVideo,
+    image: armCirclesImage,
   },
   {
     id: "wrist-circles",
