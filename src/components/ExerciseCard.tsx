@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { phaseColor, type Exercise } from "@/data/exercises";
+import { ImageLightbox } from "@/components/ImageLightbox";
 
 interface Props {
   exercise: Exercise;
@@ -21,6 +22,7 @@ export function ExerciseCard({
 }: Props) {
   const [open, setOpen] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const color = phaseColor(exercise.phase);
 
@@ -151,11 +153,18 @@ export function ExerciseCard({
                 Video unavailable
               </div>
             ) : exercise.image ? (
-              <img
-                src={exercise.image}
-                alt={exercise.name}
-                className="w-full h-auto rounded-lg object-contain bg-neutral-900"
-              />
+              <button
+                type="button"
+                onClick={() => setLightboxOpen(true)}
+                aria-label="View full image"
+                className="block w-full cursor-zoom-in"
+              >
+                <img
+                  src={exercise.image}
+                  alt={exercise.name}
+                  className="w-full h-auto rounded-lg object-contain bg-neutral-900"
+                />
+              </button>
             ) : (
               <div className="aspect-video w-full rounded-lg bg-neutral-800/60 flex items-center justify-center text-neutral-600 text-xs">
                 Illustration coming soon
@@ -200,6 +209,15 @@ export function ExerciseCard({
           to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
+
+      {exercise.image && (
+        <ImageLightbox
+          src={exercise.image}
+          alt={exercise.name}
+          open={lightboxOpen}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }
