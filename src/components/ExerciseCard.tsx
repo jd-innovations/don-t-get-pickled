@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown } from "lucide-react";
 import { phaseColor, type Exercise } from "@/data/exercises";
 
@@ -20,7 +20,25 @@ export function ExerciseCard({
   focus,
 }: Props) {
   const [open, setOpen] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const color = phaseColor(exercise.phase);
+
+  useEffect(() => {
+    if (open && videoRef.current) {
+      const v = videoRef.current;
+      v.muted = true;
+      v.defaultMuted = true;
+      const p = v.play();
+      if (p && typeof p.catch === "function") {
+        p.catch(() => {
+          // Autoplay blocked — native controls fallback will let user tap play.
+        });
+      }
+    } else if (!open && videoRef.current) {
+      videoRef.current.pause();
+    }
+  }, [open]);
   const interactive = typeof onToggleComplete === "function";
   const dose = displayDose ?? exercise.dose;
 
@@ -115,15 +133,24 @@ export function ExerciseCard({
       >
         <div className="overflow-hidden">
           <div className="px-4 pb-4 space-y-4">
-            {exercise.video ? (
+            {exercise.video && !videoError ? (
               <video
+                ref={videoRef}
                 src={exercise.video}
                 autoPlay
                 loop
                 muted
+                defaultMuted
                 playsInline
-                className="aspect-video w-full rounded-lg object-cover"
+                controls
+                preload="metadata"
+                onError={() => setVideoError(true)}
+                className="aspect-video w-full rounded-lg object-cover bg-neutral-900"
               />
+            ) : exercise.video && videoError ? (
+              <div className="aspect-video w-full rounded-lg bg-neutral-800/60 flex items-center justify-center text-neutral-500 text-xs">
+                Video unavailable
+              </div>
             ) : exercise.image ? (
               <img
                 src={exercise.image}
