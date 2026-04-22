@@ -1,4 +1,4 @@
-import armCirclesImage from "@/assets/exercises/arm-circles.png";
+import armCirclesVideo from "@/assets/exercises/arm-circles.mp4";
 import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
@@ -14,6 +14,7 @@ export interface Exercise {
   steps: string[];
   tip: string;
   image?: string;
+  video?: string;
 }
 
 export const exercises: Exercise[] = [
