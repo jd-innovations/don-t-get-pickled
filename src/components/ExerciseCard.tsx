@@ -144,7 +144,7 @@ export function ExerciseCard({
                 controls
                 preload="metadata"
                 onError={() => setVideoError(true)}
-                className="aspect-video w-full rounded-lg object-cover bg-neutral-900"
+                className="w-full h-auto rounded-lg object-contain bg-neutral-900"
               />
             ) : exercise.video && videoError ? (
               <div className="aspect-video w-full rounded-lg bg-neutral-800/60 flex items-center justify-center text-neutral-500 text-xs">
@@ -154,7 +154,7 @@ export function ExerciseCard({
               <img
                 src={exercise.image}
                 alt={exercise.name}
-                className="aspect-video w-full rounded-lg object-cover"
+                className="w-full h-auto rounded-lg object-contain bg-neutral-900"
               />
             ) : (
               <div className="aspect-video w-full rounded-lg bg-neutral-800/60 flex items-center justify-center text-neutral-600 text-xs">
