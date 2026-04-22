@@ -115,7 +115,16 @@ export function ExerciseCard({
       >
         <div className="overflow-hidden">
           <div className="px-4 pb-4 space-y-4">
-            {exercise.image ? (
+            {exercise.video ? (
+              <video
+                src={exercise.video}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="aspect-video w-full rounded-lg object-cover"
+              />
+            ) : exercise.image ? (
               <img
                 src={exercise.image}
                 alt={exercise.name}
