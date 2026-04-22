@@ -140,7 +140,6 @@ export function ExerciseCard({
                 autoPlay
                 loop
                 muted
-                defaultMuted
                 playsInline
                 controls
                 preload="metadata"
