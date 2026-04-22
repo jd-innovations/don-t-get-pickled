@@ -1,25 +1,19 @@
 
-# Fix Arm Circles Video Not Loading
+# Replace Wrist Circles Illustration
 
-The video file is valid and Vite serves it correctly (HTTP 200, `video/mp4`, 1.4 MB). The problem is on the client: iOS Safari (the user's viewport is iPhone-sized) commonly refuses to autoplay a `<video>` that mounts inside an accordion when React's `muted` prop isn't applied early enough, and the current element has no error/loading affordances so the user just sees nothing.
+Swap the existing `wrist-circles.png` asset with the new uploaded comic-style illustration. No code logic changes — same import, same `image` field — just a new asset file at the same path.
 
-## Fix
+## Steps
 
-Update `src/components/ExerciseCard.tsx`:
+1. **Save the asset** — copy `user-uploads://ABA1C40F-980D-4DD3-AF58-FF52F23A5231.png` to `src/assets/exercises/wrist-circles.png`, overwriting the previous file.
 
-1. **Force muted at the DOM level (iOS autoplay fix).** Use a `ref` and set `videoRef.current.muted = true` in a `useEffect` whenever the card opens. React's `muted` JSX attribute is known to not always reflect to the DOM property in time, which is the #1 cause of silent autoplay failure on iOS.
-2. **Call `.play()` explicitly when the card expands**, swallowing the returned promise (so a rejection doesn't bubble up). This guarantees a play attempt right after the user-initiated expand click — which Safari treats as a valid user gesture.
-3. **Add `preload="metadata"`, `controls` as a fallback when autoplay is blocked, and `poster` fallback to the first frame.** Keep `autoPlay loop muted playsInline`. Adding native `controls` lets the user tap play if Safari still blocks autoplay.
-4. **Add an `onError` handler** that flips local state to show a small "Video unavailable" message instead of an invisible failure, so future issues are visible.
-
-No data or asset changes — the mp4 import and file are correct.
+That's it. `src/data/exercises.ts` already imports `wrist-circles.png` and assigns it to the `wrist-circles` entry, and `ExerciseCard.tsx` already renders it. Vite will pick up the new file on next build.
 
 ## Files Touched
 
-- `src/components/ExerciseCard.tsx` — add `videoRef`, mount-time `muted` enforcement, explicit `.play()` on open, `controls`, `preload="metadata"`, `onError` fallback.
+- `src/assets/exercises/wrist-circles.png` — overwritten with new illustration
 
 ## Out of Scope
 
-- Re-encoding the video (current H.264/AAC is already broadly compatible).
-- Removing the audio track.
-- Adding a poster image (would need a separate frame export).
+- Changing the exercise card layout, copy, or video behavior.
+- Adding the new image as a video/animation.
