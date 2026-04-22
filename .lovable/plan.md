@@ -1,19 +1,23 @@
 
-# Replace Wrist Circles Illustration
+# Show Full Exercise Image (No Cropping)
 
-Swap the existing `wrist-circles.png` asset with the new uploaded comic-style illustration. No code logic changes — same import, same `image` field — just a new asset file at the same path.
+The image for Wrist Circles is being cropped because the container forces a fixed `aspect-video` ratio with `object-cover`. Switch the image (and video) rendering to preserve the asset's natural aspect ratio so the entire illustration is visible.
 
-## Steps
+## Change
 
-1. **Save the asset** — copy `user-uploads://ABA1C40F-980D-4DD3-AF58-FF52F23A5231.png` to `src/assets/exercises/wrist-circles.png`, overwriting the previous file.
+In `src/components/ExerciseCard.tsx`, inside the expanded content area:
 
-That's it. `src/data/exercises.ts` already imports `wrist-circles.png` and assigns it to the `wrist-circles` entry, and `ExerciseCard.tsx` already renders it. Vite will pick up the new file on next build.
+- **Image branch**: replace `aspect-video w-full ... object-cover` with `w-full h-auto object-contain` on a neutral background. This lets tall/portrait illustrations render in full without cropping.
+- **Video branch**: keep the video responsive but also drop the forced `aspect-video` crop — use `w-full h-auto` with `object-contain` and a dark background so letterboxing (if any) blends in.
+- **Fallback states** (video error, no media): keep `aspect-video` since they're empty placeholders that need a defined height.
+
+No changes to data, assets, or any other component.
 
 ## Files Touched
 
-- `src/assets/exercises/wrist-circles.png` — overwritten with new illustration
+- `src/components/ExerciseCard.tsx` — image/video className updated to preserve full aspect ratio.
 
 ## Out of Scope
 
-- Changing the exercise card layout, copy, or video behavior.
-- Adding the new image as a video/animation.
+- Replacing the wrist-circles asset or any other illustration.
+- Adding zoom/lightbox interactions.
