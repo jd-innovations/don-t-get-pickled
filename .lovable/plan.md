@@ -1,32 +1,19 @@
 
-# Replace "Seated Knee Extensions" with "Seated Hamstring Reach"
+# Replace Arm Circles Illustration
 
-Swap exercise #5's illustration with the new comic-style hamstring reach image and rename the exercise. Keep the same id so completion state and ordering are preserved.
+Swap the existing `arm-circles.png` asset with the newly uploaded comic-style illustration. No code changes needed — the import and data binding already point to this path.
 
-## Changes
+## Steps
 
-1. **Add new asset** — copy `user-uploads://0A5A9836-5285-4ABC-818A-5FB4A4159D3B.png` to `src/assets/exercises/seated-hamstring-reach.png`.
+1. **Overwrite the asset** — copy `user-uploads://391C3906-3593-44EF-865B-5E48EE5C24B8.png` to `src/assets/exercises/arm-circles.png`, replacing the current file.
 
-2. **Update `src/data/exercises.ts`** — for the entry currently identified as `knee-extensions`:
-   - Add import: `import seatedHamstringReachImage from "@/assets/exercises/seated-hamstring-reach.png";`
-   - Rename `name` from `"Seated Knee Extensions"` to `"Seated Hamstring Reach"`
-   - Update `muscles` to `"Hamstrings · Lower Back · Hips"`
-   - Update `shortBenefit` to reflect loosening tight hamstrings that pull on the lower back (matches the image's tagline)
-   - Rewrite `steps` for a seated hamstring reach: sit at edge of chair, extend one leg straight with heel on floor and toes up, hinge from hips and reach toward the toes, hold ~15 seconds, switch sides
-   - Update `dose` to a hold-based prescription (e.g. `"2×15s Each Leg"`)
-   - Update `tip` to reinforce the hamstring → lower-back connection
-   - Set `image: seatedHamstringReachImage`
-   - Keep `id: "knee-extensions"`, `number: 5`, and `phase: "Strength"` unchanged so existing completion state and card ordering remain intact
-
-No changes to `ExerciseCard.tsx`, lightbox, or any other component — they read these fields generically.
+That's the entire change. `src/data/exercises.ts` already imports from this path and assigns it to the `arm-circles` entry, and `ExerciseCard.tsx` renders it generically. Vite will pick up the new asset on next build.
 
 ## Files Touched
 
-- `src/assets/exercises/seated-hamstring-reach.png` — new image
-- `src/data/exercises.ts` — rename, new copy, new image binding for entry #5
+- `src/assets/exercises/arm-circles.png` — overwritten with new illustration
 
 ## Out of Scope
 
-- Changing the exercise `id` (would reset completion tracking).
-- Reordering exercises or moving phases.
-- Editing other exercises' copy or assets.
+- Editing exercise copy, name, steps, or dose.
+- Changing card layout or lightbox behavior.
