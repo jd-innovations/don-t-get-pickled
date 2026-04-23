@@ -1,5 +1,6 @@
 import armCirclesImage from "@/assets/exercises/arm-circles.png";
 import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
+import seatedHamstringReachImage from "@/assets/exercises/seated-hamstring-reach.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -87,18 +88,19 @@ export const exercises: Exercise[] = [
   {
     id: "knee-extensions",
     number: 5,
-    name: "Seated Knee Extensions",
-    muscles: "Quadriceps · Knee Stabilizers",
-    dose: "3×12 Each Leg",
+    name: "Seated Hamstring Reach",
+    muscles: "Hamstrings · Lower Back · Hips",
+    dose: "2×15s Each Leg",
     phase: "Strength",
-    shortBenefit: "Builds the leg strength to stay low and move fast on court",
+    shortBenefit: "Loosens tight hamstrings that pull on your lower back",
     steps: [
-      "Sit upright, hands gripping chair sides lightly.",
-      "Extend your right knee fully, squeezing the quad at the top. Hold 2 seconds.",
-      "Lower slowly — don't drop the leg.",
-      "Complete 12 reps right then 12 left. Rest 30 sec between sets.",
+      "Sit at the front edge of your chair, back tall.",
+      "Extend your right leg straight out, heel on floor, toes pointing up.",
+      "Hinge forward from the hips (not the lower back) and reach toward your toes.",
+      "Hold ~15 seconds, feeling the stretch along the back of the thigh. Switch legs and repeat.",
     ],
-    tip: "Builds quad strength to absorb landing impact and stay low for ground balls.",
+    tip: "Tight hamstrings tug on the pelvis and overload the lower back — keeping them long protects your spine on every bend.",
+    image: seatedHamstringReachImage,
   },
   {
     id: "heel-raises",
