@@ -33,6 +33,7 @@ function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [guidedOpen, setGuidedOpen] = useState(false);
+  const [recap, setRecap] = useState<SessionRecord | null>(null);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
   const totalExercises = exercises.length;
@@ -228,6 +229,8 @@ function Dashboard() {
         completed={completed}
         onToggle={toggle}
         onReset={reset}
+        recap={recap}
+        onClearRecap={() => setRecap(null)}
       />
 
       <GuidedSession
@@ -236,6 +239,7 @@ function Dashboard() {
         completed={completed}
         onToggle={toggle}
         onOpenSummary={() => setSummaryOpen(true)}
+        onSessionComplete={(rec) => setRecap(rec)}
       />
     </div>
   );
