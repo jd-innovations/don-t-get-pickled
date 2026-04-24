@@ -1,6 +1,7 @@
 import armCirclesImage from "@/assets/exercises/arm-circles.png";
 import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
 import seatedHamstringReachImage from "@/assets/exercises/seated-hamstring-reach.png";
+import seatedTorsoTwistImage from "@/assets/exercises/seated-torso-twist.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -68,6 +69,7 @@ export const exercises: Exercise[] = [
       "Hips stay locked — all rotation from the torso.",
     ],
     tip: "Every forehand and backhand uses spinal rotation. This builds power without straining your lower back.",
+    image: seatedTorsoTwistImage,
   },
   {
     id: "hip-circles",
