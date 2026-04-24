@@ -145,7 +145,25 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
     setPaused(false);
     setRepCount(0);
     lastBeepedSecond.current = -1;
+    sessionStartMsRef.current = Date.now();
+    pauseStartedAtRef.current = null;
+    pausedAccumMsRef.current = 0;
+    completedInSessionRef.current = new Set();
+    repsAccumRef.current = 0;
+    holdAccumRef.current = 0;
+    sessionWrittenRef.current = false;
   }, [open, startIdx]);
+
+  // Track pause time
+  useEffect(() => {
+    if (!open) return;
+    if (paused) {
+      pauseStartedAtRef.current = Date.now();
+    } else if (pauseStartedAtRef.current != null) {
+      pausedAccumMsRef.current += Date.now() - pauseStartedAtRef.current;
+      pauseStartedAtRef.current = null;
+    }
+  }, [paused, open]);
 
   // Lock scroll
   useEffect(() => {
