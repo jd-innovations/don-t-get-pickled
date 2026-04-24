@@ -419,7 +419,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
         <div className="mt-10 w-full max-w-xs space-y-3">
           <button
             onClick={() => {
-              onClose();
+              handleClose();
               onOpenSummary();
             }}
             className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
@@ -427,7 +427,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
             VIEW SUMMARY
           </button>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="w-full py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] text-neutral-300 hover:border-[#C8F135]/40 transition"
           >
             CLOSE
@@ -467,7 +467,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close guided session"
               className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-neutral-300 hover:text-[#C8F135] transition"
             >
