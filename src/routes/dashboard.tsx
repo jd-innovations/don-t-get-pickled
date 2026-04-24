@@ -29,6 +29,7 @@ export const Route = createFileRoute("/dashboard")({
 
 function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
   const totalExercises = exercises.length;
