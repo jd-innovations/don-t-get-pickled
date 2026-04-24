@@ -8,6 +8,7 @@ import { GuidedSession } from "@/components/GuidedSession";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import type { SessionRecord } from "@/hooks/useSessionStats";
 import {
   activeDayMask,
   getFocusFor,
