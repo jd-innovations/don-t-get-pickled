@@ -218,11 +218,42 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
       setMsRemaining(REST_S * 1000);
       return;
     }
-    // exercise done
-    if (current && !completed.has(current.id)) onToggle(current.id);
+    // exercise done — accrue stats
+    if (current) {
+      if (!completedInSessionRef.current.has(current.id)) {
+        completedInSessionRef.current.add(current.id);
+        if (parsed.kind === "hold") {
+          holdAccumRef.current += parsed.seconds * parsed.sets * parsed.sides;
+        } else {
+          repsAccumRef.current += parsed.reps * parsed.sets * parsed.sides;
+        }
+      }
+      if (!completed.has(current.id)) onToggle(current.id);
+    }
     setPhase("done-flash");
     setMsRemaining(900);
   }, [parsed, sideIdx, setIdx, current, completed, onToggle]);
+
+  const writeSessionIfNeeded = useCallback(() => {
+    if (sessionWrittenRef.current) return;
+    if (completedInSessionRef.current.size === 0) return;
+    sessionWrittenRef.current = true;
+    const now = Date.now();
+    const pausedNow =
+      pauseStartedAtRef.current != null ? now - pauseStartedAtRef.current : 0;
+    const durationMs =
+      now - sessionStartMsRef.current - pausedAccumMsRef.current - pausedNow;
+    const rec: SessionRecord = {
+      date: dateKey(),
+      completedAt: now,
+      durationSec: Math.max(0, Math.round(durationMs / 1000)),
+      exerciseIds: Array.from(completedInSessionRef.current),
+      totalReps: repsAccumRef.current,
+      totalHoldSec: holdAccumRef.current,
+    };
+    addSession(rec);
+    onSessionComplete?.(rec);
+  }, [onSessionComplete]);
 
   const goNextExercise = useCallback(() => {
     const next = exIdx + 1;
