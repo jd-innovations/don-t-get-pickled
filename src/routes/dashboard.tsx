@@ -4,6 +4,7 @@ import { Home, Calendar, User } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { SessionSummary } from "@/components/SessionSummary";
+import { GuidedSession } from "@/components/GuidedSession";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/dashboard")({
 function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const [summaryOpen, setSummaryOpen] = useState(false);
+  const [guidedOpen, setGuidedOpen] = useState(false);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
   const totalExercises = exercises.length;
@@ -137,8 +139,14 @@ function Dashboard() {
             </div>
           )}
           <button
+            onClick={() => setGuidedOpen(true)}
+            className="mt-5 w-full py-3 rounded-lg font-display text-base tracking-wider border-2 border-[#C8F135] text-[#C8F135] hover:bg-[#C8F135]/10 transition flex items-center justify-center gap-2"
+          >
+            <span aria-hidden>▶</span> START GUIDED SESSION
+          </button>
+          <button
             onClick={() => setSummaryOpen(true)}
-            className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="mt-2 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
           >
             {ctaLabel}
           </button>
@@ -219,6 +227,14 @@ function Dashboard() {
         completed={completed}
         onToggle={toggle}
         onReset={reset}
+      />
+
+      <GuidedSession
+        open={guidedOpen}
+        onClose={() => setGuidedOpen(false)}
+        completed={completed}
+        onToggle={toggle}
+        onOpenSummary={() => setSummaryOpen(true)}
       />
     </div>
   );
