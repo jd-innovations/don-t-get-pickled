@@ -342,9 +342,17 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   }, [goNextExercise]);
 
   const markDoneAndNext = useCallback(() => {
+    if (current && parsed && !completedInSessionRef.current.has(current.id)) {
+      completedInSessionRef.current.add(current.id);
+      if (parsed.kind === "hold") {
+        holdAccumRef.current += parsed.seconds * parsed.sets * parsed.sides;
+      } else {
+        repsAccumRef.current += parsed.reps * parsed.sets * parsed.sides;
+      }
+    }
     if (current && !completed.has(current.id)) onToggle(current.id);
     goNextExercise();
-  }, [current, completed, onToggle, goNextExercise]);
+  }, [current, parsed, completed, onToggle, goNextExercise]);
 
   if (!open || !current || !parsed) return null;
 
