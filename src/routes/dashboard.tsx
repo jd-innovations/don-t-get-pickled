@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Home, Calendar, User } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
+import { SessionSummary } from "@/components/SessionSummary";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/dashboard")({
 
 function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
   const totalExercises = exercises.length;
@@ -119,16 +121,24 @@ function Dashboard() {
             />
           </div>
           {completedCount > 0 && (
-            <button
-              onClick={reset}
-              className="mt-2 text-[11px] text-neutral-500 hover:text-[#C8F135] transition-colors underline underline-offset-2"
-            >
-              Reset today's progress
-            </button>
+            <div className="mt-2 flex items-center justify-between">
+              <button
+                onClick={reset}
+                className="text-[11px] text-neutral-500 hover:text-[#C8F135] transition-colors underline underline-offset-2"
+              >
+                Reset today's progress
+              </button>
+              <button
+                onClick={() => setSummaryOpen(true)}
+                className="text-[11px] text-[#C8F135] hover:brightness-125 transition underline underline-offset-2"
+              >
+                View summary
+              </button>
+            </div>
           )}
           <button
-            className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:cursor-default"
-            disabled={allDone}
+            onClick={() => setSummaryOpen(true)}
+            className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
           >
             {ctaLabel}
           </button>
@@ -202,6 +212,14 @@ function Dashboard() {
           })}
         </div>
       </nav>
+
+      <SessionSummary
+        open={summaryOpen}
+        onClose={() => setSummaryOpen(false)}
+        completed={completed}
+        onToggle={toggle}
+        onReset={reset}
+      />
     </div>
   );
 }
