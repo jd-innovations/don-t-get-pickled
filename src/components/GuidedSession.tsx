@@ -101,7 +101,7 @@ function useBeeper(muted: boolean) {
 
 type Phase = "get-ready" | "active" | "rest" | "done-flash" | "celebrate";
 
-export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummary }: Props) {
+export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummary, onSessionComplete }: Props) {
   // Find first incomplete exercise on open
   const startIdx = useMemo(() => {
     if (!open) return 0;
@@ -124,6 +124,15 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
 
   const beep = useBeeper(muted);
   const lastBeepedSecond = useRef<number>(-1);
+
+  // ----- Session stats tracking -----
+  const sessionStartMsRef = useRef<number>(0);
+  const pauseStartedAtRef = useRef<number | null>(null);
+  const pausedAccumMsRef = useRef<number>(0);
+  const completedInSessionRef = useRef<Set<string>>(new Set());
+  const repsAccumRef = useRef<number>(0);
+  const holdAccumRef = useRef<number>(0);
+  const sessionWrittenRef = useRef<boolean>(false);
 
   // Reset on open
   useEffect(() => {
