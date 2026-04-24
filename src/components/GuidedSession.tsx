@@ -258,6 +258,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   const goNextExercise = useCallback(() => {
     const next = exIdx + 1;
     if (next >= exercises.length) {
+      writeSessionIfNeeded();
       setPhase("celebrate");
       return;
     }
@@ -268,7 +269,12 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
     setPhase("get-ready");
     setMsRemaining(GET_READY_S * 1000);
     lastBeepedSecond.current = -1;
-  }, [exIdx]);
+  }, [exIdx, writeSessionIfNeeded]);
+
+  const handleClose = useCallback(() => {
+    writeSessionIfNeeded();
+    onClose();
+  }, [writeSessionIfNeeded, onClose]);
 
   // Tick
   useEffect(() => {
