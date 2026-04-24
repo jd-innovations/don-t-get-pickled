@@ -1,38 +1,58 @@
 
-# Add "Done" Button Inside Expanded Exercise Cards
+# Session Summary Screen
 
-Add a prominent "Mark Done" button at the bottom of each expanded `ExerciseCard` so users can complete an exercise without scrolling back to the small numbered checkbox in the header. It uses the existing completion state — no new storage.
+Add a per-session summary view that lists every exercise grouped by phase (Warm-Up / Mobility / Strength), showing which are done and which are still pending, plus an overall progress bar and headline stats.
 
-## Behavior
+## Trigger
 
-- When a card is expanded, a full-width button appears below the Tip block.
-- If the exercise is **not complete**: button reads `MARK DONE`, lime background (`#C8F135`), black text. Tapping it marks the exercise complete.
-- If the exercise **is complete**: button reads `✓ COMPLETED — TAP TO UNDO`, dark background with lime border and lime text. Tapping it unmarks.
-- After marking done, the card stays expanded (user controls collapse via the header chevron) so they can re-read steps if needed.
-- Hidden entirely on the read-only library view (when `onToggleComplete` is not provided), matching how the header checkbox already behaves.
+The existing `START SESSION / RESUME SESSION / SESSION COMPLETE ✓` button in the dashboard's Today's Session card currently does nothing. We'll wire it to open the summary as a full-screen overlay (modal sheet). Also add a small `View Summary` text link next to "Reset today's progress" so users can open it any time.
 
-## Visual
+## Layout (full-screen overlay, mobile-first, max-w-md)
 
-```text
-┌─ expanded card ─────────────────┐
-│ [video / image]                 │
-│ short benefit                   │
-│ 1. step…                        │
-│ 2. step…                        │
-│ ┃ Tip: …                        │
-│ ┌─────────────────────────────┐ │
-│ │       MARK DONE             │ │  ← new
-│ └─────────────────────────────┘ │
-└─────────────────────────────────┘
 ```
+┌─────────────────────────────────────────┐
+│  ✕                              SESSION │
+│                                         │
+│  TODAY'S SESSION                        │
+│  4 of 6 complete · 67%                  │
+│  ████████████████░░░░░░░  (lime fill)   │
+│                                         │
+│  ── WARM-UP ──────────────              │
+│  ✓  1  Arm Circles                      │
+│  ○  2  Wrist Circles & Flexion          │
+│                                         │
+│  ── MOBILITY ─────────────              │
+│  ✓  3  Seated Torso Twist               │
+│  ✓  4  Seated Hip Circles               │
+│                                         │
+│  ── STRENGTH ─────────────              │
+│  ○  5  Seated Hamstring Reach           │
+│  ✓  6  Heel Raises                      │
+│                                         │
+│  [  CLOSE  ]                            │
+│  Reset today's progress                 │
+└─────────────────────────────────────────┘
+```
+
+- Each row: status circle (filled lime ✓ when done, hollow grey when not), exercise number in phase color, name. Tapping a row toggles completion (same `toggle(id)` from `useCompletedExercises`) so the summary doubles as a quick check-off list.
+- Phase header reuses the existing `PhaseDivider` style (colored label + rule) for visual consistency.
+- Per-phase mini-count next to the phase label: e.g. `WARM-UP — 1/2`.
+- Headline progress bar matches the dashboard's existing one (h-2, lime fill, dark track).
+- Overlay: fixed inset-0, `bg-[#0a0a0a]`, scrollable, with sticky top bar containing the close ✕.
+
+## State & data
+
+- No new storage. Reads from `useCompletedExercises` and the static `exercises` array — same source of truth as the dashboard, so toggles stay in sync.
+- Open/close is local component state (`useState<boolean>`) on the dashboard route. Lock body scroll while open via a small effect.
 
 ## Files Touched
 
-- `src/components/ExerciseCard.tsx` — add the button at the end of the expanded content block, wired to the existing `onToggleComplete(exercise.id)` and `completed` props. No new state, no new props, no changes to `useCompletedExercises` or `Dashboard`.
+- `src/components/SessionSummary.tsx` — new component. Props: `open: boolean`, `onClose: () => void`, `completed: Set<string>`, `onToggle: (id: string) => void`, `onReset: () => void`. Pure presentation; no data fetching.
+- `src/routes/dashboard.tsx` — add `summaryOpen` state; wire the START/RESUME/COMPLETE button + a new "View summary" link to open it; render `<SessionSummary />`.
 
-## Out of Scope
+## Out of scope
 
-- Per-step checkboxes (the request is per-exercise, matching today's tracking model).
-- Auto-collapse on completion.
-- New animations, toasts, or haptics.
-- Changes to the existing header checkbox (kept for at-a-glance toggling from the collapsed list).
+- Persisting historical sessions (no streaks, no calendar history yet — today only, matching current `dgp:completed:YYYY-MM-DD` storage).
+- Sharing / export.
+- Animations beyond a simple fade/slide-in (kept minimal to match existing aesthetic).
+- Changing the header checkbox or the Mark Done button inside `ExerciseCard`.
