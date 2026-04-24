@@ -329,7 +329,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
       } else if (e.code === "ArrowRight") {
         skipExercise();
       } else if (e.code === "Escape") {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener("keydown", onKey);
