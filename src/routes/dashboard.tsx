@@ -121,16 +121,24 @@ function Dashboard() {
             />
           </div>
           {completedCount > 0 && (
-            <button
-              onClick={reset}
-              className="mt-2 text-[11px] text-neutral-500 hover:text-[#C8F135] transition-colors underline underline-offset-2"
-            >
-              Reset today's progress
-            </button>
+            <div className="mt-2 flex items-center justify-between">
+              <button
+                onClick={reset}
+                className="text-[11px] text-neutral-500 hover:text-[#C8F135] transition-colors underline underline-offset-2"
+              >
+                Reset today's progress
+              </button>
+              <button
+                onClick={() => setSummaryOpen(true)}
+                className="text-[11px] text-[#C8F135] hover:brightness-125 transition underline underline-offset-2"
+              >
+                View summary
+              </button>
+            </div>
           )}
           <button
-            className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:cursor-default"
-            disabled={allDone}
+            onClick={() => setSummaryOpen(true)}
+            className="mt-5 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
           >
             {ctaLabel}
           </button>
