@@ -2,6 +2,7 @@ import armCirclesImage from "@/assets/exercises/arm-circles.png";
 import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
 import seatedHamstringReachImage from "@/assets/exercises/seated-hamstring-reach.png";
 import seatedTorsoTwistImage from "@/assets/exercises/seated-torso-twist.png";
+import chairStandImage from "@/assets/exercises/chair-stand.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -119,6 +120,23 @@ export const exercises: Exercise[] = [
       "Progress: alternate single leg raises for greater challenge.",
     ],
     tip: "Strengthens the calf-Achilles complex — the shock absorber for every direction change on court.",
+  },
+  {
+    id: "chair-stand",
+    number: 7,
+    name: "Chair Stand",
+    muscles: "Quads · Glutes · Core",
+    dose: "3×10 Reps",
+    phase: "Strength",
+    shortBenefit: "Builds the leg power for explosive starts and stops on court",
+    steps: [
+      "Sit tall at the front edge of your chair, feet flat hip-width apart, arms crossed over chest.",
+      "Lean slightly forward from the hips and drive through your heels to stand all the way up.",
+      "Stand tall, squeeze glutes at the top — no hands, no momentum.",
+      "Lower slowly under control back to seated. Repeat for 10 reps, rest, then 2 more sets.",
+    ],
+    tip: "Chair stands rebuild the exact quad and glute power you need to push off, lunge, and stop safely on court — and protect your knees doing it.",
+    image: chairStandImage,
   },
 ];
 
