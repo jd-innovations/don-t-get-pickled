@@ -199,6 +199,24 @@ export function ExerciseCard({
               <span className="font-semibold text-[#C8F135]">Tip: </span>
               {exercise.tip}
             </div>
+
+            {interactive && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleComplete!(exercise.id);
+                }}
+                className="w-full rounded-lg py-3 font-display text-base tracking-wider transition-colors"
+                style={{
+                  backgroundColor: completed ? "transparent" : "#C8F135",
+                  border: `2px solid #C8F135`,
+                  color: completed ? "#C8F135" : "#000",
+                }}
+              >
+                {completed ? "✓ COMPLETED — TAP TO UNDO" : "MARK DONE"}
+              </button>
+            )}
           </div>
         </div>
       </div>
