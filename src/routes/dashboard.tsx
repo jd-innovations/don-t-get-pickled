@@ -212,6 +212,14 @@ function Dashboard() {
           })}
         </div>
       </nav>
+
+      <SessionSummary
+        open={summaryOpen}
+        onClose={() => setSummaryOpen(false)}
+        completed={completed}
+        onToggle={toggle}
+        onReset={reset}
+      />
     </div>
   );
 }
