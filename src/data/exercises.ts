@@ -3,6 +3,7 @@ import wristCirclesImage from "@/assets/exercises/wrist-circles.png";
 import seatedHamstringReachImage from "@/assets/exercises/seated-hamstring-reach.png";
 import seatedTorsoTwistImage from "@/assets/exercises/seated-torso-twist.png";
 import chairStandImage from "@/assets/exercises/chair-stand.png";
+import reachBackOpenerImage from "@/assets/exercises/reach-back-shoulder-opener.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -137,6 +138,22 @@ export const exercises: Exercise[] = [
     ],
     tip: "Chair stands rebuild the exact quad and glute power you need to push off, lunge, and stop safely on court — and protect your knees doing it.",
     image: chairStandImage,
+  },
+  {
+    id: "reach-back-opener",
+    number: 8,
+    name: "Reach-Back Shoulder Opener",
+    muscles: "Shoulders · Chest · Upper Back",
+    dose: "3×10s Holds",
+    phase: "Mobility",
+    shortBenefit: "Opens tight shoulders and chest for a fuller swing arc",
+    steps: [
+      "Sit tall, place both hands behind your head with elbows pointing out wide.",
+      "Gently draw your elbows back, opening your chest and squeezing your shoulder blades together.",
+      "Breathe deeply and hold for ~10 seconds, feeling the stretch across your chest and front of shoulders. Release and repeat for 3 holds.",
+    ],
+    tip: "Hours of paddle grip and screen time round the shoulders forward — opening them back restores posture, swing arc, and overhead reach.",
+    image: reachBackOpenerImage,
   },
 ];
 
