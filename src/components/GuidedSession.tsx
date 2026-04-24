@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { X, Pause, Play, SkipForward, Check, Volume2, VolumeX, Plus } from "lucide-react";
 import { exercises, phaseColor, type Exercise } from "@/data/exercises";
+import { addSession, dateKey, type SessionRecord } from "@/hooks/useSessionStats";
 
 interface Props {
   open: boolean;
@@ -8,6 +9,7 @@ interface Props {
   completed: Set<string>;
   onToggle: (id: string) => void;
   onOpenSummary: () => void;
+  onSessionComplete?: (rec: SessionRecord) => void;
 }
 
 type ParsedDose =
@@ -99,7 +101,7 @@ function useBeeper(muted: boolean) {
 
 type Phase = "get-ready" | "active" | "rest" | "done-flash" | "celebrate";
 
-export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummary }: Props) {
+export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummary, onSessionComplete }: Props) {
   // Find first incomplete exercise on open
   const startIdx = useMemo(() => {
     if (!open) return 0;
@@ -123,6 +125,15 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   const beep = useBeeper(muted);
   const lastBeepedSecond = useRef<number>(-1);
 
+  // ----- Session stats tracking -----
+  const sessionStartMsRef = useRef<number>(0);
+  const pauseStartedAtRef = useRef<number | null>(null);
+  const pausedAccumMsRef = useRef<number>(0);
+  const completedInSessionRef = useRef<Set<string>>(new Set());
+  const repsAccumRef = useRef<number>(0);
+  const holdAccumRef = useRef<number>(0);
+  const sessionWrittenRef = useRef<boolean>(false);
+
   // Reset on open
   useEffect(() => {
     if (!open) return;
@@ -134,7 +145,25 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
     setPaused(false);
     setRepCount(0);
     lastBeepedSecond.current = -1;
+    sessionStartMsRef.current = Date.now();
+    pauseStartedAtRef.current = null;
+    pausedAccumMsRef.current = 0;
+    completedInSessionRef.current = new Set();
+    repsAccumRef.current = 0;
+    holdAccumRef.current = 0;
+    sessionWrittenRef.current = false;
   }, [open, startIdx]);
+
+  // Track pause time
+  useEffect(() => {
+    if (!open) return;
+    if (paused) {
+      pauseStartedAtRef.current = Date.now();
+    } else if (pauseStartedAtRef.current != null) {
+      pausedAccumMsRef.current += Date.now() - pauseStartedAtRef.current;
+      pauseStartedAtRef.current = null;
+    }
+  }, [paused, open]);
 
   // Lock scroll
   useEffect(() => {
@@ -189,15 +218,47 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
       setMsRemaining(REST_S * 1000);
       return;
     }
-    // exercise done
-    if (current && !completed.has(current.id)) onToggle(current.id);
+    // exercise done — accrue stats
+    if (current) {
+      if (!completedInSessionRef.current.has(current.id)) {
+        completedInSessionRef.current.add(current.id);
+        if (parsed.kind === "hold") {
+          holdAccumRef.current += parsed.seconds * parsed.sets * parsed.sides;
+        } else {
+          repsAccumRef.current += parsed.reps * parsed.sets * parsed.sides;
+        }
+      }
+      if (!completed.has(current.id)) onToggle(current.id);
+    }
     setPhase("done-flash");
     setMsRemaining(900);
   }, [parsed, sideIdx, setIdx, current, completed, onToggle]);
 
+  const writeSessionIfNeeded = useCallback(() => {
+    if (sessionWrittenRef.current) return;
+    if (completedInSessionRef.current.size === 0) return;
+    sessionWrittenRef.current = true;
+    const now = Date.now();
+    const pausedNow =
+      pauseStartedAtRef.current != null ? now - pauseStartedAtRef.current : 0;
+    const durationMs =
+      now - sessionStartMsRef.current - pausedAccumMsRef.current - pausedNow;
+    const rec: SessionRecord = {
+      date: dateKey(),
+      completedAt: now,
+      durationSec: Math.max(0, Math.round(durationMs / 1000)),
+      exerciseIds: Array.from(completedInSessionRef.current),
+      totalReps: repsAccumRef.current,
+      totalHoldSec: holdAccumRef.current,
+    };
+    addSession(rec);
+    onSessionComplete?.(rec);
+  }, [onSessionComplete]);
+
   const goNextExercise = useCallback(() => {
     const next = exIdx + 1;
     if (next >= exercises.length) {
+      writeSessionIfNeeded();
       setPhase("celebrate");
       return;
     }
@@ -208,7 +269,12 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
     setPhase("get-ready");
     setMsRemaining(GET_READY_S * 1000);
     lastBeepedSecond.current = -1;
-  }, [exIdx]);
+  }, [exIdx, writeSessionIfNeeded]);
+
+  const handleClose = useCallback(() => {
+    writeSessionIfNeeded();
+    onClose();
+  }, [writeSessionIfNeeded, onClose]);
 
   // Tick
   useEffect(() => {
@@ -263,7 +329,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
       } else if (e.code === "ArrowRight") {
         skipExercise();
       } else if (e.code === "Escape") {
-        onClose();
+        handleClose();
       }
     };
     window.addEventListener("keydown", onKey);
@@ -276,9 +342,17 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   }, [goNextExercise]);
 
   const markDoneAndNext = useCallback(() => {
+    if (current && parsed && !completedInSessionRef.current.has(current.id)) {
+      completedInSessionRef.current.add(current.id);
+      if (parsed.kind === "hold") {
+        holdAccumRef.current += parsed.seconds * parsed.sets * parsed.sides;
+      } else {
+        repsAccumRef.current += parsed.reps * parsed.sets * parsed.sides;
+      }
+    }
     if (current && !completed.has(current.id)) onToggle(current.id);
     goNextExercise();
-  }, [current, completed, onToggle, goNextExercise]);
+  }, [current, parsed, completed, onToggle, goNextExercise]);
 
   if (!open || !current || !parsed) return null;
 
@@ -345,7 +419,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
         <div className="mt-10 w-full max-w-xs space-y-3">
           <button
             onClick={() => {
-              onClose();
+              handleClose();
               onOpenSummary();
             }}
             className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
@@ -353,7 +427,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
             VIEW SUMMARY
           </button>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="w-full py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] text-neutral-300 hover:border-[#C8F135]/40 transition"
           >
             CLOSE
@@ -393,7 +467,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
               {muted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               aria-label="Close guided session"
               className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-neutral-300 hover:text-[#C8F135] transition"
             >
