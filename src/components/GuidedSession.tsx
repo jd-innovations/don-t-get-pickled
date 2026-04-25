@@ -381,16 +381,19 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   const phaseProgress = phase === "active" ? 1 - msRemaining / phaseTotalMs : 0;
   const overallPct = ((exIdx + phaseProgress) / totalEx) * 100;
 
-  // Ring values
-  const ringSize = 200;
-  const stroke = 10;
-  const radius = (ringSize - stroke) / 2;
-  const circ = 2 * Math.PI * radius;
-  const ringProgress =
-    phase === "active" || phase === "get-ready" || phase === "rest"
-      ? msRemaining / phaseTotalMs
-      : 0;
-  const dashOffset = circ * (1 - ringProgress);
+  // Linear bar values
+  const barColor =
+    phase === "rest"
+      ? "#82a0e0"
+      : phase === "get-ready"
+        ? "#f5a623"
+        : color;
+  // Rest drains R→L (bar shrinks from right). Others fill L→R.
+  const remainingPct = (msRemaining / phaseTotalMs) * 100;
+  const elapsedPct = 100 - remainingPct;
+  const barFillPct =
+    phase === "rest" ? remainingPct : phase === "active" || phase === "get-ready" ? elapsedPct : 0;
+  const barAnchorRight = phase === "rest";
 
   const secondsDisplay = Math.ceil(msRemaining / 1000);
 
@@ -513,71 +516,56 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
           <p className="mt-1 text-xs text-neutral-400">{current.muscles}</p>
         </div>
 
-        {/* Ring */}
-        <div className="mt-6 flex flex-col items-center">
-          <div className="relative" style={{ width: ringSize, height: ringSize }}>
-            <svg width={ringSize} height={ringSize} className="-rotate-90">
-              <circle
-                cx={ringSize / 2}
-                cy={ringSize / 2}
-                r={radius}
-                stroke="#1e1e1e"
-                strokeWidth={stroke}
-                fill="none"
-              />
-              <circle
-                cx={ringSize / 2}
-                cy={ringSize / 2}
-                r={radius}
-                stroke={
-                  phase === "rest"
-                    ? "#82a0e0"
-                    : phase === "get-ready"
-                      ? "#f5a623"
-                      : color
-                }
-                strokeWidth={stroke}
-                fill="none"
-                strokeLinecap="round"
-                strokeDasharray={circ}
-                strokeDashoffset={dashOffset}
-                style={{ transition: "stroke-dashoffset 250ms linear" }}
-              />
-            </svg>
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center"
-              aria-live="polite"
-            >
-              {parsed.kind === "reps" && phase === "active" ? (
-                <>
-                  <span className="font-display text-5xl tracking-wider">
-                    {repCount}
-                    <span className="text-2xl text-neutral-500">/{parsed.reps}</span>
-                  </span>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
-                    reps
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="font-display text-6xl tracking-wider">
-                    {secondsDisplay}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
-                    {phase === "get-ready"
-                      ? "get ready"
-                      : phase === "rest"
-                        ? "rest"
-                        : phase === "done-flash"
-                          ? "done"
-                          : parsed.kind === "hold"
-                            ? "hold"
-                            : "seconds"}
-                  </span>
-                </>
-              )}
-            </div>
+        {/* Countdown + linear bar */}
+        <div className="mt-6 flex flex-col items-center w-full">
+          <div
+            className="flex flex-col items-center justify-center"
+            aria-live="polite"
+          >
+            {parsed.kind === "reps" && phase === "active" ? (
+              <>
+                <span className="font-display text-5xl tracking-wider leading-none">
+                  {repCount}
+                  <span className="text-2xl text-neutral-500">/{parsed.reps}</span>
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
+                  reps
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="font-display text-6xl tracking-wider leading-none">
+                  {secondsDisplay}
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
+                  {phase === "get-ready"
+                    ? "get ready"
+                    : phase === "rest"
+                      ? "rest"
+                      : phase === "done-flash"
+                        ? "done"
+                        : parsed.kind === "hold"
+                          ? "hold"
+                          : "seconds"}
+                </span>
+              </>
+            )}
           </div>
+
+          {/* Linear progress bar */}
+          <div className="mt-4 relative h-[5px] w-full max-w-xs rounded-full bg-[#1e1e1e] overflow-hidden">
+            <div
+              className="absolute top-0 bottom-0 rounded-full"
+              style={{
+                width: `${barFillPct}%`,
+                backgroundColor: barColor,
+                left: barAnchorRight ? "auto" : 0,
+                right: barAnchorRight ? 0 : "auto",
+                transition: "width 250ms linear",
+              }}
+            />
+          </div>
+
           {setSideLine && (
             <p className="mt-3 text-xs uppercase tracking-widest text-neutral-400">
               {setSideLine}
