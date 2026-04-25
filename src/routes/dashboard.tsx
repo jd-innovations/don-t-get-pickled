@@ -265,11 +265,24 @@ function Dashboard() {
 
       <GuidedSession
         open={guidedOpen}
-        onClose={() => setGuidedOpen(false)}
+        onClose={() => {
+          setGuidedOpen(false);
+          setCustomIds(undefined);
+        }}
         completed={completed}
         onToggle={toggle}
         onOpenSummary={() => setSummaryOpen(true)}
         onSessionComplete={(rec) => setRecap(rec)}
+        exerciseIds={customIds}
+      />
+
+      <GenerateWarmupSheet
+        open={generateOpen}
+        onClose={() => setGenerateOpen(false)}
+        onStart={(ids) => {
+          setCustomIds(ids);
+          setGuidedOpen(true);
+        }}
       />
     </div>
   );
