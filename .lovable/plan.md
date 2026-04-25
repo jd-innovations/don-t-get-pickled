@@ -1,38 +1,12 @@
-## Audit + Free/Locked Tier for Exercises
+## Renumber Exercises 1–18
 
-### 1. Fix duplicate / mislabeled exercise
+### Finding
 
-I believe 5 is correct, please double check before implementing the correction 
+The exercises in `src/data/exercises.ts` are **already numbered 1–18 sequentially** in their current display order. No `number` field is out of sequence, missing, or duplicated.
 
-&nbsp;
+Current sequence (matches display order on the landing page):
 
-Exercise **#5** is currently broken:
-
-- `id: "knee-extensions"` + `name: "Seated Hamstring Reach"` (mismatched — id says one thing, content says another)
-- Exercise **#14** is the real `Seated Knee Extensions`
-
-So #5 is effectively a duplicate slot pointing at the wrong content. Fix by giving #5 the correct id for what it actually is (a Hamstring Reach).
-
-**Fix in `src/data/exercises.ts`:**
-
-- Change #5 `id: "knee-extensions"` → `id: "hamstring-reach"`
-- Keep its name/content as-is (Seated Hamstring Reach)
-- Update `src/lib/personalize.ts`:
-  - `INJURY_TO_EXERCISES.Knee`: `["knee-extensions"]` → `["seated-knee-extensions"]`
-  - `INJURY_TO_EXERCISES.Hamstring`: `["hamstring-reach"]` ✓ (now resolves correctly)
-  - `GOAL_TO_EXERCISES["Leg Power"]`: replace `"knee-extensions"` with `"seated-knee-extensions"`
-  - `ACTIVE_PUSH_IDS`: replace `"knee-extensions"` with `"seated-knee-extensions"`
-  - `GOAL_TO_EXERCISES["Mobility & Flexibility"]` already references `"hamstring-reach"` ✓
-  - `GOAL_TO_EXERCISES["Recovery Speed"]` already references `"hamstring-reach"` ✓
-
-No other duplicates found across all 18 exercises (verified by id and name).
-
-### 2. Re-number sequentially within categories
-
-Per request: "same categories, numbers sequential." Renumber so #1–6 are the free preview and 7–18 are locked, while keeping the existing 3 phases (Warm-Up, Mobility, Strength).
-
-**Free (1–6) — a balanced mini-session across all 3 phases:**
-
+**Free (1–6)**
 1. Arm Circles — Warm-Up
 2. Shoulder Rolls — Warm-Up
 3. Seated Torso Twist — Mobility
@@ -40,7 +14,7 @@ Per request: "same categories, numbers sequential." Renumber so #1–6 are the f
 5. Chair Stand — Strength
 6. Heel Raises — Strength
 
-**Locked (7–18) — the rest, grouped by phase, sequential:**
+**Locked (7–18)**
 7. Wrist Circles & Flexion — Warm-Up
 8. Seated March — Warm-Up
 9. Ankle Circles — Warm-Up
@@ -54,32 +28,12 @@ Per request: "same categories, numbers sequential." Renumber so #1–6 are the f
 17. Seated Balance Hold — Strength
 18. Pelvic Tilts — Strength
 
-Numbers stay continuous 1–18, all three phases preserved.
+### Question
 
-### 3. Free vs. locked gating
+Since numbering is already correct 1–18, there's nothing to change in `exercises.ts`. Did you mean one of these instead?
 
-Add an `isFree: boolean` field to the `Exercise` interface. Mark numbers 1–6 as `isFree: true`, the rest as `isFree: false`.
+- **A.** Confirm — no changes needed (close this out).
+- **B.** Reorder the exercises within their phase sections so the numbers display in a different sequence on the landing page (tell me the order).
+- **C.** Change which exercises are free (currently 1–6) — e.g. swap a free slot with a locked one and renumber accordingly.
 
-The landing page (`src/routes/index.tsx`) currently shows all exercises. Update it to:
-
-- Always render all 18 cards in their phase sections (so users see what they unlock).
-- For locked cards (when not authenticated), wrap `<ExerciseCard>` in a non-interactive container with:
-  - reduced opacity + slight blur on the image
-  - a small lock icon overlay (lucide `Lock`)
-  - clicking it scrolls to / highlights the unlock CTA instead of opening the guided session
-- Free cards remain fully interactive.
-
-### 4. "Authenticated" definition
-
-Since there is no real auth yet, treat **"has completed onboarding"** (`hasProfile` from `UserProfileContext`) as the unlock signal for now. This matches the existing flow: the landing CTA already routes to `/onboarding`, and after onboarding `hasProfile` becomes true.
-
-When `hasProfile === true`, all 18 exercises are unlocked. When `false`, only 1–6 are interactive.
-
-This keeps scope tight and avoids adding Lovable Cloud auth in this turn. If you want real email/password auth as the gate instead, say the word and I'll plan that as a follow-up (Lovable Cloud + email/password + Google, profiles table, `/login`, `/signup`, `/reset-password`).
-
-### Files to edit
-
-- `src/data/exercises.ts` — fix #5 id, add `isFree`, renumber 1–18
-- `src/lib/personalize.ts` — update id references after the fix
-- `src/routes/index.tsx` — render locked state for non-onboarded users
-- `src/components/ExerciseCard.tsx` — accept optional `locked` prop and render lock overlay (or wrap in index.tsx — TBD during implementation, whichever is cleaner)
+Let me know which and I'll execute.
