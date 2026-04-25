@@ -15,6 +15,7 @@ import seatedKneeExtensionsImage from "@/assets/exercises/seated-knee-extensions
 import neckSideStretchImage from "@/assets/exercises/neck-side-stretch.png";
 import seatedBalanceHoldImage from "@/assets/exercises/seated-balance-hold.png";
 import figureFourStretchImage from "@/assets/exercises/figure-4-stretch.png";
+import pelvicTiltsImage from "@/assets/exercises/pelvic-tilts.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -320,6 +321,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Opens tight hips and glutes — the key to better pivots, lunges, and powerful court movement without straining your lower back.",
     image: figureFourStretchImage,
+  },
+  {
+    id: "pelvic-tilts",
+    number: 18,
+    name: "Pelvic Tilts",
+    muscles: "Core · Lower Back · Hip Flexors",
+    dose: "2×10 Reps",
+    phase: "Strength",
+    shortBenefit: "Strong core. Better game.",
+    steps: [
+      "Sit tall with feet flat, hands resting on thighs.",
+      "Tilt back: gently arch your lower back.",
+      "Tilt forward: round your lower back slightly, engaging the core.",
+      "Move smoothly between the two — control the tilt, breathe steady.",
+    ],
+    tip: "Relieves lower back tension and builds the deep core control that powers stable, straight shots and protects your spine on every rotation.",
+    image: pelvicTiltsImage,
   },
 ];
 
