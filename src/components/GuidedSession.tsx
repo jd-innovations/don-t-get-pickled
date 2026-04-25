@@ -516,97 +516,55 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
           <p className="mt-1 text-xs text-neutral-400">{current.muscles}</p>
         </div>
 
-        {/* Ring */}
-        <div className="mt-6 flex flex-col items-center">
-          <div className="relative" style={{ width: ringSize, height: ringSize }}>
-            <svg width={ringSize} height={ringSize} className="-rotate-90">
-              <circle
-                cx={ringSize / 2}
-                cy={ringSize / 2}
-                r={radius}
-                stroke="#1e1e1e"
-                strokeWidth={stroke}
-                fill="none"
-              />
-              <circle
-                cx={ringSize / 2}
-                cy={ringSize / 2}
-                r={radius}
-                stroke={
-                  phase === "rest"
-                    ? "#82a0e0"
-                    : phase === "get-ready"
-                      ? "#f5a623"
-                      : color
-                }
-                strokeWidth={stroke}
-                fill="none"
-                strokeLinecap="round"
-                strokeDasharray={circ}
-                strokeDashoffset={dashOffset}
-                style={{ transition: "stroke-dashoffset 250ms linear" }}
-              />
-            </svg>
-            <div
-              className="absolute inset-0 flex flex-col items-center justify-center"
-              aria-live="polite"
-            >
-              {parsed.kind === "reps" && phase === "active" ? (
-                <>
-                  <span className="font-display text-5xl tracking-wider">
-                    {repCount}
-                    <span className="text-2xl text-neutral-500">/{parsed.reps}</span>
-                  </span>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
-                    reps
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="font-display text-6xl tracking-wider">
-                    {secondsDisplay}
-                  </span>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
-                    {phase === "get-ready"
-                      ? "get ready"
-                      : phase === "rest"
-                        ? "rest"
-                        : phase === "done-flash"
-                          ? "done"
-                          : parsed.kind === "hold"
-                            ? "hold"
-                            : "seconds"}
-                  </span>
-                </>
-              )}
-            </div>
+        {/* Countdown + linear bar */}
+        <div className="mt-6 flex flex-col items-center w-full">
+          <div
+            className="flex flex-col items-center justify-center"
+            aria-live="polite"
+          >
+            {parsed.kind === "reps" && phase === "active" ? (
+              <>
+                <span className="font-display text-5xl tracking-wider leading-none">
+                  {repCount}
+                  <span className="text-2xl text-neutral-500">/{parsed.reps}</span>
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
+                  reps
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="font-display text-6xl tracking-wider leading-none">
+                  {secondsDisplay}
+                </span>
+                <span className="text-[10px] uppercase tracking-widest text-neutral-500 mt-1">
+                  {phase === "get-ready"
+                    ? "get ready"
+                    : phase === "rest"
+                      ? "rest"
+                      : phase === "done-flash"
+                        ? "done"
+                        : parsed.kind === "hold"
+                          ? "hold"
+                          : "seconds"}
+                </span>
+              </>
+            )}
           </div>
-          {setSideLine && (
-            <p className="mt-3 text-xs uppercase tracking-widest text-neutral-400">
-              {setSideLine}
-            </p>
-          )}
 
-          {/* +1 rep button */}
-          {parsed.kind === "reps" && phase === "active" && (
-            <button
-              onClick={() => {
-                setRepCount((r) => {
-                  const next = r + 1;
-                  if (next >= parsed.reps) {
-                    setMsRemaining(0);
-                    return parsed.reps;
-                  }
-                  return next;
-                });
-                beep(720, 0.05);
+          {/* Linear progress bar */}
+          <div className="mt-4 relative h-[5px] w-full max-w-xs rounded-full bg-[#1e1e1e] overflow-hidden">
+            <div
+              className="absolute top-0 bottom-0 rounded-full"
+              style={{
+                width: `${barFillPct}%`,
+                backgroundColor: barColor,
+                left: barAnchorRight ? "auto" : 0,
+                right: barAnchorRight ? 0 : "auto",
+                transition: "width 250ms linear",
               }}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1e1e] hover:bg-[#2a2a2a] text-sm font-medium transition"
-            >
-              <Plus className="w-4 h-4" /> Count rep
-            </button>
-          )}
-        </div>
+            />
+          </div>
 
         {/* Step text */}
         <p
