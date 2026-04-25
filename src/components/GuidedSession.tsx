@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { X, Pause, Play, SkipForward, Check, Volume2, VolumeX, Plus } from "lucide-react";
-import { exercises, phaseColor, type Exercise } from "@/data/exercises";
+import { exercises as allExercises, phaseColor, type Exercise } from "@/data/exercises";
 import { addSession, dateKey, type SessionRecord } from "@/hooks/useSessionStats";
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
   onToggle: (id: string) => void;
   onOpenSummary: () => void;
   onSessionComplete?: (rec: SessionRecord) => void;
+  /** Optional subset of exercise IDs (in order) to run. Defaults to full library. */
+  exerciseIds?: string[];
 }
 
 type ParsedDose =
