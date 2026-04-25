@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Calendar, User } from "lucide-react";
+import { Home, Calendar, User, Sparkles } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { SessionSummary } from "@/components/SessionSummary";
 import { GuidedSession } from "@/components/GuidedSession";
+import { GenerateWarmupSheet } from "@/components/GenerateWarmupSheet";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
