@@ -134,15 +134,19 @@ export function ExerciseCard({
             {exercise.phase}
           </span>
         </div>
-        <ChevronDown
-          className="w-5 h-5 text-neutral-500 transition-transform duration-300 flex-shrink-0 mt-1"
-          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
-        />
+        {locked ? (
+          <Lock className="w-5 h-5 text-[#C8F135] flex-shrink-0 mt-1" />
+        ) : (
+          <ChevronDown
+            className="w-5 h-5 text-neutral-500 transition-transform duration-300 flex-shrink-0 mt-1"
+            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+          />
+        )}
       </button>
 
       <div
         className="grid transition-all duration-300 ease-out"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        style={{ gridTemplateRows: open && !locked ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
           <div className="px-4 pb-4 space-y-4">
