@@ -381,16 +381,19 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   const phaseProgress = phase === "active" ? 1 - msRemaining / phaseTotalMs : 0;
   const overallPct = ((exIdx + phaseProgress) / totalEx) * 100;
 
-  // Ring values
-  const ringSize = 200;
-  const stroke = 10;
-  const radius = (ringSize - stroke) / 2;
-  const circ = 2 * Math.PI * radius;
-  const ringProgress =
-    phase === "active" || phase === "get-ready" || phase === "rest"
-      ? msRemaining / phaseTotalMs
-      : 0;
-  const dashOffset = circ * (1 - ringProgress);
+  // Linear bar values
+  const barColor =
+    phase === "rest"
+      ? "#82a0e0"
+      : phase === "get-ready"
+        ? "#f5a623"
+        : color;
+  // Rest drains R→L (bar shrinks from right). Others fill L→R.
+  const remainingPct = (msRemaining / phaseTotalMs) * 100;
+  const elapsedPct = 100 - remainingPct;
+  const barFillPct =
+    phase === "rest" ? remainingPct : phase === "active" || phase === "get-ready" ? elapsedPct : 0;
+  const barAnchorRight = phase === "rest";
 
   const secondsDisplay = Math.ceil(msRemaining / 1000);
 
