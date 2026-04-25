@@ -8,6 +8,7 @@ import seatedHipCirclesImage from "@/assets/exercises/seated-hip-circles.png";
 import heelRaisesImage from "@/assets/exercises/heel-raises.png";
 import shoulderRollsImage from "@/assets/exercises/shoulder-rolls.png";
 import seatedMarchImage from "@/assets/exercises/seated-march.png";
+import wristPrayerStretchImage from "@/assets/exercises/wrist-prayer-stretch.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -194,6 +195,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Wakes up the hip flexors, core, and circulation — the exact systems you need firing for first-step quickness and longer rallies.",
     image: seatedMarchImage,
+  },
+  {
+    id: "wrist-prayer",
+    number: 11,
+    name: "Wrist Prayer Stretch",
+    muscles: "Wrists · Forearms · Elbow Tendons",
+    dose: "3×15s Holds",
+    phase: "Mobility",
+    shortBenefit: "The final defense against pickleball elbow",
+    steps: [
+      "Press your palms together at chest height, elbows bent and out wide.",
+      "Gently lower your hands toward your lap, keeping palms pressed together.",
+      "Feel the stretch through your wrists and forearms. Hold ~15 seconds.",
+      "Breathe deep, release, and repeat for 3 holds.",
+    ],
+    tip: "Lengthens the forearm flexors that grip the paddle all game — your final defense against pickleball elbow and wrist strain.",
+    image: wristPrayerStretchImage,
   },
 ];
 
