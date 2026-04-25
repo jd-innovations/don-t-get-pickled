@@ -1,41 +1,41 @@
-# Add "Ankle Circles" Exercise
+# Add "Paddle-Swing Simulation" Exercise
 
-Add a new exercise entry for **Ankle Circles** using the uploaded illustration.
+Add a new exercise entry for **Paddle-Swing Simulation** using the uploaded illustration.
 
 ## What's added
 
 ### 1. Asset
-- Save uploaded image to `src/assets/exercises/ankle-circles.png`.
+- Save uploaded image to `src/assets/exercises/paddle-swing-simulation.png`.
 
 ### 2. Data wiring (`src/data/exercises.ts`)
-- Add `import ankleCirclesImage from "@/assets/exercises/ankle-circles.png";`
-- Append a new exercise entry as #12 in the Warm-Up phase.
+- Add `import paddleSwingImage from "@/assets/exercises/paddle-swing-simulation.png";`
+- Append a new exercise entry as #13 in the Mobility phase.
 
 Proposed entry:
 ```ts
 {
-  id: "ankle-circles",
-  number: 12,
-  name: "Ankle Circles",
-  muscles: "Ankles · Calves · Achilles",
-  dose: "10 Each Direction",
-  phase: "Warm-Up",
-  shortBenefit: "Mobile ankles, quicker you",
+  id: "paddle-swing",
+  number: 13,
+  name: "Paddle-Swing Simulation",
+  muscles: "Shoulders · Core · Forearms",
+  dose: "10 Each Side",
+  phase: "Mobility",
+  shortBenefit: "Practice the swing, perfect the game",
   steps: [
-    "Lift one foot slightly off the ground and extend your leg.",
-    "Rotate your ankle in a smooth circle — keep your knee steady.",
-    "After 10 circles, reverse the direction for 10 more.",
-    "Switch to the other foot and repeat. Keep movements controlled and consistent.",
+    "Sit tall with core engaged — feet flat, chest up, shoulders back.",
+    "Rotate your torso and draw the paddle (or hand) back as if loading a shot.",
+    "Swing forward smoothly, rotating through your core. Keep movement controlled.",
+    "Return to ready position. Repeat on both sides to build rhythm and timing.",
   ],
-  tip: "Mobile ankles support better footwork, reduce sprain risk, and keep you light on your feet for quick lateral moves.",
-  image: ankleCirclesImage,
+  tip: "Grooves the exact swing pattern your shoulders, core, and hands need on court — better mechanics, better control, fewer injuries.",
+  image: paddleSwingImage,
 }
 ```
 
-Note: `ankle-circles` is already mapped in `personalize.ts` ("Ankle/Achilles" injury + "Injury Prevention" goal), so badges will automatically light up.
+Note: `paddle-swing` is already mapped in `personalize.ts` under "Shot Power" goal, so the focus badge will automatically light up.
 
 ## Files Touched
-- `src/assets/exercises/ankle-circles.png` — new image (copied from upload).
+- `src/assets/exercises/paddle-swing-simulation.png` — new image (copied from upload).
 - `src/data/exercises.ts` — new import + new exercise entry.
 
 ## Out of scope
