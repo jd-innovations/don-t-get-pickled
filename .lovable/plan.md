@@ -1,39 +1,43 @@
-## Renumber Exercises 1–18
+## Renumber + Reorder for Continuous 1–18 with Free Slots at 1–2, 6–7, 13–14
 
-### Finding
+### Goal
 
-The exercises in `src/data/exercises.ts` are **already numbered 1–18 sequentially** in their current display order. No `number` field is out of sequence, missing, or duplicated.
+Continuous numbering 1–18 across phases, with the first 2 of each phase being free:
 
-Current sequence (matches display order on the landing page):
+- **Warm-Up**: 1–2 free, 3–5 locked
+- **Mobility**: 6–7 free, 8–12 locked
+- **Strength**: 13–14 free, 15–18 locked
 
-**Free (1–6)**
-1. Arm Circles — Warm-Up
-2. Shoulder Rolls — Warm-Up
-3. Seated Torso Twist — Mobility
-4. Seated Hip Circles — Mobility
-5. Chair Stand — Strength
-6. Heel Raises — Strength
+This requires reordering within each phase so the free items render first.
 
-**Locked (7–18)**
-7. Wrist Circles & Flexion — Warm-Up
-8. Seated March — Warm-Up
-9. Ankle Circles — Warm-Up
-10. Reach-Back Shoulder Opener — Mobility
-11. Wrist Prayer Stretch — Mobility
-12. Paddle-Swing Simulation — Mobility
-13. Neck Side Stretch — Mobility
-14. Figure-4 Stretch — Mobility
-15. Seated Hamstring Reach — Strength
-16. Seated Knee Extensions — Strength
-17. Seated Balance Hold — Strength
-18. Pelvic Tilts — Strength
+### New Sequence
 
-### Question
+**Warm-Up**
+1. Arm Circles — FREE
+2. Shoulder Rolls — FREE
+3. Wrist Circles & Flexion — locked
+4. Seated March — locked
+5. Ankle Circles — locked
 
-Since numbering is already correct 1–18, there's nothing to change in `exercises.ts`. Did you mean one of these instead?
+**Mobility**
+6. Seated Torso Twist — FREE
+7. Seated Hip Circles — FREE
+8. Reach-Back Shoulder Opener — locked
+9. Wrist Prayer Stretch — locked
+10. Paddle-Swing Simulation — locked
+11. Neck Side Stretch — locked
+12. Figure-4 Stretch — locked
 
-- **A.** Confirm — no changes needed (close this out).
-- **B.** Reorder the exercises within their phase sections so the numbers display in a different sequence on the landing page (tell me the order).
-- **C.** Change which exercises are free (currently 1–6) — e.g. swap a free slot with a locked one and renumber accordingly.
+**Strength**
+13. Chair Stand — FREE
+14. Heel Raises — FREE
+15. Seated Hamstring Reach — locked
+16. Seated Knee Extensions — locked
+17. Seated Balance Hold — locked
+18. Pelvic Tilts — locked
 
-Let me know which and I'll execute.
+### Changes
+
+- `src/data/exercises.ts`: reorder the array so each phase lists its 2 free items first, then locked. Update `number` fields to match (1–18). `isFree` flags stay the same per exercise (only 6 free total: Arm Circles, Shoulder Rolls, Torso Twist, Hip Circles, Chair Stand, Heel Raises).
+
+No other files need changes — the landing page already filters by `phase` and respects the array order, and the lock gating already keys off `isFree`.
