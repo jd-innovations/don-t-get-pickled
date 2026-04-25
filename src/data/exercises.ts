@@ -35,7 +35,7 @@ export interface Exercise {
 }
 
 export const exercises: Exercise[] = [
-  // ===== FREE (1–6) =====
+  // ===== WARM-UP (1–5) — free: 1–2 =====
   {
     id: "arm-circles",
     number: 1,
