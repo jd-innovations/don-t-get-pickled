@@ -304,6 +304,23 @@ export const exercises: Exercise[] = [
     tip: "Builds the seated core stability that translates to stronger split-steps, lunges, and quick pivots on court.",
     image: seatedBalanceHoldImage,
   },
+  {
+    id: "figure-four",
+    number: 17,
+    name: "Figure-4 Stretch",
+    muscles: "Glutes · Hips · Lower Back",
+    dose: "2×20s Each Side",
+    phase: "Mobility",
+    shortBenefit: "Open your hips. Own the court.",
+    steps: [
+      "Sit tall and cross one ankle over the opposite knee.",
+      "Keep your back straight and core engaged.",
+      "Gently lean forward from the hips until you feel a stretch in the hip and glute.",
+      "Hold and breathe. Switch sides and repeat.",
+    ],
+    tip: "Opens tight hips and glutes — the key to better pivots, lunges, and powerful court movement without straining your lower back.",
+    image: figureFourStretchImage,
+  },
 ];
 
 export const phaseColor = (phase: Phase): string => {
