@@ -50,14 +50,21 @@ export function ExerciseCard({
 
   return (
     <div
-      className="rounded-xl border bg-[#111111] transition-colors duration-300 overflow-hidden"
+      className="rounded-xl border bg-[#111111] transition-colors duration-300 overflow-hidden relative"
       style={{
         borderColor: open ? "#C8F135" : "#1e1e1e",
+        opacity: locked ? 0.7 : 1,
       }}
     >
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          if (locked) {
+            onLockedClick?.();
+            return;
+          }
+          setOpen((v) => !v);
+        }}
         className="w-full flex items-start gap-3 p-4 text-left"
       >
         {interactive ? (
