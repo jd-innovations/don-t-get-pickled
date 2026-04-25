@@ -1,30 +1,30 @@
-## Add Exercise #16: Seated Balance Hold
+## Add Exercise #18: Pelvic Tilts
 
 Append a new exercise to the library using the uploaded illustration.
 
 ### Files
-- **New**: `src/assets/exercises/seated-balance-hold.png` (copied from upload)
+- **New**: `src/assets/exercises/pelvic-tilts.png` (copied from upload)
 - **Edit**: `src/data/exercises.ts` — add image import + new entry
 
 ### Entry
 ```ts
 {
-  id: "seated-balance-hold",
-  number: 16,
-  name: "Seated Balance Hold",
-  muscles: "Core · Hip Flexors · Stabilizers",
-  dose: "3×15s Each Leg",
+  id: "pelvic-tilts",
+  number: 18,
+  name: "Pelvic Tilts",
+  muscles: "Core · Lower Back · Hip Flexors",
+  dose: "2×10 Reps",
   phase: "Strength",
-  shortBenefit: "Better balance, stronger game",
+  shortBenefit: "Strong core. Better game.",
   steps: [
-    "Sit tall with chest up and core tight.",
-    "Lift one foot off the ground and find your balance.",
-    "Hold the position — breathe and stay in control.",
-    "Lower with control and switch legs. Repeat for 3 holds each side.",
+    "Sit tall with feet flat, hands resting on thighs.",
+    "Tilt back: gently arch your lower back.",
+    "Tilt forward: round your lower back slightly, engaging the core.",
+    "Move smoothly between the two — control the tilt, breathe steady.",
   ],
-  tip: "Builds the seated core stability that translates to stronger split-steps, lunges, and quick pivots on court.",
-  image: seatedBalanceHoldImage,
+  tip: "Relieves lower back tension and builds the deep core control that powers stable, straight shots and protects your spine on every rotation.",
+  image: pelvicTiltsImage,
 }
 ```
 
-No changes needed to `personalize.ts` (no existing mapping for this id; it will simply show without extra badges, consistent with other recent additions).
+No changes needed to `personalize.ts` — the `pelvic-tilts` id is already mapped to Lower Back injury and Core Strength / Injury Prevention goals, so badges will auto-apply.
