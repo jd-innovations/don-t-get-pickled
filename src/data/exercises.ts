@@ -11,6 +11,7 @@ import seatedMarchImage from "@/assets/exercises/seated-march.png";
 import wristPrayerStretchImage from "@/assets/exercises/wrist-prayer-stretch.png";
 import ankleCirclesImage from "@/assets/exercises/ankle-circles.png";
 import paddleSwingImage from "@/assets/exercises/paddle-swing-simulation.png";
+import seatedKneeExtensionsImage from "@/assets/exercises/seated-knee-extensions.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -248,6 +249,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Grooves the exact swing pattern your shoulders, core, and hands need on court — better mechanics, better control, fewer injuries.",
     image: paddleSwingImage,
+  },
+  {
+    id: "seated-knee-extensions",
+    number: 14,
+    name: "Seated Knee Extensions",
+    muscles: "Quads · Knees · Hip Flexors",
+    dose: "3×10 Each Leg",
+    phase: "Strength",
+    shortBenefit: "Strong quads, quicker steps, better plays",
+    steps: [
+      "Sit tall with back straight, core engaged, hands on the sides of the chair.",
+      "Straighten one leg until fully extended. Squeeze your quad at the top.",
+      "Hold for a moment — keep the leg straight and strong.",
+      "Lower with control. Repeat with the other leg, keeping it smooth.",
+    ],
+    tip: "Builds the quad strength that protects your knees and powers every push-off, lunge, and stop on court.",
+    image: seatedKneeExtensionsImage,
   },
 ];
 
