@@ -10,6 +10,7 @@ import shoulderRollsImage from "@/assets/exercises/shoulder-rolls.png";
 import seatedMarchImage from "@/assets/exercises/seated-march.png";
 import wristPrayerStretchImage from "@/assets/exercises/wrist-prayer-stretch.png";
 import ankleCirclesImage from "@/assets/exercises/ankle-circles.png";
+import paddleSwingImage from "@/assets/exercises/paddle-swing-simulation.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -230,6 +231,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Mobile ankles support better footwork, reduce sprain risk, and keep you light on your feet for quick lateral moves.",
     image: ankleCirclesImage,
+  },
+  {
+    id: "paddle-swing",
+    number: 13,
+    name: "Paddle-Swing Simulation",
+    muscles: "Shoulders · Core · Forearms",
+    dose: "10 Each Side",
+    phase: "Mobility",
+    shortBenefit: "Practice the swing, perfect the game",
+    steps: [
+      "Sit tall with core engaged — feet flat, chest up, shoulders back.",
+      "Rotate your torso and draw the paddle (or hand) back as if loading a shot.",
+      "Swing forward smoothly, rotating through your core. Keep movement controlled.",
+      "Return to ready position. Repeat on both sides to build rhythm and timing.",
+    ],
+    tip: "Grooves the exact swing pattern your shoulders, core, and hands need on court — better mechanics, better control, fewer injuries.",
+    image: paddleSwingImage,
   },
 ];
 
