@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Lock } from "lucide-react";
 import { phaseColor, type Exercise } from "@/data/exercises";
 import { ImageLightbox } from "@/components/ImageLightbox";
 
@@ -10,6 +10,8 @@ interface Props {
   displayDose?: string;
   priority?: boolean;
   focus?: boolean;
+  locked?: boolean;
+  onLockedClick?: () => void;
 }
 
 export function ExerciseCard({
@@ -19,6 +21,8 @@ export function ExerciseCard({
   displayDose,
   priority,
   focus,
+  locked,
+  onLockedClick,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [videoError, setVideoError] = useState(false);
