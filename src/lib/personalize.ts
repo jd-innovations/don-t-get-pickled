@@ -2,7 +2,7 @@
 
 export type FitnessLevel = "Beginner" | "Moderate" | "Active" | "Athlete" | string;
 
-const ACTIVE_PUSH_IDS = new Set(["knee-extensions", "heel-raises"]);
+const ACTIVE_PUSH_IDS = new Set(["seated-knee-extensions", "heel-raises"]);
 
 /**
  * Adjusts the displayed dose string for a given exercise based on fitness level.
@@ -39,7 +39,7 @@ export const INJURY_TO_EXERCISES: Record<string, string[]> = {
   Shoulder: ["arm-circles", "shoulder-rolls"],
   "Lower Back": ["pelvic-tilts", "hip-circles"],
   Hip: ["figure-four", "hip-circles"],
-  Knee: ["knee-extensions"],
+  Knee: ["seated-knee-extensions"],
   "Ankle/Achilles": ["ankle-circles", "heel-raises"],
   Neck: ["neck-side-stretch"],
   Hamstring: ["hamstring-reach"],
@@ -50,9 +50,9 @@ export const GOAL_TO_EXERCISES: Record<string, string[]> = {
   "Mobility & Flexibility": ["hip-circles", "figure-four", "torso-twist", "hamstring-reach"],
   "Shoulder Health": ["arm-circles", "shoulder-rolls", "reach-back-opener"],
   "Injury Prevention": ["wrist-circles", "pelvic-tilts", "ankle-circles", "neck-side-stretch"],
-  "Leg Power": ["chair-stand", "knee-extensions", "heel-raises"],
-  "Core Strength": ["torso-twist", "pelvic-tilts", "balance-hold"],
-  "Balance & Stability": ["balance-hold", "chair-stand", "seated-march"],
+  "Leg Power": ["chair-stand", "seated-knee-extensions", "heel-raises"],
+  "Core Strength": ["torso-twist", "pelvic-tilts", "seated-balance-hold"],
+  "Balance & Stability": ["seated-balance-hold", "chair-stand", "seated-march"],
   "Shot Power": ["paddle-swing", "torso-twist", "arm-circles"],
   Endurance: ["seated-march", "chair-stand", "heel-raises"],
   "Endurance on Court": ["seated-march", "chair-stand", "heel-raises"],

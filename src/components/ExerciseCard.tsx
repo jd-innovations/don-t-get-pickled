@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Lock } from "lucide-react";
 import { phaseColor, type Exercise } from "@/data/exercises";
 import { ImageLightbox } from "@/components/ImageLightbox";
 
@@ -10,6 +10,8 @@ interface Props {
   displayDose?: string;
   priority?: boolean;
   focus?: boolean;
+  locked?: boolean;
+  onLockedClick?: () => void;
 }
 
 export function ExerciseCard({
@@ -19,6 +21,8 @@ export function ExerciseCard({
   displayDose,
   priority,
   focus,
+  locked,
+  onLockedClick,
 }: Props) {
   const [open, setOpen] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -46,14 +50,21 @@ export function ExerciseCard({
 
   return (
     <div
-      className="rounded-xl border bg-[#111111] transition-colors duration-300 overflow-hidden"
+      className="rounded-xl border bg-[#111111] transition-colors duration-300 overflow-hidden relative"
       style={{
         borderColor: open ? "#C8F135" : "#1e1e1e",
+        opacity: locked ? 0.7 : 1,
       }}
     >
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          if (locked) {
+            onLockedClick?.();
+            return;
+          }
+          setOpen((v) => !v);
+        }}
         className="w-full flex items-start gap-3 p-4 text-left"
       >
         {interactive ? (
@@ -123,15 +134,19 @@ export function ExerciseCard({
             {exercise.phase}
           </span>
         </div>
-        <ChevronDown
-          className="w-5 h-5 text-neutral-500 transition-transform duration-300 flex-shrink-0 mt-1"
-          style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
-        />
+        {locked ? (
+          <Lock className="w-5 h-5 text-[#C8F135] flex-shrink-0 mt-1" />
+        ) : (
+          <ChevronDown
+            className="w-5 h-5 text-neutral-500 transition-transform duration-300 flex-shrink-0 mt-1"
+            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+          />
+        )}
       </button>
 
       <div
         className="grid transition-all duration-300 ease-out"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+        style={{ gridTemplateRows: open && !locked ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
           <div className="px-4 pb-4 space-y-4">
