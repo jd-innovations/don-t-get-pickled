@@ -4,6 +4,7 @@ import seatedHamstringReachImage from "@/assets/exercises/seated-hamstring-reach
 import seatedTorsoTwistImage from "@/assets/exercises/seated-torso-twist.png";
 import chairStandImage from "@/assets/exercises/chair-stand.png";
 import reachBackOpenerImage from "@/assets/exercises/reach-back-shoulder-opener.png";
+import seatedHipCirclesImage from "@/assets/exercises/seated-hip-circles.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -88,6 +89,7 @@ export const exercises: Exercise[] = [
       "Move slowly — feel the hip joint open.",
     ],
     tip: "Immobile hips force your lower back to compensate on every bent shot.",
+    image: seatedHipCirclesImage,
   },
   {
     id: "knee-extensions",
