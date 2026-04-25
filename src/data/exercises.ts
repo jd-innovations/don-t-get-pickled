@@ -7,6 +7,7 @@ import reachBackOpenerImage from "@/assets/exercises/reach-back-shoulder-opener.
 import seatedHipCirclesImage from "@/assets/exercises/seated-hip-circles.png";
 import heelRaisesImage from "@/assets/exercises/heel-raises.png";
 import shoulderRollsImage from "@/assets/exercises/shoulder-rolls.png";
+import seatedMarchImage from "@/assets/exercises/seated-march.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -176,6 +177,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Loose shoulders restore your full swing arc and help prevent the neck and rotator-cuff strain that builds up from grip and screen time.",
     image: shoulderRollsImage,
+  },
+  {
+    id: "seated-march",
+    number: 10,
+    name: "Seated March",
+    muscles: "Hip Flexors · Core · Quads",
+    dose: "20 Total Reps",
+    phase: "Warm-Up",
+    shortBenefit: "Activates hips and core to prime you for first-step quickness",
+    steps: [
+      "Sit tall with feet flat, hands at your sides or holding the seat.",
+      "Lift one knee up toward your chest with control — drive the opposite arm up.",
+      "Lower the leg and switch sides smoothly, keeping a steady rhythm.",
+      "Continue alternating for 20 total reps. Breathe steady, stay tall.",
+    ],
+    tip: "Wakes up the hip flexors, core, and circulation — the exact systems you need firing for first-step quickness and longer rallies.",
+    image: seatedMarchImage,
   },
 ];
 
