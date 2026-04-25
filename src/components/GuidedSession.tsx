@@ -566,6 +566,33 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
             />
           </div>
 
+          {setSideLine && (
+            <p className="mt-3 text-xs uppercase tracking-widest text-neutral-400">
+              {setSideLine}
+            </p>
+          )}
+
+          {/* +1 rep button */}
+          {parsed.kind === "reps" && phase === "active" && (
+            <button
+              onClick={() => {
+                setRepCount((r) => {
+                  const next = r + 1;
+                  if (next >= parsed.reps) {
+                    setMsRemaining(0);
+                    return parsed.reps;
+                  }
+                  return next;
+                });
+                beep(720, 0.05);
+              }}
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1e1e] hover:bg-[#2a2a2a] text-sm font-medium transition"
+            >
+              <Plus className="w-4 h-4" /> Count rep
+            </button>
+          )}
+        </div>
+
         {/* Step text */}
         <p
           className="mt-6 text-center text-sm text-neutral-200 leading-relaxed min-h-[3.5rem]"
