@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { X, Pause, Play, SkipForward, Check, Volume2, VolumeX, Plus } from "lucide-react";
-import { exercises, phaseColor, type Exercise } from "@/data/exercises";
+import { exercises as allExercises, phaseColor, type Exercise } from "@/data/exercises";
 import { addSession, dateKey, type SessionRecord } from "@/hooks/useSessionStats";
 
 interface Props {
@@ -10,6 +10,8 @@ interface Props {
   onToggle: (id: string) => void;
   onOpenSummary: () => void;
   onSessionComplete?: (rec: SessionRecord) => void;
+  /** Optional subset of exercise IDs (in order) to run. Defaults to full library. */
+  exerciseIds?: string[];
 }
 
 type ParsedDose =
@@ -101,7 +103,14 @@ function useBeeper(muted: boolean) {
 
 type Phase = "get-ready" | "active" | "rest" | "done-flash" | "celebrate";
 
-export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummary, onSessionComplete }: Props) {
+export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummary, onSessionComplete, exerciseIds }: Props) {
+  // Active exercise list — either a custom subset or the full library
+  const exercises = useMemo<Exercise[]>(() => {
+    if (!exerciseIds || exerciseIds.length === 0) return allExercises;
+    const map = new Map(allExercises.map((e) => [e.id, e]));
+    return exerciseIds.map((id) => map.get(id)).filter((e): e is Exercise => Boolean(e));
+  }, [exerciseIds]);
+
   // Find first incomplete exercise on open
   const startIdx = useMemo(() => {
     if (!open) return 0;

@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Calendar, User } from "lucide-react";
+import { Home, Calendar, User, Sparkles } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { SessionSummary } from "@/components/SessionSummary";
 import { GuidedSession } from "@/components/GuidedSession";
+import { GenerateWarmupSheet } from "@/components/GenerateWarmupSheet";
 import { exercises, phaseColor, type Phase } from "@/data/exercises";
 import { useCompletedExercises } from "@/hooks/useCompletedExercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
@@ -33,6 +34,8 @@ function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [guidedOpen, setGuidedOpen] = useState(false);
+  const [generateOpen, setGenerateOpen] = useState(false);
+  const [customIds, setCustomIds] = useState<string[] | undefined>(undefined);
   const [recap, setRecap] = useState<SessionRecord | null>(null);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
@@ -107,6 +110,33 @@ function Dashboard() {
             </div>
           </section>
         )}
+
+        {/* Generate custom warm-up */}
+        <section className="mt-2 rounded-2xl border border-[#C8F135]/40 bg-gradient-to-br from-[#1a1f0a] to-[#111111] p-5">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-lg bg-[#C8F135]/15 flex items-center justify-center shrink-0">
+              <Sparkles className="w-5 h-5 text-[#C8F135]" />
+            </div>
+            <div className="flex-1">
+              <p className="text-[10px] uppercase tracking-widest text-[#C8F135]">
+                On-Demand
+              </p>
+              <p className="mt-1 font-display text-lg tracking-wide text-white">
+                GENERATE TODAY'S WARM-UP
+              </p>
+              <p className="mt-1 text-xs text-neutral-400 leading-relaxed">
+                6 exercises tailored to your focus and recent sessions.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => setGenerateOpen(true)}
+            className="mt-4 w-full py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            BUILD MY SESSION
+          </button>
+        </section>
 
         {/* Session tracker */}
         <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
@@ -235,11 +265,24 @@ function Dashboard() {
 
       <GuidedSession
         open={guidedOpen}
-        onClose={() => setGuidedOpen(false)}
+        onClose={() => {
+          setGuidedOpen(false);
+          setCustomIds(undefined);
+        }}
         completed={completed}
         onToggle={toggle}
         onOpenSummary={() => setSummaryOpen(true)}
         onSessionComplete={(rec) => setRecap(rec)}
+        exerciseIds={customIds}
+      />
+
+      <GenerateWarmupSheet
+        open={generateOpen}
+        onClose={() => setGenerateOpen(false)}
+        onStart={(ids) => {
+          setCustomIds(ids);
+          setGuidedOpen(true);
+        }}
       />
     </div>
   );
