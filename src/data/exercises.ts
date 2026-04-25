@@ -13,6 +13,7 @@ import ankleCirclesImage from "@/assets/exercises/ankle-circles.png";
 import paddleSwingImage from "@/assets/exercises/paddle-swing-simulation.png";
 import seatedKneeExtensionsImage from "@/assets/exercises/seated-knee-extensions.png";
 import neckSideStretchImage from "@/assets/exercises/neck-side-stretch.png";
+import seatedBalanceHoldImage from "@/assets/exercises/seated-balance-hold.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -284,6 +285,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Releases the neck and upper-trap tension that builds up from screen time and tracking the ball — better mobility, sharper focus, smoother turns on court.",
     image: neckSideStretchImage,
+  },
+  {
+    id: "seated-balance-hold",
+    number: 16,
+    name: "Seated Balance Hold",
+    muscles: "Core · Hip Flexors · Stabilizers",
+    dose: "3×15s Each Leg",
+    phase: "Strength",
+    shortBenefit: "Better balance, stronger game",
+    steps: [
+      "Sit tall with chest up and core tight.",
+      "Lift one foot off the ground and find your balance.",
+      "Hold the position — breathe and stay in control.",
+      "Lower with control and switch legs. Repeat for 3 holds each side.",
+    ],
+    tip: "Builds the seated core stability that translates to stronger split-steps, lunges, and quick pivots on court.",
+    image: seatedBalanceHoldImage,
   },
 ];
 
