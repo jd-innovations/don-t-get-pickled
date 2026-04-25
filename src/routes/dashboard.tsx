@@ -34,6 +34,8 @@ function Dashboard() {
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [guidedOpen, setGuidedOpen] = useState(false);
+  const [generateOpen, setGenerateOpen] = useState(false);
+  const [customIds, setCustomIds] = useState<string[] | undefined>(undefined);
   const [recap, setRecap] = useState<SessionRecord | null>(null);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
