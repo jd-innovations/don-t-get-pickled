@@ -6,6 +6,7 @@ import chairStandImage from "@/assets/exercises/chair-stand.png";
 import reachBackOpenerImage from "@/assets/exercises/reach-back-shoulder-opener.png";
 import seatedHipCirclesImage from "@/assets/exercises/seated-hip-circles.png";
 import heelRaisesImage from "@/assets/exercises/heel-raises.png";
+import shoulderRollsImage from "@/assets/exercises/shoulder-rolls.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -158,6 +159,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Hours of paddle grip and screen time round the shoulders forward — opening them back restores posture, swing arc, and overhead reach.",
     image: reachBackOpenerImage,
+  },
+  {
+    id: "shoulder-rolls",
+    number: 9,
+    name: "Shoulder Rolls",
+    muscles: "Shoulders · Upper Traps · Neck",
+    dose: "10 Each Direction",
+    phase: "Warm-Up",
+    shortBenefit: "Releases shoulder tension and primes the upper body for a free swing",
+    steps: [
+      "Sit tall with feet flat, arms hanging relaxed at your sides.",
+      "Lift your shoulders up, roll them back, and lower down — 10 slow reps.",
+      "Reverse direction: roll forward, up, back, and down for 10 more.",
+      "Move smooth and steady, breathing deep to release tension.",
+    ],
+    tip: "Loose shoulders restore your full swing arc and help prevent the neck and rotator-cuff strain that builds up from grip and screen time.",
+    image: shoulderRollsImage,
   },
 ];
 
