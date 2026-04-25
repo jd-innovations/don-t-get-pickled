@@ -12,6 +12,7 @@ import wristPrayerStretchImage from "@/assets/exercises/wrist-prayer-stretch.png
 import ankleCirclesImage from "@/assets/exercises/ankle-circles.png";
 import paddleSwingImage from "@/assets/exercises/paddle-swing-simulation.png";
 import seatedKneeExtensionsImage from "@/assets/exercises/seated-knee-extensions.png";
+import neckSideStretchImage from "@/assets/exercises/neck-side-stretch.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -266,6 +267,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Builds the quad strength that protects your knees and powers every push-off, lunge, and stop on court.",
     image: seatedKneeExtensionsImage,
+  },
+  {
+    id: "neck-side-stretch",
+    number: 15,
+    name: "Neck Side Stretch",
+    muscles: "Neck · Upper Traps · Shoulders",
+    dose: "2×15s Each Side",
+    phase: "Mobility",
+    shortBenefit: "Loosen up, stay focused, play better",
+    steps: [
+      "Sit tall with back straight and shoulders relaxed.",
+      "Use one hand to gently guide your head toward that shoulder.",
+      "Hold ~15 seconds, breathing deep and letting tension release.",
+      "Return to center and switch sides. Repeat for 2 holds each side.",
+    ],
+    tip: "Releases the neck and upper-trap tension that builds up from screen time and tracking the ball — better mobility, sharper focus, smoother turns on court.",
+    image: neckSideStretchImage,
   },
 ];
 

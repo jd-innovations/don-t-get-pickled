@@ -1,45 +1,43 @@
-# Add "Seated Knee Extensions" Exercise
+# Add "Neck Side Stretch" Exercise
 
-Add a new exercise entry for **Seated Knee Extensions** using the uploaded illustration.
-
-## Note on ID
-
-The existing exercise #5 already uses id `knee-extensions` (now repurposed as the "Seated Hamstring Reach" entry). To avoid collision, this new exercise will use id `seated-knee-extensions`.
+Add a new exercise entry for **Neck Side Stretch** using the uploaded illustration.
 
 ## What's added
 
 ### 1. Asset
-- Save uploaded image to `src/assets/exercises/seated-knee-extensions.png`.
+- Save uploaded image to `src/assets/exercises/neck-side-stretch.png`.
 
 ### 2. Data wiring (`src/data/exercises.ts`)
-- Add `import seatedKneeExtensionsImage from "@/assets/exercises/seated-knee-extensions.png";`
-- Append a new exercise entry as #14 in the Strength phase.
+- Add `import neckSideStretchImage from "@/assets/exercises/neck-side-stretch.png";`
+- Append a new exercise entry as #15 in the Mobility phase.
 
 Proposed entry:
 ```ts
 {
-  id: "seated-knee-extensions",
-  number: 14,
-  name: "Seated Knee Extensions",
-  muscles: "Quads · Knees · Hip Flexors",
-  dose: "3×10 Each Leg",
-  phase: "Strength",
-  shortBenefit: "Strong quads, quicker steps, better plays",
+  id: "neck-side-stretch",
+  number: 15,
+  name: "Neck Side Stretch",
+  muscles: "Neck · Upper Traps · Shoulders",
+  dose: "2×15s Each Side",
+  phase: "Mobility",
+  shortBenefit: "Loosen up, stay focused, play better",
   steps: [
-    "Sit tall with back straight, core engaged, hands on the sides of the chair.",
-    "Straighten one leg until fully extended. Squeeze your quad at the top.",
-    "Hold for a moment — keep the leg straight and strong.",
-    "Lower with control. Repeat with the other leg, keeping it smooth.",
+    "Sit tall with back straight and shoulders relaxed.",
+    "Use one hand to gently guide your head toward that shoulder.",
+    "Hold ~15 seconds, breathing deep and letting tension release.",
+    "Return to center and switch sides. Repeat for 2 holds each side.",
   ],
-  tip: "Builds the quad strength that protects your knees and powers every push-off, lunge, and stop on court.",
-  image: seatedKneeExtensionsImage,
+  tip: "Releases the neck and upper-trap tension that builds up from screen time and tracking the ball — better mobility, sharper focus, smoother turns on court.",
+  image: neckSideStretchImage,
 }
 ```
 
+Note: `neck-side-stretch` is already mapped in `personalize.ts` ("Neck" injury, "Injury Prevention" + "Recovery Speed" goals), so badges will automatically light up.
+
 ## Files Touched
-- `src/assets/exercises/seated-knee-extensions.png` — new image (copied from upload).
+- `src/assets/exercises/neck-side-stretch.png` — new image (copied from upload).
 - `src/data/exercises.ts` — new import + new exercise entry.
 
 ## Out of scope
-- Renaming/renumbering existing entries.
-- Changes to `personalize.ts`.
+- Reordering or renumbering existing exercises.
+- Changes to `personalize.ts` (already mapped).
