@@ -9,6 +9,7 @@ import heelRaisesImage from "@/assets/exercises/heel-raises.png";
 import shoulderRollsImage from "@/assets/exercises/shoulder-rolls.png";
 import seatedMarchImage from "@/assets/exercises/seated-march.png";
 import wristPrayerStretchImage from "@/assets/exercises/wrist-prayer-stretch.png";
+import ankleCirclesImage from "@/assets/exercises/ankle-circles.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
@@ -212,6 +213,23 @@ export const exercises: Exercise[] = [
     ],
     tip: "Lengthens the forearm flexors that grip the paddle all game — your final defense against pickleball elbow and wrist strain.",
     image: wristPrayerStretchImage,
+  },
+  {
+    id: "ankle-circles",
+    number: 12,
+    name: "Ankle Circles",
+    muscles: "Ankles · Calves · Achilles",
+    dose: "10 Each Direction",
+    phase: "Warm-Up",
+    shortBenefit: "Mobile ankles, quicker you",
+    steps: [
+      "Lift one foot slightly off the ground and extend your leg.",
+      "Rotate your ankle in a smooth circle — keep your knee steady.",
+      "After 10 circles, reverse the direction for 10 more.",
+      "Switch to the other foot and repeat. Keep movements controlled and consistent.",
+    ],
+    tip: "Mobile ankles support better footwork, reduce sprain risk, and keep you light on your feet for quick lateral moves.",
+    image: ankleCirclesImage,
   },
 ];
 
