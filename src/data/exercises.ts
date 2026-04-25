@@ -14,6 +14,7 @@ import paddleSwingImage from "@/assets/exercises/paddle-swing-simulation.png";
 import seatedKneeExtensionsImage from "@/assets/exercises/seated-knee-extensions.png";
 import neckSideStretchImage from "@/assets/exercises/neck-side-stretch.png";
 import seatedBalanceHoldImage from "@/assets/exercises/seated-balance-hold.png";
+import figureFourStretchImage from "@/assets/exercises/figure-4-stretch.png";
 
 export type Phase = "Warm-Up" | "Mobility" | "Strength";
 
