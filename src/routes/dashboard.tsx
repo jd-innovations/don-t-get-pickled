@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { Home, Calendar, User, Sparkles, Play } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
@@ -40,6 +41,15 @@ function Dashboard() {
   const [recap, setRecap] = useState<SessionRecord | null>(null);
   const { completed, isComplete, toggle, reset } = useCompletedExercises();
   const { profile, hasProfile } = useUserProfile();
+  const { user } = useAuth();
+  const initial = (
+    (user?.user_metadata?.display_name as string | undefined) ||
+    user?.email ||
+    "P"
+  )
+    .trim()
+    .charAt(0)
+    .toUpperCase();
   const totalExercises = exercises.length;
   const completedCount = exercises.reduce((n, e) => (completed.has(e.id) ? n + 1 : n), 0);
   const allDone = completedCount === totalExercises && totalExercises > 0;
@@ -76,9 +86,13 @@ function Dashboard() {
           <span className="font-display text-lg tracking-wider text-[#C8F135]">
             DON'T GET PICKLED
           </span>
-          <div className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-sm font-semibold text-[#C8F135] border border-[#C8F135]/40">
-            P
-          </div>
+          <Link
+            to="/profile"
+            aria-label="Open profile"
+            className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-sm font-semibold text-[#C8F135] border border-[#C8F135]/40 hover:bg-[#C8F135]/10 hover:border-[#C8F135] transition press"
+          >
+            {initial}
+          </Link>
         </div>
       </header>
 
