@@ -88,7 +88,7 @@ function Onboarding() {
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
-  const [sex, setSex] = useState<string | null>(profile.gender);
+  const [gender, setGender] = useState<string | null>(profile.gender);
   const [age, setAge] = useState<string | null>(profile.ageRange);
   const [fitness, setFitness] = useState<string | null>(profile.fitnessLevel);
   const [frequency, setFrequency] = useState<string | null>(profile.playFrequency);
