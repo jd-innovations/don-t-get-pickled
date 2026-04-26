@@ -421,11 +421,17 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   if (phase === "celebrate") {
     return (
       <div className="fixed inset-0 z-50 bg-[#0a0a0a] text-white flex flex-col items-center justify-center px-6 animate-in fade-in duration-300">
-        <div className="text-7xl mb-6">🎉</div>
-        <h2 className="font-display text-4xl tracking-wider text-[#C8F135] text-center">
+        <div className="text-7xl mb-6 anim-bounce-in">🎉</div>
+        <h2
+          className="font-display text-4xl tracking-wider text-[#C8F135] text-center anim-fade-in-up"
+          style={{ animationDelay: "200ms" }}
+        >
           SESSION COMPLETE
         </h2>
-        <p className="mt-3 text-sm text-neutral-300 text-center">
+        <p
+          className="mt-3 text-sm text-neutral-300 text-center anim-fade-in-up"
+          style={{ animationDelay: "320ms" }}
+        >
           You showed up. That's the win.
         </p>
         <div className="mt-10 w-full max-w-xs space-y-3">
@@ -434,13 +440,15 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
               handleClose();
               onOpenSummary();
             }}
-            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-fade-in-up anim-pulse-glow"
+            style={{ animationDelay: "440ms" }}
           >
             VIEW SUMMARY
           </button>
           <button
             onClick={handleClose}
-            className="w-full py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] text-neutral-300 hover:border-[#C8F135]/40 transition"
+            className="w-full py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] text-neutral-300 hover:border-[#C8F135]/40 transition press anim-fade-in-up"
+            style={{ animationDelay: "560ms" }}
           >
             CLOSE
           </button>
