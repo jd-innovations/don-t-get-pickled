@@ -172,9 +172,18 @@ function Onboarding() {
           <span className="font-display text-lg tracking-wider text-[#C8F135]">
             DON'T GET PICKLED
           </span>
-          <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
-            Skip for now
-          </Link>
+          {isEdit ? (
+            <Link
+              to={search.from}
+              className="text-sm text-neutral-400 hover:text-white"
+            >
+              Cancel
+            </Link>
+          ) : (
+            <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
+              Skip for now
+            </Link>
+          )}
         </div>
       </header>
 
