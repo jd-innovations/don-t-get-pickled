@@ -182,8 +182,7 @@ function Onboarding() {
             </Link>
           ) : (
             <Link
-              to={user ? "/dashboard" : "/auth"}
-              search={user ? undefined : { redirect: "/dashboard" }}
+              to="/"
               className="text-sm text-neutral-400 hover:text-white"
             >
               Skip for now
