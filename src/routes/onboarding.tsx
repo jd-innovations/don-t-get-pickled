@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { BrandLogo } from "@/components/BrandLogo";
+import pgdLogo from "@/assets/pgd-logo.png";
 
 type EditFrom = "/dashboard" | "/profile";
 
@@ -381,6 +382,19 @@ function Onboarding() {
               className="mt-8 rounded-xl border border-[#C8F135]/40 bg-[#111111] p-6 anim-scale-in anim-pulse-glow"
               style={{ animationDelay: "440ms" }}
             >
+              <a
+                href="https://pickleballgripdoctor.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit Pickleball Grip Doctor store"
+                className="flex items-center justify-center mb-4 hover-lift press"
+              >
+                <img
+                  src={pgdLogo}
+                  alt="Pickleball Grip Doctor"
+                  className="max-h-12 w-auto"
+                />
+              </a>
               <p className="text-xs uppercase tracking-widest text-[#C8F135] mb-2">
                 Welcome Gift
               </p>
@@ -393,6 +407,14 @@ function Onboarding() {
                   NEWCUSTOMER20
                 </p>
               </div>
+              <a
+                href="https://pickleballgripdoctor.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 block text-center text-xs text-[#C8F135] font-medium tracking-wide hover:underline"
+              >
+                Shop now at pickleballgripdoctor.com →
+              </a>
             </div>
 
             {!user && (
