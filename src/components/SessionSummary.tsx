@@ -300,7 +300,7 @@ function StatStrip({ totals }: { totals: Totals }) {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4">
+    <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4 hover-lift">
       <p className="text-[10px] uppercase tracking-widest text-neutral-500">{label}</p>
       <p className="font-display text-2xl text-[#C8F135] mt-1">{value}</p>
     </div>
