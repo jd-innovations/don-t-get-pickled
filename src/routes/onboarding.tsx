@@ -126,7 +126,11 @@ function Onboarding() {
         injuries,
         goals,
       });
-      setStage("done");
+      if (isEdit) {
+        navigate({ to: search.from });
+      } else {
+        setStage("done");
+      }
     } else {
       setStep(step + 1);
     }
