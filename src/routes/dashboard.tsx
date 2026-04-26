@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Home, Calendar, User, Sparkles } from "lucide-react";
+import { Home, Calendar, User, Sparkles, Play } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { SessionSummary } from "@/components/SessionSummary";
@@ -186,7 +186,7 @@ function Dashboard() {
             onClick={() => setGuidedOpen(true)}
             className="mt-5 w-full py-3 rounded-lg font-display text-base tracking-wider border-2 border-[#C8F135] text-[#C8F135] hover:bg-[#C8F135]/10 transition flex items-center justify-center gap-2 hover-lift press"
           >
-            <span aria-hidden>▶</span> START GUIDED SESSION
+            <Play className="w-4 h-4" /> START GUIDED SESSION
           </button>
           <button
             onClick={() => setSummaryOpen(true)}
