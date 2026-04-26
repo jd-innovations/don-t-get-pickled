@@ -33,6 +33,7 @@ function AuthPage() {
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [info, setInfo] = useState<string | null>(null);
+  const [acceptedPolicies, setAcceptedPolicies] = useState(false);
 
   useEffect(() => {
     if (!loading && user) {
@@ -44,6 +45,10 @@ function AuthPage() {
     e.preventDefault();
     setError(null);
     setInfo(null);
+    if (mode === "signup" && !acceptedPolicies) {
+      setError("Please accept the Terms of Use and Privacy Policy to continue.");
+      return;
+    }
     setBusy(true);
     try {
       if (mode === "signup") {
@@ -174,10 +179,33 @@ function AuthPage() {
               </p>
             )}
 
+            {mode === "signup" && (
+              <label className="flex items-start gap-2 text-[11px] text-neutral-400 leading-snug cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={acceptedPolicies}
+                  onChange={(e) => setAcceptedPolicies(e.target.checked)}
+                  className="mt-0.5 accent-[#C8F135] cursor-pointer"
+                />
+                <span>
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-[#C8F135] hover:underline">
+                    Terms of Use
+                  </Link>{" "}
+                  and{" "}
+                  <Link to="/privacy" className="text-[#C8F135] hover:underline">
+                    Privacy Policy
+                  </Link>
+                  , and I understand I'll receive marketing emails from
+                  pickleballgripdoctor.com (unsubscribe anytime).
+                </span>
+              </label>
+            )}
+
             <button
               type="submit"
-              disabled={busy}
-              className="w-full py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:opacity-50 hover-lift press"
+              disabled={busy || (mode === "signup" && !acceptedPolicies)}
+              className="w-full py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed hover-lift press"
             >
               {busy
                 ? "..."
@@ -193,6 +221,7 @@ function AuthPage() {
               setMode(mode === "signup" ? "signin" : "signup");
               setError(null);
               setInfo(null);
+              setAcceptedPolicies(false);
             }}
             className="mt-4 w-full text-xs text-neutral-400 hover:text-[#C8F135] transition"
           >
@@ -208,6 +237,16 @@ function AuthPage() {
         >
           Continue without an account
         </Link>
+
+        <div className="mt-3 flex items-center justify-center gap-3 text-[10px] text-neutral-600">
+          <Link to="/privacy" className="hover:text-[#C8F135] transition">
+            Privacy
+          </Link>
+          <span>·</span>
+          <Link to="/terms" className="hover:text-[#C8F135] transition">
+            Terms
+          </Link>
+        </div>
       </div>
     </div>
   );
