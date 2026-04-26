@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { BrandLogo } from "@/components/BrandLogo";
 
 type EditFrom = "/dashboard" | "/profile";
@@ -82,6 +83,7 @@ function Onboarding() {
   const navigate = useNavigate();
   const search = Route.useSearch();
   const { profile, hasProfile, setProfile } = useUserProfile();
+  const { user } = useAuth();
   const isEdit = search.edit || hasProfile;
 
   const [stage, setStage] = useState<Stage>("questions");
