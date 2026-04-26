@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { Home, Calendar, User, Sparkles, Play } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
