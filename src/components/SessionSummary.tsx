@@ -70,7 +70,7 @@ export function SessionSummary({
 
       <main className="max-w-md mx-auto px-5 pb-12">
         {/* Headline */}
-        <section className="pt-6 pb-4">
+        <section className="pt-6 pb-4 anim-fade-in-up" style={{ animationDelay: "40ms" }}>
           <h1 className="font-display text-4xl leading-none tracking-wide">YOUR PROGRESS</h1>
           <p className="mt-2 text-sm text-neutral-400">
             Track today, this week, and lifetime totals.
