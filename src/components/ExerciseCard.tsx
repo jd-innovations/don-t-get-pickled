@@ -199,12 +199,8 @@ export function ExerciseCard({
               {exercise.steps.map((step, i) => (
                 <li
                   key={i}
-                  className="flex gap-3 text-sm text-neutral-200 opacity-0"
-                  style={{
-                    animation: open
-                      ? `fadeSlideIn 0.4s ease-out ${i * 0.08}s forwards`
-                      : "none",
-                  }}
+                  className={`flex gap-3 text-sm text-neutral-200 ${open ? "anim-step-in" : "opacity-0"}`}
+                  style={{ animationDelay: open ? `${i * 70}ms` : undefined }}
                 >
                   <span className="font-display text-base text-[#C8F135] flex-shrink-0 w-5">
                     {i + 1}.
