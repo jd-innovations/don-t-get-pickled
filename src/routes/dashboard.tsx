@@ -3,6 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { Home, Calendar, User, Sparkles, Play } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
+import { BrandLogo } from "@/components/BrandLogo";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { SessionSummary } from "@/components/SessionSummary";
 import { GuidedSession } from "@/components/GuidedSession";
@@ -83,9 +84,7 @@ function Dashboard() {
       {/* Top bar */}
       <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
-          <span className="font-display text-lg tracking-wider text-[#C8F135]">
-            DON'T GET PICKLED
-          </span>
+          <BrandLogo />
           <Link
             to="/profile"
             aria-label="Open profile"

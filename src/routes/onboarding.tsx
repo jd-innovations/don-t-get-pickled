@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import { BrandLogo } from "@/components/BrandLogo";
 
 type EditFrom = "/dashboard" | "/profile";
 
@@ -173,9 +174,7 @@ function Onboarding() {
       {/* Top bar */}
       <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
-          <span className="font-display text-lg tracking-wider text-[#C8F135]">
-            DON'T GET PICKLED
-          </span>
+          <BrandLogo />
           {isEdit ? (
             <Link
               to={search.from}

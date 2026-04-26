@@ -6,6 +6,7 @@ import { exercises, type Phase } from "@/data/exercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import { useAuth } from "@/contexts/AuthContext";
 import pgdLogo from "@/assets/pgd-logo.png";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,9 +42,7 @@ function Landing() {
       {/* Header */}
       <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
-          <span className="font-display text-xl tracking-wider text-[#C8F135]">
-            DON'T GET PICKLED
-          </span>
+          <BrandLogo />
           {user ? (
             <div className="flex items-center gap-3">
               <Link
