@@ -1,58 +1,27 @@
-# Wire the Schedule Tab — Pre-Generated Warm-Up Presets
+## Add "Brought to you by Pickleball Grip Doctor" section to home screen
 
-Today the "Schedule" button in the bottom nav does nothing. We'll turn it into a real screen that gives the user 3–4 ready-to-go warm-up presets, pre-built from their profile, so they tap one card and immediately start a guided session.
+Add a clear sponsor/brand attribution section near the bottom of the landing page (`src/routes/index.tsx`), just above the sticky CTA.
 
-## What the user will see
+### What the user will see
 
-A new **Schedule** view (route `/schedule`, protected like `/profile`) with:
+Between the last exercise phase and the sticky "UNLOCK FREE GUIDE" CTA:
 
-1. **Today's Pick** (hero card) — one preset auto-chosen for today based on profile + day of week. Big "START NOW" button.
-2. **Preset library** — 3 more cards the user can tap any day:
-   - **Quick Reset** (4 exercises, ~3 min) — light mobility, good for busy days
-   - **Full Tune-Up** (6 exercises, ~6 min) — balanced full-body, the default
-   - **Power Prep** (6 exercises, ~7 min) — emphasizes Strength + Power before competitive play
-   - **Recovery Flow** (5 exercises, ~5 min) — gentle, post-play or sore days
-3. Each card shows: name, focus tag, exercise count, est. duration, a 3-icon preview of the first exercises, and a "START" button.
-4. Cards are personalized — exercises are picked using the same scoring engine that powers "Generate Warm-Up" (respects injuries, goals, fitness level, recent session freshness), so two users see different exercises under the same preset name.
+1. A **subtle divider** — a thin lime-accent horizontal line with the small label "BROUGHT TO YOU BY" centered on it (matching the existing `PhaseDivider` aesthetic of the app).
+2. A **brand card** with:
+  - The Pickleball Grip Doctor logo (white/lime on dark, fits the existing palette perfectly)
+  - Short tagline below: "Helping pickleball players grip better, play longer, stay injury-free."
+  - A small "Learn more →" link styled as a subtle story-link (placeholder `#` href for now — user can supply actual URL later).
+3. Card uses the same `rounded-2xl border border-[#1e1e1e] bg-[#111111]` treatment as other cards, with a soft fade-in animation on scroll.
 
-Tapping any preset opens the existing **GuidedSession** with that exercise list — no extra screens.
+### Technical details
 
-## How it fits the existing app
+- **Add logo asset**: Copy `user-uploads://PGD.png` to `src/assets/pgd-logo.png` and import it as an ES6 module in `index.tsx` (per project asset guidelines).
+- **Edit `src/routes/index.tsx**`: Add a new `<section>` after the exercises map and before the sticky CTA `<div>`. Reuse existing motion classes (`anim-fade-in-up`, `hover-lift`) and the lime accent (`#C8F135`) for visual consistency.
+- **No new components needed** — the section is small enough to inline. No route, data, or dependency changes.
+- Bottom padding on `<main>` already accounts for the sticky CTA, so no layout adjustments needed.
+- Add link to the logo to open [https://pickleballgripdoctor.com/](https://pickleballgripdoctor.com/) in new tab.
 
-- Reuses `generateWarmupPlan()` from `src/lib/generateWarmup.ts` — we just call it with different `focus` + size params per preset.
-- Reuses `GuidedSession` component (already accepts `exerciseIds`).
-- Reuses `useUserProfile` and `useCloudSessions` for personalization + freshness rotation.
-- "Today's Pick" rotates deterministically by date so it feels scheduled, not random.
+### Out of scope
 
-## Technical details
-
-**New route**: `src/routes/_authenticated/schedule.tsx` (protected — requires auth, matches profile pattern).
-
-**New file**: `src/lib/presets.ts`
-- Defines `PRESETS` array: `{ id, name, focus: FocusTag, size: number, durationMin, blurb, accent }`.
-- `buildPresetPlan(preset, profile, recentSessions)` → calls `generateWarmupPlan` with `focus`, then trims `picks` to `preset.size`.
-- `pickTodaysPreset(date, profile)` → deterministic selection (e.g. weekday → Power Prep, weekend → Full Tune-Up, day-after-active → Recovery).
-
-**Update**: `src/lib/generateWarmup.ts` — extend `generateWarmupPlan` to accept an optional `size` parameter (defaults to 6) so presets can request 4 or 5 exercises. Phase distribution scales proportionally.
-
-**Update**: `src/routes/dashboard.tsx` — wire the bottom-nav "Schedule" button to `navigate({ to: "/schedule" })`, same pattern as Profile.
-
-**Update**: `src/routes/_authenticated/schedule.tsx` includes the same bottom nav (Home / Schedule / Profile) for consistency, with Schedule highlighted as active.
-
-**Schedule page structure**:
-```text
-[Header: DON'T GET PICKLED]
-[Hero: "Today's Pick" — big preset card, START NOW]
-[Section: "All Presets" — 3 preset cards in a column]
-[Bottom nav]
-```
-
-Each preset card uses the lime accent palette and the same `hover-lift press` motion language already used elsewhere.
-
-**No new database tables, no new server functions** — presets are deterministic client-side, computed from profile + cached session history.
-
-## Out of scope (can be a follow-up)
-
-- User-saved custom presets
-- Calendar view / scheduling specific days/times
-- Push reminders
+- Adding the same section to `/dashboard` (user said "home screen" only — landing page).
+- Linking to a real Pickleball Grip Doctor URL (user can provide later).
