@@ -78,7 +78,7 @@ function Landing() {
             className="text-xs uppercase tracking-[0.2em] text-[#C8F135] font-semibold mb-3 anim-fade-in-up"
             style={{ animationDelay: "60ms" }}
           >
-            {hasProfile ? "Your Full Guide" : "Free Warm Up Guide"}
+            {isUnlocked ? "Your Full Guide" : "Free Warm Up Guide"}
           </p>
           <h1 className="font-display text-6xl leading-[0.95] tracking-wide text-white">
             <span className="block anim-fade-in-up" style={{ animationDelay: "140ms" }}>
@@ -92,9 +92,9 @@ function Landing() {
             className="mt-4 text-sm text-neutral-400 leading-relaxed anim-fade-in-up"
             style={{ animationDelay: "360ms" }}
           >
-            {hasProfile
+            {isUnlocked
               ? "All 18 chair-based moves unlocked — tap any move to activate"
-              : "6 free chair-based moves for pickleball players 40+ — unlock 12 more with your free profile"}
+              : "6 free chair-based moves for pickleball players 40+ — sign up to unlock 12 more"}
           </p>
         </section>
 
@@ -119,7 +119,7 @@ function Landing() {
                     >
                       <ExerciseCard
                         exercise={ex}
-                        locked={!hasProfile && !ex.isFree}
+                        locked={!isUnlocked && !ex.isFree}
                         onLockedClick={scrollToCta}
                       />
                     </div>
@@ -171,16 +171,26 @@ function Landing() {
       >
         <div className="max-w-md mx-auto px-5 py-4">
           <p className="text-xs text-neutral-300 text-center mb-2">
-            {hasProfile
+            {isUnlocked
               ? "Start your personalized session"
               : "Want all 18 exercises + your personalized schedule?"}
           </p>
-          <Link
-            to={hasProfile ? "/dashboard" : "/onboarding"}
-            className="block w-full text-center py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-pulse-glow"
-          >
-            {hasProfile ? "GO TO DASHBOARD" : "UNLOCK FREE GUIDE"}
-          </Link>
+          {isUnlocked ? (
+            <Link
+              to="/dashboard"
+              className="block w-full text-center py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-pulse-glow"
+            >
+              GO TO DASHBOARD
+            </Link>
+          ) : (
+            <Link
+              to="/onboarding"
+              search={{ edit: false, from: "/dashboard" }}
+              className="block w-full text-center py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-pulse-glow"
+            >
+              UNLOCK FREE GUIDE
+            </Link>
+          )}
         </div>
       </div>
     </div>
