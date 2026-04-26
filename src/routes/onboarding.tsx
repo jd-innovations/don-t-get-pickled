@@ -278,7 +278,14 @@ function Onboarding() {
                         <button
                           key={opt}
                           onClick={() => toggleInjury(opt)}
-                          className="px-4 py-2 rounded-full text-sm font-medium border transition-colors press hover-lift"
+                          className="px-4 py-2 rounded-full text-sm font-medium border press hover-lift"
+                          style={{
+                            borderColor: selected ? "#ef4444" : "#1e1e1e",
+                            backgroundColor: selected ? "#ef4444" : "#111111",
+                            color: selected ? "white" : "#d4d4d4",
+                            transition: "background-color 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                            transform: selected ? "scale(1.05)" : "scale(1)",
+                          }}
                         >
                           {opt}
                         </button>
