@@ -31,14 +31,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Don't Get Pickled" },
+      { name: "description", content: "A pickleball warm-up and injury prevention web app for players 40+." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Don't Get Pickled" },
+      { property: "og:description", content: "A pickleball warm-up and injury prevention web app for players 40+." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Don't Get Pickled" },
+      { name: "twitter:description", content: "A pickleball warm-up and injury prevention web app for players 40+." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/5jI9JNoQyoeZ36Bk0dqU2XJc9uq2/social-images/social-1777222076367-ChatGPT_Image_Apr_26,_2026,_11_49_42_AM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/5jI9JNoQyoeZ36Bk0dqU2XJc9uq2/social-images/social-1777222076367-ChatGPT_Image_Apr_26,_2026,_11_49_42_AM.webp" },
     ],
     links: [
       {
