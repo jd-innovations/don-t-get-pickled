@@ -130,6 +130,10 @@
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
+@keyframes dgp-grow-up {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
 @keyframes dgp-shimmer {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(200%); }
