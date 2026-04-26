@@ -147,6 +147,7 @@ export interface WarmupPlan {
 }
 
 export function generateWarmupPlan(input: GenerateInput): WarmupPlan {
+  const total = Math.max(2, Math.min(input.size ?? TOTAL, exercises.length));
   const scored = exercises.map((ex) => scoreExercise(ex, input));
 
   const byPhase: Record<Phase, ScoredPick[]> = {
@@ -159,35 +160,40 @@ export function generateWarmupPlan(input: GenerateInput): WarmupPlan {
     byPhase[phase].sort((a, b) => b.score - a.score);
   }
 
+  // Scale phase targets proportionally to requested size
+  const ratio = total / TOTAL;
+  const phaseWants: Record<Phase, number> = {
+    "Warm-Up": Math.max(1, Math.round(TARGET_PER_PHASE["Warm-Up"] * ratio)),
+    Mobility: Math.max(1, Math.round(TARGET_PER_PHASE["Mobility"] * ratio)),
+    Strength: Math.max(1, Math.round(TARGET_PER_PHASE["Strength"] * ratio)),
+  };
+
   const picks: ScoredPick[] = [];
   const used = new Set<string>();
 
-  // Take target per phase
   for (const phase of ["Warm-Up", "Mobility", "Strength"] as Phase[]) {
-    const want = TARGET_PER_PHASE[phase];
+    const want = phaseWants[phase];
     for (const s of byPhase[phase]) {
       if (picks.filter((p) => p.exercise.phase === phase).length >= want) break;
+      if (picks.length >= total) break;
       picks.push(s);
       used.add(s.exercise.id);
     }
   }
 
-  // Fill any shortfall (e.g. if a phase is short) from overall top scores
-  if (picks.length < TOTAL) {
+  if (picks.length < total) {
     const rest = scored
       .filter((s) => !used.has(s.exercise.id))
       .sort((a, b) => b.score - a.score);
     for (const s of rest) {
-      if (picks.length >= TOTAL) break;
+      if (picks.length >= total) break;
       picks.push(s);
       used.add(s.exercise.id);
     }
   }
 
-  // Trim if somehow over (shouldn't happen but safe)
-  picks.length = Math.min(picks.length, TOTAL);
+  picks.length = Math.min(picks.length, total);
 
-  // Order by phase progression: Warm-Up → Mobility → Strength
   const phaseOrder: Record<Phase, number> = {
     "Warm-Up": 0,
     Mobility: 1,
