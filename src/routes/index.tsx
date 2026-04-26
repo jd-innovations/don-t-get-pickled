@@ -4,6 +4,7 @@ import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { exercises, type Phase } from "@/data/exercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import pgdLogo from "@/assets/pgd-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -104,6 +105,38 @@ function Landing() {
               </div>
             );
           })}
+        </section>
+
+        {/* Brought to you by */}
+        <section className="mt-12 anim-fade-in-up" style={{ animationDelay: "200ms" }}>
+          <div className="flex items-center gap-3 mb-5">
+            <div className="flex-1 h-[1px] bg-[#C8F135]/40" />
+            <span className="font-display text-[10px] tracking-[0.25em] text-[#C8F135]">
+              BROUGHT TO YOU BY
+            </span>
+            <div className="flex-1 h-[1px] bg-[#C8F135]/40" />
+          </div>
+          <a
+            href="https://pickleballgripdoctor.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-2xl border border-[#1e1e1e] bg-[#111111] p-6 hover-lift press transition"
+          >
+            <div className="flex items-center justify-center mb-4">
+              <img
+                src={pgdLogo}
+                alt="Pickleball Grip Doctor"
+                className="max-h-20 w-auto"
+              />
+            </div>
+            <p className="text-center text-sm text-neutral-400 leading-relaxed">
+              Helping pickleball players grip better, play longer, and stay
+              injury-free.
+            </p>
+            <p className="mt-3 text-center text-xs text-[#C8F135] font-medium tracking-wide">
+              Learn more →
+            </p>
+          </a>
         </section>
       </main>
 
