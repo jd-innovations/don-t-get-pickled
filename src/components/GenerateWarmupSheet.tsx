@@ -139,9 +139,9 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                 generate(s);
               }}
               disabled={loading}
-              className="w-full py-3 rounded-lg font-display text-base tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-lg font-display text-base tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center gap-2 hover-lift press anim-pulse-glow"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className={`w-4 h-4 ${loading ? "" : "anim-pulse-soft"}`} />
               {loading ? "GENERATING…" : "GENERATE 6 EXERCISES"}
             </button>
           )}
