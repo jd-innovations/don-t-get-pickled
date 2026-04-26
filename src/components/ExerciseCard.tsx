@@ -86,14 +86,16 @@ export function ExerciseCard({
                 onToggleComplete!(exercise.id);
               }
             }}
-            className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-display text-base transition-colors cursor-pointer"
+            className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-display text-base cursor-pointer press"
             style={{
               backgroundColor: completed ? "#C8F135" : "transparent",
               border: `2px solid #C8F135`,
               color: completed ? "#000" : "#C8F135",
+              transition: "background-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+              transform: completed ? "scale(1.06)" : "scale(1)",
             }}
           >
-            {completed ? <Check className="w-4 h-4" strokeWidth={3} /> : exercise.number}
+            {completed ? <Check className="w-4 h-4 anim-scale-in" strokeWidth={3} /> : exercise.number}
           </span>
         ) : (
           <div
