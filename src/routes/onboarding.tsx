@@ -35,7 +35,7 @@ export const Route = createFileRoute("/onboarding")({
 
 type Stage = "questions" | "done";
 
-const sexOptions = ["Male", "Female", "Prefer Not to Say"];
+const genderOptions = ["Man", "Woman", "Non-binary", "Prefer not to say"];
 const ageOptions = [
   { label: "21–35", desc: "Young adult" },
   { label: "36–49", desc: "Prime years" },
