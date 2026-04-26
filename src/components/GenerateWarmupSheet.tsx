@@ -228,7 +228,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                     onStart(plan.picks.map((p) => p.exercise.id));
                     handleClose();
                   }}
-                  className="py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2"
+                  className="py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2 hover-lift press"
                 >
                   <Play className="w-4 h-4" />
                   START
