@@ -71,7 +71,7 @@ function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
       {/* Top bar */}
-      <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
+      <header className="sticky top-0 z-20 bg-black border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
           <BrandLogo />
           <button

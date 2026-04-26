@@ -468,7 +468,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   return (
     <div className="fixed inset-0 z-50 bg-[#0a0a0a] text-white overflow-y-auto animate-in fade-in duration-200">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
+      <header className="sticky top-0 z-10 bg-black border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span
