@@ -606,7 +606,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
         <div className="mt-6 grid grid-cols-3 gap-3">
           <button
             onClick={() => setPaused((p) => !p)}
-            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition"
+            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition press hover-lift"
           >
             {paused ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
             <span className="text-[10px] uppercase tracking-widest text-neutral-400">
@@ -615,7 +615,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
           </button>
           <button
             onClick={skipExercise}
-            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition"
+            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition press hover-lift"
           >
             <SkipForward className="w-5 h-5" />
             <span className="text-[10px] uppercase tracking-widest text-neutral-400">
@@ -624,7 +624,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
           </button>
           <button
             onClick={markDoneAndNext}
-            className="flex flex-col items-center gap-1 py-3 rounded-xl bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="flex flex-col items-center gap-1 py-3 rounded-xl bg-[#C8F135] text-black hover:brightness-110 transition press hover-lift"
           >
             <Check className="w-5 h-5" strokeWidth={3} />
             <span className="text-[10px] uppercase tracking-widest font-semibold">
