@@ -50,10 +50,12 @@ export function ExerciseCard({
 
   return (
     <div
-      className="rounded-xl border bg-[#111111] transition-colors duration-300 overflow-hidden relative"
+      className="rounded-xl border bg-[#111111] overflow-hidden relative hover-lift"
       style={{
         borderColor: open ? "#C8F135" : "#1e1e1e",
         opacity: locked ? 0.7 : 1,
+        boxShadow: open ? "var(--shadow-lime)" : undefined,
+        transition: "border-color 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft), transform 0.25s var(--ease-soft)",
       }}
     >
       <button
