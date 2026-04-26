@@ -95,7 +95,7 @@ function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-5 py-10">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-5 py-10">
       <div className="w-full max-w-sm">
         <Link
           to="/dashboard"
