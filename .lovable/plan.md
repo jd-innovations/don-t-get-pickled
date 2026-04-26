@@ -1,97 +1,58 @@
-## User Profile Dashboard at `/profile`
+# Wire the Schedule Tab — Pre-Generated Warm-Up Presets
 
-Build a new "Profile" page wired to the bottom nav's Profile tab, backed by Lovable Cloud so data syncs across devices. Today's `/dashboard` (today's session) stays as-is.
+Today the "Schedule" button in the bottom nav does nothing. We'll turn it into a real screen that gives the user 3–4 ready-to-go warm-up presets, pre-built from their profile, so they tap one card and immediately start a guided session.
 
-### What's on the page
+## What the user will see
 
-Five stacked sections, each in the existing dark card style (`bg-[#111111]` / `border-[#1e1e1e]` / lime accent):
+A new **Schedule** view (route `/schedule`, protected like `/profile`) with:
 
-1. **Header** — Avatar initial, display name (or email), member-since date, sign out button.
-2. **Stats & Progress**
-   - Streak (current day streak, with flame icon)
-   - All-time totals: sessions, exercises completed, total minutes, total reps, total hold seconds
-   - 7-day activity bar chart (reuse `weekBuckets` shape from `useSessionStats`)
-3. **Achievements / Milestones** — Grid of badge tiles, locked vs unlocked. Initial set:
-   - First session, 3-day streak, 7-day streak, 30-day streak
-   - 10 / 50 / 100 sessions completed
-   - Tried all 3 phases (Warm-Up, Mobility, Strength)
-   - Each tile shows icon, label, progress (e.g. "4 / 7 days") and unlock date when earned.
-4. **History Log** — Reverse-chronological list of past sessions. Each row: date, duration, exercise count, expandable to show exercise names. Pagination/show-more after 10.
-5. **Profile & Preferences** — Read-only summary of age, fitness level, frequency, injuries, goals; "Edit profile" button → routes to existing `/onboarding`; "Reset profile" destructive action.
+1. **Today's Pick** (hero card) — one preset auto-chosen for today based on profile + day of week. Big "START NOW" button.
+2. **Preset library** — 3 more cards the user can tap any day:
+   - **Quick Reset** (4 exercises, ~3 min) — light mobility, good for busy days
+   - **Full Tune-Up** (6 exercises, ~6 min) — balanced full-body, the default
+   - **Power Prep** (6 exercises, ~7 min) — emphasizes Strength + Power before competitive play
+   - **Recovery Flow** (5 exercises, ~5 min) — gentle, post-play or sore days
+3. Each card shows: name, focus tag, exercise count, est. duration, a 3-icon preview of the first exercises, and a "START" button.
+4. Cards are personalized — exercises are picked using the same scoring engine that powers "Generate Warm-Up" (respects injuries, goals, fitness level, recent session freshness), so two users see different exercises under the same preset name.
 
-### Auth (Lovable Cloud)
+Tapping any preset opens the existing **GuidedSession** with that exercise list — no extra screens.
 
-- Email + password and Google sign-in (Cloud defaults).
-- New `/auth` route: combined sign-in / sign-up form.
-- New `_authenticated` pathless layout protecting `/profile`. Unauthenticated users hitting `/profile` are redirected to `/auth?redirect=/profile`.
-- All other routes (`/`, `/dashboard`, `/onboarding`) remain public — no breaking changes.
-- Sign out from header in `/profile`.
+## How it fits the existing app
 
-### Data model (Lovable Cloud / Postgres)
+- Reuses `generateWarmupPlan()` from `src/lib/generateWarmup.ts` — we just call it with different `focus` + size params per preset.
+- Reuses `GuidedSession` component (already accepts `exerciseIds`).
+- Reuses `useUserProfile` and `useCloudSessions` for personalization + freshness rotation.
+- "Today's Pick" rotates deterministically by date so it feels scheduled, not random.
 
+## Technical details
+
+**New route**: `src/routes/_authenticated/schedule.tsx` (protected — requires auth, matches profile pattern).
+
+**New file**: `src/lib/presets.ts`
+- Defines `PRESETS` array: `{ id, name, focus: FocusTag, size: number, durationMin, blurb, accent }`.
+- `buildPresetPlan(preset, profile, recentSessions)` → calls `generateWarmupPlan` with `focus`, then trims `picks` to `preset.size`.
+- `pickTodaysPreset(date, profile)` → deterministic selection (e.g. weekday → Power Prep, weekend → Full Tune-Up, day-after-active → Recovery).
+
+**Update**: `src/lib/generateWarmup.ts` — extend `generateWarmupPlan` to accept an optional `size` parameter (defaults to 6) so presets can request 4 or 5 exercises. Phase distribution scales proportionally.
+
+**Update**: `src/routes/dashboard.tsx` — wire the bottom-nav "Schedule" button to `navigate({ to: "/schedule" })`, same pattern as Profile.
+
+**Update**: `src/routes/_authenticated/schedule.tsx` includes the same bottom nav (Home / Schedule / Profile) for consistency, with Schedule highlighted as active.
+
+**Schedule page structure**:
 ```text
-profiles
-  id uuid PK = auth.users.id (FK, on delete cascade)
-  display_name text
-  gender text
-  age_range text
-  fitness_level text
-  play_frequency text
-  injuries text[]   default '{}'
-  goals text[]      default '{}'
-  created_at timestamptz default now()
-  updated_at timestamptz default now()
-
-sessions
-  id uuid PK default gen_random_uuid()
-  user_id uuid FK -> auth.users.id (on delete cascade)
-  date date                    -- local YYYY-MM-DD
-  completed_at timestamptz
-  duration_sec int
-  exercise_ids text[]
-  total_reps int
-  total_hold_sec int
-  created_at timestamptz default now()
-
-  index (user_id, date desc)
+[Header: DON'T GET PICKLED]
+[Hero: "Today's Pick" — big preset card, START NOW]
+[Section: "All Presets" — 3 preset cards in a column]
+[Bottom nav]
 ```
 
-RLS: each table has policies so `auth.uid() = user_id` (or `id` for profiles) for select / insert / update / delete. Auto-create profile row on signup via trigger.
+Each preset card uses the lime accent palette and the same `hover-lift press` motion language already used elsewhere.
 
-### Migration from localStorage
+**No new database tables, no new server functions** — presets are deterministic client-side, computed from profile + cached session history.
 
-On first authenticated visit to `/profile`:
-- If `dgp:sessions` exists in localStorage and the user has zero rows in `sessions`, bulk-insert them, then clear local key.
-- Same for `dgp:profile` → upsert into `profiles`.
-- Idempotent and silent (toast "Synced N past sessions" once).
+## Out of scope (can be a follow-up)
 
-After migration, `useSessionStats` and `UserProfileContext` switch to Cloud-backed sources for authenticated users; for anonymous users they keep using localStorage so the rest of the app still works without forcing sign-in.
-
-### Files to add
-
-- `src/routes/_authenticated.tsx` — auth guard layout
-- `src/routes/_authenticated/profile.tsx` — the profile dashboard page
-- `src/routes/auth.tsx` — sign in / sign up
-- `src/components/profile/StatsPanel.tsx`
-- `src/components/profile/AchievementsGrid.tsx`
-- `src/components/profile/HistoryLog.tsx`
-- `src/components/profile/PreferencesPanel.tsx`
-- `src/lib/achievements.ts` — pure function deriving unlocked badges from stats
-- `src/hooks/useCloudSessions.ts` — replaces `useSessionStats` reads when authed
-- `src/hooks/useCloudProfile.ts` — replaces `UserProfileContext` reads when authed
-- `src/integrations/supabase/*` — generated by Cloud enable
-
-### Files to modify
-
-- `src/router.tsx` — provide auth context to router
-- `src/routes/__root.tsx` — wrap with auth provider
-- `src/routes/dashboard.tsx` — make Profile tab navigate to `/profile`; add session-write to Cloud when authed; minor: show "Sign in to sync" hint when anonymous
-- `src/components/GuidedSession.tsx` / wherever `addSession` is called — also write to Cloud if authed
-- `src/contexts/UserProfileContext.tsx` — read/write through Cloud when authed, fallback to localStorage otherwise
-
-### Out of scope
-
-- Editing individual past sessions
-- Social features (friends, leaderboards)
-- Export / share
-- Push notifications
+- User-saved custom presets
+- Calendar view / scheduling specific days/times
+- Push reminders
