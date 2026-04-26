@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Home, Calendar, User, Sparkles, Play } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
@@ -31,6 +31,7 @@ export const Route = createFileRoute("/dashboard")({
 });
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<"home" | "schedule" | "profile">("home");
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [guidedOpen, setGuidedOpen] = useState(false);
@@ -233,7 +234,10 @@ function Dashboard() {
             return (
               <button
                 key={id}
-                onClick={() => setTab(id)}
+                onClick={() => {
+                  setTab(id);
+                  if (id === "profile") navigate({ to: "/profile" });
+                }}
                 className="flex flex-col items-center gap-1 px-4 py-1 press"
                 style={{
                   color: active ? "#C8F135" : "#737373",
