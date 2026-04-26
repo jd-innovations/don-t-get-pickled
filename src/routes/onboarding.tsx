@@ -142,7 +142,7 @@ function Onboarding() {
   const back = () => {
     setDirection("back");
     if (step === 0) {
-      navigate({ to: isEdit ? search.from : "/dashboard" });
+      navigate({ to: isEdit ? search.from : "/" });
     } else {
       setStep(step - 1);
     }
@@ -182,8 +182,7 @@ function Onboarding() {
             </Link>
           ) : (
             <Link
-              to={user ? "/dashboard" : "/auth"}
-              search={user ? undefined : { redirect: "/dashboard" }}
+              to="/"
               className="text-sm text-neutral-400 hover:text-white"
             >
               Skip for now

@@ -52,7 +52,7 @@ function ProfilePage() {
   const handleResetProfile = () => {
     if (confirm("Reset your profile? You'll be taken through onboarding again.")) {
       clearProfile();
-      navigate({ to: "/onboarding" });
+      navigate({ to: "/onboarding", search: { edit: false, from: "/profile" } });
     }
   };
 

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/contexts/AuthContext";
@@ -100,10 +100,19 @@ function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-5 py-10">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center px-5 py-10 relative">
+      {/* Close button */}
+      <Link
+        to="/"
+        aria-label="Close and return home"
+        className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center border border-[#1e1e1e] bg-[#111111] text-neutral-400 hover:text-[#C8F135] hover:border-[#C8F135]/40 transition press"
+      >
+        <X className="w-5 h-5" />
+      </Link>
+
       <div className="w-full max-w-sm">
         <Link
-          to="/dashboard"
+          to="/"
           className="flex justify-center mb-8"
           aria-label="Don't Get Pickled — Home"
         >
@@ -232,10 +241,10 @@ function AuthPage() {
         </div>
 
         <Link
-          to="/dashboard"
+          to="/"
           className="block mt-4 text-center text-[11px] text-neutral-500 hover:text-neutral-300 transition"
         >
-          Continue without an account
+          ← Back to home
         </Link>
 
         <div className="mt-3 flex items-center justify-center gap-3 text-[10px] text-neutral-600">
