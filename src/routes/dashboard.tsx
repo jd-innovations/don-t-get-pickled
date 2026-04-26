@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Home, Calendar, User, Sparkles, Play } from "lucide-react";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
@@ -51,6 +51,22 @@ function Dashboard() {
       : "START SESSION";
   const dayMask = activeDayMask(profile.playFrequency);
   const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
+
+  // Auto-start a preset session if one was queued from /schedule
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("dgp:pendingSession");
+      if (!raw) return;
+      sessionStorage.removeItem("dgp:pendingSession");
+      const parsed = JSON.parse(raw) as { ids?: string[] };
+      if (parsed?.ids?.length) {
+        setCustomIds(parsed.ids);
+        setGuidedOpen(true);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
@@ -237,6 +253,7 @@ function Dashboard() {
                 onClick={() => {
                   setTab(id);
                   if (id === "profile") navigate({ to: "/profile" });
+                  if (id === "schedule") navigate({ to: "/schedule" });
                 }}
                 className="flex flex-col items-center gap-1 px-4 py-1 press"
                 style={{
