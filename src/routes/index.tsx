@@ -41,7 +41,7 @@ function Landing() {
           <span className="font-display text-xl tracking-wider text-[#C8F135]">
             DON'T GET PICKLED
           </span>
-          <button className="text-sm text-neutral-400 hover:text-white transition-colors">
+          <button className="text-sm text-neutral-400 hover:text-white transition-colors story-link">
             Sign In
           </button>
         </div>
@@ -50,15 +50,24 @@ function Landing() {
       <main className="max-w-md mx-auto px-5">
         {/* Hero */}
         <section className="pt-8 pb-6">
-          <p className="text-xs uppercase tracking-[0.2em] text-[#C8F135] font-semibold mb-3">
+          <p
+            className="text-xs uppercase tracking-[0.2em] text-[#C8F135] font-semibold mb-3 anim-fade-in-up"
+            style={{ animationDelay: "60ms" }}
+          >
             {hasProfile ? "Your Full Guide" : "Free Warm Up Guide"}
           </p>
           <h1 className="font-display text-6xl leading-[0.95] tracking-wide text-white">
-            DON'T GET
-            <br />
-            PICKLED
+            <span className="block anim-fade-in-up" style={{ animationDelay: "140ms" }}>
+              DON'T GET
+            </span>
+            <span className="block anim-fade-in-up" style={{ animationDelay: "240ms" }}>
+              PICKLED
+            </span>
           </h1>
-          <p className="mt-4 text-sm text-neutral-400 leading-relaxed">
+          <p
+            className="mt-4 text-sm text-neutral-400 leading-relaxed anim-fade-in-up"
+            style={{ animationDelay: "360ms" }}
+          >
             {hasProfile
               ? "All 18 chair-based moves unlocked — tap any move to activate"
               : "6 free chair-based moves for pickleball players 40+ — unlock 12 more with your free profile"}
@@ -67,20 +76,29 @@ function Landing() {
 
         {/* Exercises */}
         <section>
-          {phases.map((phase) => {
+          {phases.map((phase, phaseIdx) => {
             const items = exercises.filter((e) => e.phase === phase);
             const phaseNum = phases.indexOf(phase) + 1;
             return (
-              <div key={phase}>
+              <div
+                key={phase}
+                className="anim-fade-in-up"
+                style={{ animationDelay: `${440 + phaseIdx * 120}ms` }}
+              >
                 <PhaseDivider phase={phase} label={`PHASE ${phaseNum} · ${phase.toUpperCase()}`} />
                 <div className="space-y-3">
-                  {items.map((ex) => (
-                    <ExerciseCard
+                  {items.map((ex, i) => (
+                    <div
                       key={ex.id}
-                      exercise={ex}
-                      locked={!hasProfile && !ex.isFree}
-                      onLockedClick={scrollToCta}
-                    />
+                      className="anim-fade-in-up"
+                      style={{ animationDelay: `${500 + phaseIdx * 120 + i * 60}ms` }}
+                    >
+                      <ExerciseCard
+                        exercise={ex}
+                        locked={!hasProfile && !ex.isFree}
+                        onLockedClick={scrollToCta}
+                      />
+                    </div>
                   ))}
                 </div>
               </div>
@@ -103,7 +121,7 @@ function Landing() {
           </p>
           <Link
             to={hasProfile ? "/dashboard" : "/onboarding"}
-            className="block w-full text-center py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="block w-full text-center py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-pulse-glow"
           >
             {hasProfile ? "GO TO DASHBOARD" : "UNLOCK FREE GUIDE"}
           </Link>
