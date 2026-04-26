@@ -254,8 +254,13 @@ function Dashboard() {
               <button
                 key={id}
                 onClick={() => setTab(id)}
-                className="flex flex-col items-center gap-1 px-4 py-1 transition-colors"
-                style={{ color: active ? "#C8F135" : "#737373" }}
+                className="flex flex-col items-center gap-1 px-4 py-1 press"
+                style={{
+                  color: active ? "#C8F135" : "#737373",
+                  transition: "color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                  transform: active ? "scale(1.08)" : "scale(1)",
+                  filter: active ? "drop-shadow(0 0 8px rgba(200,241,53,0.4))" : "none",
+                }}
               >
                 <Icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium tracking-wide">{label}</span>
