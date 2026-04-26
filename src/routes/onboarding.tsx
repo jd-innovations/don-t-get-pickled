@@ -135,7 +135,11 @@ function Onboarding() {
   const back = () => {
     setDirection("back");
     if (step === 0) {
-      setStage("register");
+      if (isEdit) {
+        navigate({ to: search.from });
+      } else {
+        setStage("register");
+      }
     } else {
       setStep(step - 1);
     }
