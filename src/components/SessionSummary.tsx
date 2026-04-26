@@ -269,7 +269,7 @@ export function SessionSummary({
         <div className="mt-8 space-y-3">
           <button
             onClick={onClose}
-            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press"
           >
             CLOSE
           </button>
