@@ -176,7 +176,7 @@ function Onboarding() {
               </div>
               <div className="h-1.5 w-full bg-[#1e1e1e] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#C8F135] transition-all duration-500"
+                  className="h-full bg-[#C8F135] transition-all duration-500 shimmer-overlay"
                   style={{ width: `${((step + 1) / totalSteps) * 100}%` }}
                 />
               </div>
@@ -184,8 +184,12 @@ function Onboarding() {
                 {Array.from({ length: totalSteps }).map((_, i) => (
                   <span
                     key={i}
-                    className="w-2 h-2 rounded-full transition-colors"
-                    style={{ backgroundColor: i <= step ? "#C8F135" : "#2a2a2a" }}
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: i <= step ? "#C8F135" : "#2a2a2a",
+                      transition: "background-color 0.3s var(--ease-soft), transform 0.3s var(--ease-spring)",
+                      transform: i <= step ? "scale(1.25)" : "scale(1)",
+                    }}
                   />
                 ))}
               </div>
