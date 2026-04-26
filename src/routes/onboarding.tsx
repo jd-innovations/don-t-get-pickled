@@ -193,10 +193,7 @@ function Onboarding() {
 
             <div
               key={step}
-              className="animate-slide"
-              style={{
-                animation: `${direction === "forward" ? "slideInRight" : "slideInLeft"} 0.3s ease-out`,
-              }}
+              className={direction === "forward" ? "anim-slide-in-right" : "anim-slide-in-left"}
             >
               {step === 0 && (
                 <Question title="WHAT'S YOUR BIOLOGICAL SEX?">
