@@ -467,10 +467,12 @@ function OptionCard({
   return (
     <button
       onClick={onClick}
-      className="w-full text-left p-4 rounded-xl border bg-[#111111] transition-colors"
+      className="w-full text-left p-4 rounded-xl border bg-[#111111] hover-lift press"
       style={{
         borderColor: selected ? "#C8F135" : "#1e1e1e",
         backgroundColor: selected ? "rgba(200, 241, 53, 0.08)" : "#111111",
+        boxShadow: selected ? "var(--shadow-lime)" : undefined,
+        transition: "border-color 0.25s var(--ease-soft), background-color 0.25s var(--ease-soft), box-shadow 0.25s var(--ease-soft), transform 0.25s var(--ease-soft)",
       }}
     >
       <div
