@@ -29,8 +29,9 @@ export const Route = createFileRoute("/")({
 
 function Landing() {
   const phases: Phase[] = ["Warm-Up", "Mobility", "Strength"];
-  const { hasProfile } = useUserProfile();
+  useUserProfile(); // keep provider hydrated; gating now uses auth state
   const { user, signOut } = useAuth();
+  const isUnlocked = !!user;
   const ctaRef = useRef<HTMLDivElement>(null);
 
   const scrollToCta = () => {
