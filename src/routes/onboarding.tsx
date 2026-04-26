@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { BrandLogo } from "@/components/BrandLogo";
 
 type EditFrom = "/dashboard" | "/profile";
@@ -35,7 +36,7 @@ export const Route = createFileRoute("/onboarding")({
 
 type Stage = "questions" | "done";
 
-const sexOptions = ["Male", "Female", "Prefer Not to Say"];
+const genderOptions = ["Man", "Woman", "Non-binary", "Prefer not to say"];
 const ageOptions = [
   { label: "21–35", desc: "Young adult" },
   { label: "36–49", desc: "Prime years" },
@@ -82,13 +83,14 @@ function Onboarding() {
   const navigate = useNavigate();
   const search = Route.useSearch();
   const { profile, hasProfile, setProfile } = useUserProfile();
+  const { user } = useAuth();
   const isEdit = search.edit || hasProfile;
 
   const [stage, setStage] = useState<Stage>("questions");
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
-  const [sex, setSex] = useState<string | null>(profile.gender);
+  const [gender, setGender] = useState<string | null>(profile.gender);
   const [age, setAge] = useState<string | null>(profile.ageRange);
   const [fitness, setFitness] = useState<string | null>(profile.fitnessLevel);
   const [frequency, setFrequency] = useState<string | null>(profile.playFrequency);
@@ -100,7 +102,7 @@ function Onboarding() {
   const canProceed = () => {
     switch (step) {
       case 0:
-        return !!sex;
+        return !!gender;
       case 1:
         return !!age;
       case 2:
@@ -120,7 +122,7 @@ function Onboarding() {
     setDirection("forward");
     if (step === totalSteps - 1) {
       setProfile({
-        gender: sex,
+        gender: gender,
         ageRange: age,
         fitnessLevel: fitness,
         playFrequency: frequency,
@@ -179,7 +181,11 @@ function Onboarding() {
               Cancel
             </Link>
           ) : (
-            <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
+            <Link
+              to={user ? "/dashboard" : "/auth"}
+              search={user ? undefined : { redirect: "/dashboard" }}
+              className="text-sm text-neutral-400 hover:text-white"
+            >
               Skip for now
             </Link>
           )}
@@ -228,23 +234,16 @@ function Onboarding() {
               className={direction === "forward" ? "anim-slide-in-right" : "anim-slide-in-left"}
             >
               {step === 0 && (
-                <Question title="WHAT'S YOUR BIOLOGICAL SEX?">
-                  <div className="grid grid-cols-2 gap-3">
-                    {sexOptions.slice(0, 2).map((opt) => (
+                <Question title="WHAT'S YOUR GENDER?">
+                  <div className="space-y-3">
+                    {genderOptions.map((opt) => (
                       <OptionCard
                         key={opt}
                         label={opt}
-                        selected={sex === opt}
-                        onClick={() => setSex(opt)}
+                        selected={gender === opt}
+                        onClick={() => setGender(opt)}
                       />
                     ))}
-                  </div>
-                  <div className="mt-3">
-                    <OptionCard
-                      label="Prefer Not to Say"
-                      selected={sex === "Prefer Not to Say"}
-                      onClick={() => setSex("Prefer Not to Say")}
-                    />
                   </div>
                 </Question>
               )}
@@ -397,12 +396,25 @@ function Onboarding() {
               </div>
             </div>
 
+            {!user && (
+              <p
+                className="mt-6 text-xs text-neutral-400 anim-fade-in-up"
+                style={{ animationDelay: "560ms" }}
+              >
+                Create a free account to save your plan and unlock your dashboard.
+              </p>
+            )}
+
             <button
-              onClick={() => navigate({ to: "/dashboard" })}
+              onClick={() =>
+                user
+                  ? navigate({ to: "/dashboard" })
+                  : navigate({ to: "/auth", search: { redirect: "/dashboard" } })
+              }
               className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-fade-in-up"
               style={{ animationDelay: "640ms" }}
             >
-              VIEW MY PLAN
+              {user ? "VIEW MY PLAN" : "CREATE ACCOUNT TO CONTINUE"}
             </button>
           </div>
         )}

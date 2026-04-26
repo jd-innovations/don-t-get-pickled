@@ -1,60 +1,44 @@
-# Add /privacy + /terms routes and signup consent
+## Goal
 
-Create dedicated SSR-friendly routes for the policies and a required acknowledgement checkbox on signup.
+1. Replace the "Biological Sex" question with a "Gender" question in onboarding.
+2. Let users complete the entire onboarding flow without an account, but require sign-up before they can access the dashboard.
 
-## New files
+## Changes
 
-### `src/components/PolicyLayout.tsx`
-Shared layout for both policy pages: black sticky header with `BrandLogo` and "Back" link, centered max-w-3xl content area with `font-display` h1, "Last updated" sub-line in `#C8F135`, prose styling (h2/h3/ul/links) via `[&_h2]:...` Tailwind selectors, and a footer linking back to `/privacy`, `/terms`, and `/`.
+### 1. Onboarding gender question (`src/routes/onboarding.tsx`)
 
-### `src/routes/privacy.tsx`
-TanStack route at `/privacy` with its own `head()` (title, description, og:title, og:description). Renders the full 11-section Privacy Policy from the docx — same wording — using `<PolicyLayout>`. Section 3 explicitly covers marketing emails from pickleballgripdoctor.com and the unsubscribe right.
+- Rename the step 0 question title from `WHAT'S YOUR BIOLOGICAL SEX?` to `WHAT'S YOUR GENDER?`.
+- Replace `sexOptions` with `genderOptions`: `Man`, `Woman`, `Non-binary`, `Prefer not to say`.
+- Render them as a single vertical list (one column) using the existing `OptionCard`, so all 4 options fit cleanly. Drops the special 2-col + full-width layout currently used.
+- Rename local state `sex` → `gender` for clarity (still maps to `profile.gender`, no schema change).
 
-### `src/routes/terms.tsx`
-Route at `/terms` with its own `head()`. Renders the full 15-section Terms of Use, including the Health & Fitness Disclaimer, marketing-emails clause (Section 5), and Florida governing law.
+### 2. Gate dashboard behind authentication
 
-## Edits to `src/routes/auth.tsx`
+Currently `/dashboard` is a public route. We need anonymous users to be able to:
+- Click "UNLOCK FREE GUIDE" on the landing page → go through onboarding (no auth required).
+- Reach the "YOU WON'T GET PICKLED" success screen and see their welcome gift.
+- Be required to sign up / sign in before the dashboard renders.
 
-1. Add state: `const [acceptedPolicies, setAcceptedPolicies] = useState(false);`
-2. In `handleSubmit`, when `mode === "signup"`, guard:
-   ```ts
-   if (!acceptedPolicies) {
-     setError("Please accept the Terms of Use and Privacy Policy to continue.");
-     setBusy(false);
-     return;
-   }
-   ```
-3. In the form JSX, render the checkbox **only when `mode === "signup"`**, just above the submit button:
-   ```tsx
-   <label className="flex items-start gap-2 text-[11px] text-neutral-400 leading-snug">
-     <input
-       type="checkbox"
-       checked={acceptedPolicies}
-       onChange={(e) => setAcceptedPolicies(e.target.checked)}
-       className="mt-0.5 accent-[#C8F135]"
-     />
-     <span>
-       I agree to the{" "}
-       <Link to="/terms" className="text-[#C8F135] hover:underline">Terms of Use</Link>{" "}
-       and{" "}
-       <Link to="/privacy" className="text-[#C8F135] hover:underline">Privacy Policy</Link>,
-       and I understand I'll receive marketing emails from pickleballgripdoctor.com (unsubscribe anytime).
-     </span>
-   </label>
-   ```
-4. Disable the submit button on signup until the box is checked: `disabled={busy || (mode === "signup" && !acceptedPolicies)}`.
-5. When toggling between signin/signup, reset `acceptedPolicies` to `false` along with the existing error/info reset.
+Approach: move dashboard under the existing `_authenticated` layout.
 
-## Footer links (optional polish)
+- Move `src/routes/dashboard.tsx` → `src/routes/_authenticated/dashboard.tsx`. The existing `_authenticated.tsx` guard already redirects unauthenticated users to `/auth?redirect=...`.
+- Update the onboarding success screen ("VIEW MY PLAN" button) so that:
+  - If the user is already authenticated → navigate to `/dashboard` (unchanged behavior).
+  - If the user is anonymous → navigate to `/auth?redirect=/dashboard` with a short helper line on the success screen ("Create a free account to save your plan and unlock your dashboard.").
+- Keep the profile (saved to `localStorage` via `UserProfileContext`) so that after sign-up, when the user lands on `/dashboard`, their personalized plan is already there.
+- Update the landing page "Skip for now" / header link so that unauthenticated users who try to reach the dashboard via direct URL still hit the auth gate (handled automatically by the `_authenticated` move).
+- The `/onboarding` "Skip for now" link currently points to `/dashboard` — change it to `/auth?redirect=/dashboard` for anonymous users (keep `/dashboard` for already-signed-in users).
 
-Add subtle `Privacy` and `Terms` links to the bottom of `src/routes/auth.tsx` (under the existing "Continue without an account" link) so the policies are reachable from the auth screen without scrolling.
+### 3. Auth redirect handling
 
-## Why separate routes (not modal/anchor)
+`src/routes/auth.tsx` already supports `?redirect=` and defaults to `/profile`. No changes needed beyond passing `/dashboard` from onboarding.
 
-Per TanStack route architecture: `/privacy` and `/terms` need their own SSR HTML, distinct `<title>`/`<meta description>`, and shareable URLs (legal review, app stores, email footers all link directly). Hash anchors on `/auth` would not be crawlable or shareable.
+## Files Edited
 
-## Verification
+- `src/routes/onboarding.tsx` — gender question + redirect logic on success screen and skip link.
+- `src/routes/dashboard.tsx` → moved to `src/routes/_authenticated/dashboard.tsx` (contents unchanged aside from the route path string in `createFileRoute`).
 
-- `/privacy` and `/terms` load standalone with their own page titles and headers.
-- On `/auth`, switching to "Create account" reveals the consent checkbox; submit is disabled until checked; checkbox state resets when switching back to sign-in.
-- Both checkbox links open in-app to the policy routes.
+## Out of scope
+
+- No database / profile schema changes (`profile.gender` field is reused).
+- No change to existing authenticated routes or auth logic.
