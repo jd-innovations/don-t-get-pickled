@@ -19,7 +19,7 @@ import {
   personalizeDose,
 } from "@/lib/personalize";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
       { title: "Today's Session — Don't Get Pickled" },
