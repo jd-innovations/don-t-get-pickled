@@ -81,7 +81,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
 
   return (
     <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center animate-in fade-in duration-200">
-      <div className="w-full max-w-md max-h-[92vh] overflow-y-auto bg-[#0a0a0a] border-t border-[#1e1e1e] sm:border sm:rounded-2xl sm:my-6 text-white">
+      <div className="w-full max-w-md max-h-[92vh] overflow-y-auto bg-[#0a0a0a] border-t border-[#1e1e1e] sm:border sm:rounded-2xl sm:my-6 text-white anim-fade-in-up">
         {/* Header */}
         <header className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
           <div className="px-5 py-4 flex items-center justify-between">
