@@ -62,6 +62,7 @@ function Landing() {
           ) : (
             <Link
               to="/auth"
+              search={{ redirect: "/dashboard" }}
               className="text-sm text-neutral-400 hover:text-white transition-colors story-link"
             >
               Sign In
