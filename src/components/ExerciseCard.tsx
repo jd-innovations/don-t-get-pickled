@@ -139,11 +139,14 @@ export function ExerciseCard({
           </span>
         </div>
         {locked ? (
-          <Lock className="w-5 h-5 text-[#C8F135] flex-shrink-0 mt-1" />
+          <Lock className="w-5 h-5 text-[#C8F135] flex-shrink-0 mt-1 anim-pulse-soft" />
         ) : (
           <ChevronDown
-            className="w-5 h-5 text-neutral-500 transition-transform duration-300 flex-shrink-0 mt-1"
-            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+            className="w-5 h-5 text-neutral-500 flex-shrink-0 mt-1"
+            style={{
+              transform: open ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.4s var(--ease-spring)",
+            }}
           />
         )}
       </button>
