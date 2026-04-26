@@ -219,26 +219,6 @@ function Dashboard() {
           );
         })}
 
-        {/* Coming soon placeholders */}
-        <PhaseDivider phase="Strength" label="MORE COMING SOON" />
-        <div className="grid grid-cols-2 gap-3">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div
-              key={i}
-              className="rounded-xl border border-dashed border-[#1e1e1e] bg-[#0f0f0f] p-4 aspect-square flex flex-col items-center justify-center text-center"
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center font-display text-sm mb-2"
-                style={{ backgroundColor: "#1a1a1a", color: phaseColor("Strength") }}
-              >
-                {i + 7}
-              </div>
-              <p className="text-[10px] text-neutral-500 leading-tight">
-                Full exercise library coming soon
-              </p>
-            </div>
-          ))}
-        </div>
       </main>
 
       {/* Bottom nav */}
