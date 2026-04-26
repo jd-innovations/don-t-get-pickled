@@ -176,7 +176,7 @@ function Onboarding() {
               </div>
               <div className="h-1.5 w-full bg-[#1e1e1e] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-[#C8F135] transition-all duration-500"
+                  className="h-full bg-[#C8F135] transition-all duration-500 shimmer-overlay"
                   style={{ width: `${((step + 1) / totalSteps) * 100}%` }}
                 />
               </div>
@@ -184,8 +184,12 @@ function Onboarding() {
                 {Array.from({ length: totalSteps }).map((_, i) => (
                   <span
                     key={i}
-                    className="w-2 h-2 rounded-full transition-colors"
-                    style={{ backgroundColor: i <= step ? "#C8F135" : "#2a2a2a" }}
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: i <= step ? "#C8F135" : "#2a2a2a",
+                      transition: "background-color 0.3s var(--ease-soft), transform 0.3s var(--ease-spring)",
+                      transform: i <= step ? "scale(1.25)" : "scale(1)",
+                    }}
                   />
                 ))}
               </div>
@@ -193,10 +197,7 @@ function Onboarding() {
 
             <div
               key={step}
-              className="animate-slide"
-              style={{
-                animation: `${direction === "forward" ? "slideInRight" : "slideInLeft"} 0.3s ease-out`,
-              }}
+              className={direction === "forward" ? "anim-slide-in-right" : "anim-slide-in-left"}
             >
               {step === 0 && (
                 <Question title="WHAT'S YOUR BIOLOGICAL SEX?">
@@ -277,11 +278,13 @@ function Onboarding() {
                         <button
                           key={opt}
                           onClick={() => toggleInjury(opt)}
-                          className="px-4 py-2 rounded-full text-sm font-medium border transition-colors"
+                          className="px-4 py-2 rounded-full text-sm font-medium border press hover-lift"
                           style={{
                             borderColor: selected ? "#ef4444" : "#1e1e1e",
                             backgroundColor: selected ? "#ef4444" : "#111111",
                             color: selected ? "white" : "#d4d4d4",
+                            transition: "background-color 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                            transform: selected ? "scale(1.05)" : "scale(1)",
                           }}
                         >
                           {opt}
@@ -304,11 +307,13 @@ function Onboarding() {
                         <button
                           key={opt}
                           onClick={() => toggleGoal(opt)}
-                          className="px-4 py-2 rounded-full text-sm font-medium border transition-colors"
+                          className="px-4 py-2 rounded-full text-sm font-medium border press hover-lift"
                           style={{
                             borderColor: selected ? "#C8F135" : "#1e1e1e",
                             backgroundColor: selected ? "#C8F135" : "#111111",
                             color: selected ? "black" : "#d4d4d4",
+                            transition: "background-color 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                            transform: selected ? "scale(1.05)" : "scale(1)",
                           }}
                         >
                           {opt}
@@ -323,7 +328,7 @@ function Onboarding() {
             <button
               onClick={next}
               disabled={!canProceed()}
-              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition"
+              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition hover-lift press"
             >
               {step === totalSteps - 1 ? "FINISH" : "NEXT"}
             </button>
@@ -331,16 +336,25 @@ function Onboarding() {
         )}
 
         {stage === "done" && (
-          <div className="text-center py-8 animate-[slideInRight_0.4s_ease-out]">
-            <div className="text-7xl mb-6">🥒</div>
-            <h2 className="font-display text-4xl tracking-wide text-white">
+          <div className="text-center py-8">
+            <div className="text-7xl mb-6 anim-bounce-in">🥒</div>
+            <h2
+              className="font-display text-4xl tracking-wide text-white anim-fade-in-up"
+              style={{ animationDelay: "200ms" }}
+            >
               YOU WON'T GET PICKLED
             </h2>
-            <p className="mt-3 text-sm text-neutral-400">
+            <p
+              className="mt-3 text-sm text-neutral-400 anim-fade-in-up"
+              style={{ animationDelay: "320ms" }}
+            >
               Your personalized warm up plan is ready. Here's your welcome gift.
             </p>
 
-            <div className="mt-8 rounded-xl border border-[#C8F135]/40 bg-[#111111] p-6">
+            <div
+              className="mt-8 rounded-xl border border-[#C8F135]/40 bg-[#111111] p-6 anim-scale-in anim-pulse-glow"
+              style={{ animationDelay: "440ms" }}
+            >
               <p className="text-xs uppercase tracking-widest text-[#C8F135] mb-2">
                 Welcome Gift
               </p>
@@ -357,24 +371,14 @@ function Onboarding() {
 
             <button
               onClick={() => navigate({ to: "/dashboard" })}
-              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-fade-in-up"
+              style={{ animationDelay: "640ms" }}
             >
               VIEW MY PLAN
             </button>
           </div>
         )}
       </main>
-
-      <style>{`
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-      `}</style>
     </div>
   );
 }
@@ -463,10 +467,12 @@ function OptionCard({
   return (
     <button
       onClick={onClick}
-      className="w-full text-left p-4 rounded-xl border bg-[#111111] transition-colors"
+      className="w-full text-left p-4 rounded-xl border bg-[#111111] hover-lift press"
       style={{
         borderColor: selected ? "#C8F135" : "#1e1e1e",
         backgroundColor: selected ? "rgba(200, 241, 53, 0.08)" : "#111111",
+        boxShadow: selected ? "var(--shadow-lime)" : undefined,
+        transition: "border-color 0.25s var(--ease-soft), background-color 0.25s var(--ease-soft), box-shadow 0.25s var(--ease-soft), transform 0.25s var(--ease-soft)",
       }}
     >
       <div

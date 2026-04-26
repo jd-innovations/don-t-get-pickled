@@ -421,11 +421,17 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
   if (phase === "celebrate") {
     return (
       <div className="fixed inset-0 z-50 bg-[#0a0a0a] text-white flex flex-col items-center justify-center px-6 animate-in fade-in duration-300">
-        <div className="text-7xl mb-6">🎉</div>
-        <h2 className="font-display text-4xl tracking-wider text-[#C8F135] text-center">
+        <div className="text-7xl mb-6 anim-bounce-in">🎉</div>
+        <h2
+          className="font-display text-4xl tracking-wider text-[#C8F135] text-center anim-fade-in-up"
+          style={{ animationDelay: "200ms" }}
+        >
           SESSION COMPLETE
         </h2>
-        <p className="mt-3 text-sm text-neutral-300 text-center">
+        <p
+          className="mt-3 text-sm text-neutral-300 text-center anim-fade-in-up"
+          style={{ animationDelay: "320ms" }}
+        >
           You showed up. That's the win.
         </p>
         <div className="mt-10 w-full max-w-xs space-y-3">
@@ -434,13 +440,15 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
               handleClose();
               onOpenSummary();
             }}
-            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-fade-in-up anim-pulse-glow"
+            style={{ animationDelay: "440ms" }}
           >
             VIEW SUMMARY
           </button>
           <button
             onClick={handleClose}
-            className="w-full py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] text-neutral-300 hover:border-[#C8F135]/40 transition"
+            className="w-full py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] text-neutral-300 hover:border-[#C8F135]/40 transition press anim-fade-in-up"
+            style={{ animationDelay: "560ms" }}
           >
             CLOSE
           </button>
@@ -561,7 +569,8 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
                 backgroundColor: barColor,
                 left: barAnchorRight ? "auto" : 0,
                 right: barAnchorRight ? 0 : "auto",
-                transition: "width 250ms linear",
+                transition: "width 250ms linear, background-color 350ms var(--ease-soft), box-shadow 350ms var(--ease-soft)",
+                boxShadow: `0 0 12px 1px ${barColor}66`,
               }}
             />
           </div>
@@ -586,7 +595,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
                 });
                 beep(720, 0.05);
               }}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1e1e] hover:bg-[#2a2a2a] text-sm font-medium transition"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1e1e] hover:bg-[#2a2a2a] text-sm font-medium transition press hover-lift"
             >
               <Plus className="w-4 h-4" /> Count rep
             </button>
@@ -605,7 +614,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
         <div className="mt-6 grid grid-cols-3 gap-3">
           <button
             onClick={() => setPaused((p) => !p)}
-            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition"
+            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition press hover-lift"
           >
             {paused ? <Play className="w-5 h-5" /> : <Pause className="w-5 h-5" />}
             <span className="text-[10px] uppercase tracking-widest text-neutral-400">
@@ -614,7 +623,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
           </button>
           <button
             onClick={skipExercise}
-            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition"
+            className="flex flex-col items-center gap-1 py-3 rounded-xl border border-[#1e1e1e] bg-[#111111] hover:border-[#C8F135]/40 transition press hover-lift"
           >
             <SkipForward className="w-5 h-5" />
             <span className="text-[10px] uppercase tracking-widest text-neutral-400">
@@ -623,7 +632,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
           </button>
           <button
             onClick={markDoneAndNext}
-            className="flex flex-col items-center gap-1 py-3 rounded-xl bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="flex flex-col items-center gap-1 py-3 rounded-xl bg-[#C8F135] text-black hover:brightness-110 transition press hover-lift"
           >
             <Check className="w-5 h-5" strokeWidth={3} />
             <span className="text-[10px] uppercase tracking-widest font-semibold">

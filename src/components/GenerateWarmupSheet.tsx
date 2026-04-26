@@ -81,7 +81,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
 
   return (
     <div className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center animate-in fade-in duration-200">
-      <div className="w-full max-w-md max-h-[92vh] overflow-y-auto bg-[#0a0a0a] border-t border-[#1e1e1e] sm:border sm:rounded-2xl sm:my-6 text-white">
+      <div className="w-full max-w-md max-h-[92vh] overflow-y-auto bg-[#0a0a0a] border-t border-[#1e1e1e] sm:border sm:rounded-2xl sm:my-6 text-white anim-fade-in-up">
         {/* Header */}
         <header className="sticky top-0 z-10 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
           <div className="px-5 py-4 flex items-center justify-between">
@@ -114,11 +114,13 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                   <button
                     key={tag}
                     onClick={() => setFocus(tag)}
-                    className="px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition border"
+                    className="px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide border press hover-lift"
                     style={{
                       backgroundColor: active ? "#C8F135" : "#111111",
                       color: active ? "#0a0a0a" : "#e5e5e5",
                       borderColor: active ? "#C8F135" : "#1e1e1e",
+                      transition: "background-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                      transform: active ? "scale(1.06)" : "scale(1)",
                     }}
                   >
                     {tag}
@@ -137,9 +139,9 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                 generate(s);
               }}
               disabled={loading}
-              className="w-full py-3 rounded-lg font-display text-base tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-lg font-display text-base tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition disabled:opacity-50 flex items-center justify-center gap-2 hover-lift press anim-pulse-glow"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className={`w-4 h-4 ${loading ? "" : "anim-pulse-soft"}`} />
               {loading ? "GENERATING…" : "GENERATE 6 EXERCISES"}
             </button>
           )}
@@ -176,7 +178,8 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                   return (
                     <div
                       key={ex.id}
-                      className="rounded-xl border border-[#1e1e1e] bg-[#111111] p-3 flex items-center gap-3"
+                      className="rounded-xl border border-[#1e1e1e] bg-[#111111] p-3 flex items-center gap-3 anim-fade-in-up hover-lift"
+                      style={{ animationDelay: `${idx * 60}ms` }}
                     >
                       <div
                         className="w-9 h-9 rounded-lg flex items-center justify-center font-display text-sm shrink-0"
@@ -215,7 +218,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                     generate(s);
                   }}
                   disabled={loading}
-                  className="py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] bg-[#111111] text-neutral-200 hover:border-[#C8F135]/40 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] bg-[#111111] text-neutral-200 hover:border-[#C8F135]/40 transition disabled:opacity-50 flex items-center justify-center gap-2 hover-lift press"
                 >
                   <RefreshCw className="w-4 h-4" />
                   REGENERATE
@@ -225,7 +228,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                     onStart(plan.picks.map((p) => p.exercise.id));
                     handleClose();
                   }}
-                  className="py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2"
+                  className="py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2 hover-lift press"
                 >
                   <Play className="w-4 h-4" />
                   START

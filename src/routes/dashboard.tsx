@@ -67,7 +67,7 @@ function Dashboard() {
 
       <main className="max-w-md mx-auto px-5">
         {/* Welcome */}
-        <section className="pt-8 pb-4">
+        <section className="pt-8 pb-4 anim-fade-in-up" style={{ animationDelay: "40ms" }}>
           <h1 className="font-display text-5xl leading-none tracking-wide text-white">
             READY TO PLAY?
           </h1>
@@ -78,7 +78,10 @@ function Dashboard() {
 
         {/* Profile summary */}
         {hasProfile && (
-          <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
+          <section
+            className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5 anim-fade-in-up hover-lift"
+            style={{ animationDelay: "120ms" }}
+          >
             <p className="text-[10px] uppercase tracking-widest text-[#C8F135] mb-3">
               Your Profile
             </p>
@@ -93,7 +96,10 @@ function Dashboard() {
 
         {/* Weekly schedule */}
         {hasProfile && (
-          <section className="mt-3 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4">
+          <section
+            className="mt-3 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4 anim-fade-in-up hover-lift"
+            style={{ animationDelay: "200ms" }}
+          >
             <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-3">
               Your Week
             </p>
@@ -102,7 +108,7 @@ function Dashboard() {
                 <div key={i} className="flex flex-col items-center gap-1.5">
                   <span className="text-[11px] font-medium text-neutral-300">{d}</span>
                   <span
-                    className="w-2 h-2 rounded-full"
+                    className="w-2 h-2 rounded-full transition-colors"
                     style={{ backgroundColor: dayMask[i] ? "#C8F135" : "#2a2a2a" }}
                   />
                 </div>
@@ -112,9 +118,12 @@ function Dashboard() {
         )}
 
         {/* Generate custom warm-up */}
-        <section className="mt-2 rounded-2xl border border-[#C8F135]/40 bg-gradient-to-br from-[#1a1f0a] to-[#111111] p-5">
+        <section
+          className="mt-2 rounded-2xl border border-[#C8F135]/40 bg-gradient-to-br from-[#1a1f0a] to-[#111111] p-5 anim-fade-in-up hover-lift"
+          style={{ animationDelay: "280ms" }}
+        >
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#C8F135]/15 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-[#C8F135]/15 flex items-center justify-center shrink-0 anim-pulse-soft">
               <Sparkles className="w-5 h-5 text-[#C8F135]" />
             </div>
             <div className="flex-1">
@@ -131,7 +140,7 @@ function Dashboard() {
           </div>
           <button
             onClick={() => setGenerateOpen(true)}
-            className="mt-4 w-full py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2"
+            className="mt-4 w-full py-3 rounded-lg font-display text-sm tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition flex items-center justify-center gap-2 hover-lift press"
           >
             <Sparkles className="w-4 h-4" />
             BUILD MY SESSION
@@ -139,7 +148,10 @@ function Dashboard() {
         </section>
 
         {/* Session tracker */}
-        <section className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5">
+        <section
+          className="mt-2 rounded-2xl border border-[#1e1e1e] bg-[#111111] p-5 anim-fade-in-up"
+          style={{ animationDelay: "360ms" }}
+        >
           <div className="flex items-center justify-between">
             <p className="text-xs uppercase tracking-widest text-neutral-400">
               Today's Session
@@ -148,14 +160,14 @@ function Dashboard() {
               {completedCount} of {totalExercises} complete
             </p>
           </div>
-          <div className="mt-3 h-2 w-full bg-[#0a0a0a] rounded-full overflow-hidden">
+          <div className="mt-3 h-2 w-full bg-[#0a0a0a] rounded-full overflow-hidden relative">
             <div
-              className="h-full bg-[#C8F135] transition-all duration-500"
+              className={`h-full bg-[#C8F135] transition-all duration-500 ${completedCount > 0 && !allDone ? "shimmer-overlay" : ""}`}
               style={{ width: `${(completedCount / totalExercises) * 100}%` }}
             />
           </div>
           {completedCount > 0 && (
-            <div className="mt-2 flex items-center justify-between">
+            <div className="mt-2 flex items-center justify-between anim-fade-in">
               <button
                 onClick={reset}
                 className="text-[11px] text-neutral-500 hover:text-[#C8F135] transition-colors underline underline-offset-2"
@@ -172,13 +184,13 @@ function Dashboard() {
           )}
           <button
             onClick={() => setGuidedOpen(true)}
-            className="mt-5 w-full py-3 rounded-lg font-display text-base tracking-wider border-2 border-[#C8F135] text-[#C8F135] hover:bg-[#C8F135]/10 transition flex items-center justify-center gap-2"
+            className="mt-5 w-full py-3 rounded-lg font-display text-base tracking-wider border-2 border-[#C8F135] text-[#C8F135] hover:bg-[#C8F135]/10 transition flex items-center justify-center gap-2 hover-lift press"
           >
             <span aria-hidden>▶</span> START GUIDED SESSION
           </button>
           <button
             onClick={() => setSummaryOpen(true)}
-            className="mt-2 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="mt-2 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press"
           >
             {ctaLabel}
           </button>
@@ -242,8 +254,13 @@ function Dashboard() {
               <button
                 key={id}
                 onClick={() => setTab(id)}
-                className="flex flex-col items-center gap-1 px-4 py-1 transition-colors"
-                style={{ color: active ? "#C8F135" : "#737373" }}
+                className="flex flex-col items-center gap-1 px-4 py-1 press"
+                style={{
+                  color: active ? "#C8F135" : "#737373",
+                  transition: "color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                  transform: active ? "scale(1.08)" : "scale(1)",
+                  filter: active ? "drop-shadow(0 0 8px rgba(200,241,53,0.4))" : "none",
+                }}
               >
                 <Icon className="w-5 h-5" />
                 <span className="text-[10px] font-medium tracking-wide">{label}</span>

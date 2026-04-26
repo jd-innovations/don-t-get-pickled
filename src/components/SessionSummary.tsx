@@ -70,7 +70,7 @@ export function SessionSummary({
 
       <main className="max-w-md mx-auto px-5 pb-12">
         {/* Headline */}
-        <section className="pt-6 pb-4">
+        <section className="pt-6 pb-4 anim-fade-in-up" style={{ animationDelay: "40ms" }}>
           <h1 className="font-display text-4xl leading-none tracking-wide">YOUR PROGRESS</h1>
           <p className="mt-2 text-sm text-neutral-400">
             Track today, this week, and lifetime totals.
@@ -79,7 +79,7 @@ export function SessionSummary({
 
         {/* Recap banner */}
         {recap && (
-          <div className="mb-5 rounded-2xl border border-[#C8F135]/40 bg-[#C8F135]/5 p-4 relative">
+          <div className="mb-5 rounded-2xl border border-[#C8F135]/40 bg-[#C8F135]/5 p-4 relative anim-scale-in">
             <button
               onClick={onClearRecap}
               aria-label="Dismiss recap"
@@ -269,7 +269,7 @@ export function SessionSummary({
         <div className="mt-8 space-y-3">
           <button
             onClick={onClose}
-            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+            className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press"
           >
             CLOSE
           </button>
@@ -300,7 +300,7 @@ function StatStrip({ totals }: { totals: Totals }) {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4">
+    <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] p-4 hover-lift">
       <p className="text-[10px] uppercase tracking-widest text-neutral-500">{label}</p>
       <p className="font-display text-2xl text-[#C8F135] mt-1">{value}</p>
     </div>

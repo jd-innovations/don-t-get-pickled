@@ -50,10 +50,12 @@ export function ExerciseCard({
 
   return (
     <div
-      className="rounded-xl border bg-[#111111] transition-colors duration-300 overflow-hidden relative"
+      className="rounded-xl border bg-[#111111] overflow-hidden relative hover-lift"
       style={{
         borderColor: open ? "#C8F135" : "#1e1e1e",
         opacity: locked ? 0.7 : 1,
+        boxShadow: open ? "var(--shadow-lime)" : undefined,
+        transition: "border-color 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft), transform 0.25s var(--ease-soft)",
       }}
     >
       <button
@@ -84,14 +86,16 @@ export function ExerciseCard({
                 onToggleComplete!(exercise.id);
               }
             }}
-            className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-display text-base transition-colors cursor-pointer"
+            className="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-display text-base cursor-pointer press"
             style={{
               backgroundColor: completed ? "#C8F135" : "transparent",
               border: `2px solid #C8F135`,
               color: completed ? "#000" : "#C8F135",
+              transition: "background-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+              transform: completed ? "scale(1.06)" : "scale(1)",
             }}
           >
-            {completed ? <Check className="w-4 h-4" strokeWidth={3} /> : exercise.number}
+            {completed ? <Check className="w-4 h-4 anim-scale-in" strokeWidth={3} /> : exercise.number}
           </span>
         ) : (
           <div
@@ -135,11 +139,14 @@ export function ExerciseCard({
           </span>
         </div>
         {locked ? (
-          <Lock className="w-5 h-5 text-[#C8F135] flex-shrink-0 mt-1" />
+          <Lock className="w-5 h-5 text-[#C8F135] flex-shrink-0 mt-1 anim-pulse-soft" />
         ) : (
           <ChevronDown
-            className="w-5 h-5 text-neutral-500 transition-transform duration-300 flex-shrink-0 mt-1"
-            style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+            className="w-5 h-5 text-neutral-500 flex-shrink-0 mt-1"
+            style={{
+              transform: open ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.4s var(--ease-spring)",
+            }}
           />
         )}
       </button>
@@ -192,12 +199,8 @@ export function ExerciseCard({
               {exercise.steps.map((step, i) => (
                 <li
                   key={i}
-                  className="flex gap-3 text-sm text-neutral-200 opacity-0"
-                  style={{
-                    animation: open
-                      ? `fadeSlideIn 0.4s ease-out ${i * 0.08}s forwards`
-                      : "none",
-                  }}
+                  className={`flex gap-3 text-sm text-neutral-200 ${open ? "anim-step-in" : "opacity-0"}`}
+                  style={{ animationDelay: open ? `${i * 70}ms` : undefined }}
                 >
                   <span className="font-display text-base text-[#C8F135] flex-shrink-0 w-5">
                     {i + 1}.
@@ -222,7 +225,7 @@ export function ExerciseCard({
                   e.stopPropagation();
                   onToggleComplete!(exercise.id);
                 }}
-                className="w-full rounded-lg py-3 font-display text-base tracking-wider transition-colors"
+                className="w-full rounded-lg py-3 font-display text-base tracking-wider transition-colors hover-lift press"
                 style={{
                   backgroundColor: completed ? "transparent" : "#C8F135",
                   border: `2px solid #C8F135`,
@@ -235,13 +238,6 @@ export function ExerciseCard({
           </div>
         </div>
       </div>
-
-      <style>{`
-        @keyframes fadeSlideIn {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
 
       {exercise.image && (
         <ImageLightbox
