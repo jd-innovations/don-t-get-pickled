@@ -52,6 +52,22 @@ function Dashboard() {
   const dayMask = activeDayMask(profile.playFrequency);
   const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
 
+  // Auto-start a preset session if one was queued from /schedule
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("dgp:pendingSession");
+      if (!raw) return;
+      sessionStorage.removeItem("dgp:pendingSession");
+      const parsed = JSON.parse(raw) as { ids?: string[] };
+      if (parsed?.ids?.length) {
+        setCustomIds(parsed.ids);
+        setGuidedOpen(true);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-24">
       {/* Top bar */}
