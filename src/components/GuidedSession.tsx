@@ -587,7 +587,7 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
                 });
                 beep(720, 0.05);
               }}
-              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1e1e] hover:bg-[#2a2a2a] text-sm font-medium transition"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#1e1e1e] hover:bg-[#2a2a2a] text-sm font-medium transition press hover-lift"
             >
               <Plus className="w-4 h-4" /> Count rep
             </button>
