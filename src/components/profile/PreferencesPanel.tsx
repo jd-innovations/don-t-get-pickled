@@ -41,6 +41,7 @@ export function PreferencesPanel({ profile, onReset }: Props) {
       <div className="mt-5 grid grid-cols-2 gap-3">
         <Link
           to="/onboarding"
+          search={{ edit: true, from: "/profile" }}
           className="py-2.5 rounded-lg text-xs font-medium border border-[#1e1e1e] bg-[#0a0a0a] text-neutral-200 hover:border-[#C8F135]/40 hover:text-[#C8F135] transition flex items-center justify-center gap-2 hover-lift press"
         >
           <Pencil className="w-3.5 h-3.5" /> EDIT PROFILE
