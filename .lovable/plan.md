@@ -1,28 +1,27 @@
-## Audit Findings (375×812 mobile)
+## Goal
+Replace the text-based "DON'T GET PICKLED" wordmark in every header with the uploaded logo image (pickle mascot + "DON'T GET PICKLED / WARM UP APP" lockup), sized to fit the existing ~56px-tall header bars consistently.
 
-### Truncation issues found
-1. **`ExerciseCard.tsx` line 114** — primary issue. Every exercise card uses `truncate` on the muscles list (`Shoulders · Deltoi…`, `Wrists · Forearms · El…`, `Hip Flexors · Pelvis…`, etc.). This hides important muscle-target info on every card on the landing page, dashboard, and onboarding preview.
-
-2. **`ExerciseCard.tsx` lines 116–140** — the right-side meta column ("10 Each Wrist", "10 Each Direction", phase pill) shares a row with the title. When titles wrap to 2 lines (Wrist Circles & Flexion, Ankle Circles, Seated Hip Circles, etc.), the dose text gets squeezed against the title, looking cramped.
-
-3. **`schedule.tsx` line 242** — preset preview pills truncate exercise names at `max-w-[80px]`. Acceptable as a preview, but easy to relax.
-
-### Acceptable truncations (leaving as-is)
-- `profile.tsx` display name & email — protects layout from very long emails; no info loss because email is shown elsewhere.
-- `GuidedSession.tsx` "Next up" mini-preview — full name renders on the next step.
-- `SessionSummary.tsx` `whitespace-nowrap` is inside a fixed-width metric, fine.
+## Where the logo appears
+Six routes render the wordmark in their sticky header:
+- `src/routes/index.tsx` (landing) — `font-display text-xl`
+- `src/routes/dashboard.tsx` — `font-display text-lg`
+- `src/routes/_authenticated/profile.tsx` — `font-display text-lg`
+- `src/routes/_authenticated/schedule.tsx` — `font-display text-lg`
+- `src/routes/onboarding.tsx` — `font-display text-lg`
+- `src/routes/auth.tsx` — centered link, `font-display text-lg`
 
 ## Changes
 
-**`src/components/ExerciseCard.tsx`**
-1. Remove `truncate` on the muscles `<p>` (line 114). Replace with `break-words leading-snug` so long lists wrap to 2 lines instead of clipping.
-2. Tighten the title/meta layout:
-   - Reduce title from `text-lg` → `text-base` to give the right column more room (still bold via `font-display`).
-   - Add `gap-2` on the right meta column wrapper and `text-right` on the dose so wrapped dose like "10 Each Direction" sits cleanly.
-   - Add `max-w-[88px]` to the meta column so it never expands past a usable size, letting the title use the rest of the row.
+**1. Add the asset**
+- Copy `user-uploads://dontgetpickled.png` → `src/assets/dgp-logo.png`.
+- Create a small reusable `src/components/BrandLogo.tsx` that imports the asset and renders `<img>` with consistent sizing (`h-8 w-auto` ≈ 32px tall, fits the existing 56px headers with breathing room) and `alt="Don't Get Pickled — Warm Up App"`.
+- Accept an optional `className` prop and an optional `size` prop (`sm` = h-7, `md` = h-8 default, `lg` = h-10) for the centered auth screen.
 
-**`src/routes/_authenticated/schedule.tsx`**
-3. Bump preview-pill `max-w-[80px]` → `max-w-[110px]` so most preset names fit without `…`.
+**2. Wire into all 6 headers**
+- Replace each `<span class="font-display ...">DON'T GET PICKLED</span>` with `<BrandLogo />` (or `<BrandLogo size="lg" />` on the auth page where it's the only hero element).
+- Keep the surrounding header containers unchanged; the image's aspect ratio (~4.5:1) means an `h-8` logo is ~144px wide, which fits comfortably with the right-side actions in the 375px mobile viewport.
 
-## Out of scope (no change needed)
-- Auth, onboarding, dashboard hero, profile header, schedule cards, guided session screens — verified clean at 375×812.
+## Notes
+- The image already contains the wordmark, so no accompanying text is needed.
+- Header heights (`py-4`) stay the same — no layout shift.
+- The logo is a PNG with a white-ish background mascot; on the dark `#0a0a0a` headers it shows as intended (transparent background per the upload preview).
