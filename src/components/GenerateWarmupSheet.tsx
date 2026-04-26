@@ -239,7 +239,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
           )}
 
           <p className="text-[10px] text-neutral-600 text-center pt-2">
-            <Link to="/auth" className="text-[#C8F135] hover:underline">
+            <Link to="/auth" search={{ redirect: "/dashboard" }} className="text-[#C8F135] hover:underline">
               Sign in
             </Link>
             {" "}to sync your sessions across devices.
