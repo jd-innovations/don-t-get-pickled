@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 
 import appCss from "../styles.css?url";
 import { UserProfileProvider } from "@/contexts/UserProfileContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 function NotFoundComponent() {
   return (
@@ -67,8 +68,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <UserProfileProvider>
-      <Outlet />
-    </UserProfileProvider>
+    <AuthProvider>
+      <UserProfileProvider>
+        <Outlet />
+      </UserProfileProvider>
+    </AuthProvider>
   );
 }
