@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/auth")({
   validateSearch: (s: Record<string, unknown>) => ({
@@ -92,9 +93,10 @@ function AuthPage() {
       <div className="w-full max-w-sm">
         <Link
           to="/dashboard"
-          className="block text-center font-display text-lg tracking-wider text-[#C8F135] mb-8"
+          className="flex justify-center mb-8"
+          aria-label="Don't Get Pickled — Home"
         >
-          DON'T GET PICKLED
+          <BrandLogo size="lg" />
         </Link>
 
         <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] p-6 anim-fade-in-up">

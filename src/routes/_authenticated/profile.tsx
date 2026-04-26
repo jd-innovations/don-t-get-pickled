@@ -10,6 +10,7 @@ import { AchievementsGrid } from "@/components/profile/AchievementsGrid";
 import { HistoryLog } from "@/components/profile/HistoryLog";
 import { PreferencesPanel } from "@/components/profile/PreferencesPanel";
 import { Home, Calendar, User } from "lucide-react";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
@@ -72,9 +73,7 @@ function ProfilePage() {
       {/* Top bar */}
       <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
-          <span className="font-display text-lg tracking-wider text-[#C8F135]">
-            DON'T GET PICKLED
-          </span>
+          <BrandLogo />
           <button
             onClick={handleSignOut}
             className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-neutral-300 hover:text-[#C8F135] transition press"

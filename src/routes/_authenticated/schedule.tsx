@@ -5,6 +5,7 @@ import { useUserProfile } from "@/contexts/UserProfileContext";
 import { useCloudSessions } from "@/hooks/useCloudSessions";
 import { PRESETS, buildPresetPlan, pickTodaysPreset, type Preset } from "@/lib/presets";
 import { phaseColor } from "@/data/exercises";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const PENDING_KEY = "dgp:pendingSession";
 
@@ -52,9 +53,7 @@ function SchedulePage() {
       {/* Top bar */}
       <header className="sticky top-0 z-20 bg-[#0a0a0a]/95 backdrop-blur border-b border-[#1e1e1e]">
         <div className="max-w-md mx-auto px-5 py-4 flex items-center justify-between">
-          <span className="font-display text-lg tracking-wider text-[#C8F135]">
-            DON'T GET PICKLED
-          </span>
+          <BrandLogo />
           <div className="w-9 h-9 rounded-full bg-[#1e1e1e] flex items-center justify-center text-[#C8F135] border border-[#C8F135]/40">
             <Calendar className="w-4 h-4" />
           </div>
