@@ -14,7 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          age_range: string | null
+          created_at: string
+          display_name: string | null
+          fitness_level: string | null
+          gender: string | null
+          goals: string[]
+          id: string
+          injuries: string[]
+          play_frequency: string | null
+          updated_at: string
+        }
+        Insert: {
+          age_range?: string | null
+          created_at?: string
+          display_name?: string | null
+          fitness_level?: string | null
+          gender?: string | null
+          goals?: string[]
+          id: string
+          injuries?: string[]
+          play_frequency?: string | null
+          updated_at?: string
+        }
+        Update: {
+          age_range?: string | null
+          created_at?: string
+          display_name?: string | null
+          fitness_level?: string | null
+          gender?: string | null
+          goals?: string[]
+          id?: string
+          injuries?: string[]
+          play_frequency?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          date: string
+          duration_sec: number
+          exercise_ids: string[]
+          id: string
+          total_hold_sec: number
+          total_reps: number
+          user_id: string
+        }
+        Insert: {
+          completed_at: string
+          created_at?: string
+          date: string
+          duration_sec?: number
+          exercise_ids?: string[]
+          id?: string
+          total_hold_sec?: number
+          total_reps?: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          date?: string
+          duration_sec?: number
+          exercise_ids?: string[]
+          id?: string
+          total_hold_sec?: number
+          total_reps?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
