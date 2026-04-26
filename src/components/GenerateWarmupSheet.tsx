@@ -178,7 +178,8 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                   return (
                     <div
                       key={ex.id}
-                      className="rounded-xl border border-[#1e1e1e] bg-[#111111] p-3 flex items-center gap-3"
+                      className="rounded-xl border border-[#1e1e1e] bg-[#111111] p-3 flex items-center gap-3 anim-fade-in-up hover-lift"
+                      style={{ animationDelay: `${idx * 60}ms` }}
                     >
                       <div
                         className="w-9 h-9 rounded-lg flex items-center justify-center font-display text-sm shrink-0"
