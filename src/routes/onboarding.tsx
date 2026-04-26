@@ -2,16 +2,33 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 
+type EditFrom = "/dashboard" | "/profile";
+
 export const Route = createFileRoute("/onboarding")({
-  head: () => ({
-    meta: [
-      { title: "Create Your Profile — Don't Get Pickled" },
-      {
-        name: "description",
-        content: "Build your personalized pickleball warm up plan in 6 quick steps.",
-      },
-    ],
-  }),
+  validateSearch: (s: Record<string, unknown>) => {
+    const edit = s.edit === 1 || s.edit === "1" || s.edit === true;
+    const fromRaw = typeof s.from === "string" ? s.from : "/dashboard";
+    const from: EditFrom = fromRaw === "/profile" ? "/profile" : "/dashboard";
+    return { edit, from };
+  },
+  head: ({ match }) => {
+    const isEdit = (match.search as { edit?: boolean } | undefined)?.edit;
+    return {
+      meta: [
+        {
+          title: isEdit
+            ? "Edit Your Profile — Don't Get Pickled"
+            : "Create Your Profile — Don't Get Pickled",
+        },
+        {
+          name: "description",
+          content: isEdit
+            ? "Update your personalized pickleball warm up plan."
+            : "Build your personalized pickleball warm up plan in 6 quick steps.",
+        },
+      ],
+    };
+  },
   component: Onboarding,
 });
 
@@ -62,17 +79,20 @@ const goalOptions = [
 
 function Onboarding() {
   const navigate = useNavigate();
-  const { setProfile } = useUserProfile();
-  const [stage, setStage] = useState<Stage>("register");
+  const search = Route.useSearch();
+  const { profile, hasProfile, setProfile } = useUserProfile();
+  const isEdit = search.edit || hasProfile;
+
+  const [stage, setStage] = useState<Stage>(isEdit ? "questions" : "register");
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
-  const [sex, setSex] = useState<string | null>(null);
-  const [age, setAge] = useState<string | null>(null);
-  const [fitness, setFitness] = useState<string | null>(null);
-  const [frequency, setFrequency] = useState<string | null>(null);
-  const [injuries, setInjuries] = useState<string[]>([]);
-  const [goals, setGoals] = useState<string[]>([]);
+  const [sex, setSex] = useState<string | null>(profile.gender);
+  const [age, setAge] = useState<string | null>(profile.ageRange);
+  const [fitness, setFitness] = useState<string | null>(profile.fitnessLevel);
+  const [frequency, setFrequency] = useState<string | null>(profile.playFrequency);
+  const [injuries, setInjuries] = useState<string[]>(profile.injuries);
+  const [goals, setGoals] = useState<string[]>(profile.goals);
 
   const totalSteps = 6;
 
@@ -106,7 +126,11 @@ function Onboarding() {
         injuries,
         goals,
       });
-      setStage("done");
+      if (isEdit) {
+        navigate({ to: search.from });
+      } else {
+        setStage("done");
+      }
     } else {
       setStep(step + 1);
     }
@@ -115,7 +139,11 @@ function Onboarding() {
   const back = () => {
     setDirection("back");
     if (step === 0) {
-      setStage("register");
+      if (isEdit) {
+        navigate({ to: search.from });
+      } else {
+        setStage("register");
+      }
     } else {
       setStep(step - 1);
     }
@@ -148,9 +176,18 @@ function Onboarding() {
           <span className="font-display text-lg tracking-wider text-[#C8F135]">
             DON'T GET PICKLED
           </span>
-          <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
-            Skip for now
-          </Link>
+          {isEdit ? (
+            <Link
+              to={search.from}
+              className="text-sm text-neutral-400 hover:text-white"
+            >
+              Cancel
+            </Link>
+          ) : (
+            <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
+              Skip for now
+            </Link>
+          )}
         </div>
       </header>
 
@@ -330,7 +367,7 @@ function Onboarding() {
               disabled={!canProceed()}
               className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition hover-lift press"
             >
-              {step === totalSteps - 1 ? "FINISH" : "NEXT"}
+              {step === totalSteps - 1 ? (isEdit ? "SAVE CHANGES" : "FINISH") : "NEXT"}
             </button>
           </div>
         )}
