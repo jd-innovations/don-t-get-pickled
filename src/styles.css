@@ -88,4 +88,150 @@
     font-family: "Bebas Neue", sans-serif;
     letter-spacing: 0.02em;
   }
+
+  :root {
+    --shadow-lime: 0 0 0 1px rgba(200, 241, 53, 0.18), 0 8px 28px -8px rgba(200, 241, 53, 0.45);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* ---------- Reusable animation utilities ---------- */
+@keyframes dgp-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dgp-fade-in-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dgp-fade-in-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes dgp-scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes dgp-bounce-in {
+  0% { opacity: 0; transform: scale(0.4); }
+  60% { opacity: 1; transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+@keyframes dgp-slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes dgp-slide-in-left {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes dgp-grow-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes dgp-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+@keyframes dgp-pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 241, 53, 0.35); }
+  50% { box-shadow: 0 0 28px 4px rgba(200, 241, 53, 0.18); }
+}
+@keyframes dgp-pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.06); }
+}
+@keyframes dgp-fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .anim-fade-in { animation: dgp-fade-in 0.5s var(--ease-soft) both; }
+  .anim-fade-in-up { animation: dgp-fade-in-up 0.55s var(--ease-soft) both; }
+  .anim-fade-in-down { animation: dgp-fade-in-down 0.4s var(--ease-soft) both; }
+  .anim-scale-in { animation: dgp-scale-in 0.4s var(--ease-spring) both; }
+  .anim-bounce-in { animation: dgp-bounce-in 0.6s var(--ease-spring) both; }
+  .anim-slide-in-right { animation: dgp-slide-in-right 0.35s var(--ease-soft) both; }
+  .anim-slide-in-left { animation: dgp-slide-in-left 0.35s var(--ease-soft) both; }
+  .anim-grow-x {
+    transform-origin: left center;
+    animation: dgp-grow-x 0.5s var(--ease-soft) both;
+  }
+  .anim-pulse-glow { animation: dgp-pulse-glow 3.2s ease-in-out infinite; }
+  .anim-pulse-soft { animation: dgp-pulse-soft 2.4s ease-in-out infinite; }
+  .anim-step-in { animation: dgp-fadeSlideIn 0.4s var(--ease-soft) both; }
+
+  .hover-lift {
+    transition: transform 0.25s var(--ease-soft), box-shadow 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft);
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.7);
+  }
+  .press {
+    transition: transform 0.12s ease-out, filter 0.12s ease-out;
+  }
+  .press:active {
+    transform: scale(0.96);
+  }
+
+  .shimmer-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+  .shimmer-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.18) 50%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: dgp-shimmer 2.2s linear infinite;
+    pointer-events: none;
+  }
+
+  .story-link {
+    position: relative;
+    display: inline-block;
+  }
+  .story-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s var(--ease-soft);
+  }
+  .story-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-in,
+  .anim-fade-in-up,
+  .anim-fade-in-down,
+  .anim-scale-in,
+  .anim-bounce-in,
+  .anim-slide-in-right,
+  .anim-slide-in-left,
+  .anim-grow-x,
+  .anim-pulse-glow,
+  .anim-pulse-soft,
+  .anim-step-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
