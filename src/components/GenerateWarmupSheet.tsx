@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { X, Sparkles, RefreshCw, Play } from "lucide-react";
 import { useUserProfile } from "@/contexts/UserProfileContext";
 import { useSessionStats } from "@/hooks/useSessionStats";
@@ -238,7 +239,10 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
           )}
 
           <p className="text-[10px] text-neutral-600 text-center pt-2">
-            Sign-in coming soon — your sessions will sync across devices.
+            <Link to="/auth" className="text-[#C8F135] hover:underline">
+              Sign in
+            </Link>
+            {" "}to sync your sessions across devices.
           </p>
         </div>
       </div>

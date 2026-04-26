@@ -33,7 +33,7 @@ export const Route = createFileRoute("/onboarding")({
   component: Onboarding,
 });
 
-type Stage = "register" | "questions" | "done";
+type Stage = "questions" | "done";
 
 const sexOptions = ["Male", "Female", "Prefer Not to Say"];
 const ageOptions = [
@@ -84,7 +84,7 @@ function Onboarding() {
   const { profile, hasProfile, setProfile } = useUserProfile();
   const isEdit = search.edit || hasProfile;
 
-  const [stage, setStage] = useState<Stage>(isEdit ? "questions" : "register");
+  const [stage, setStage] = useState<Stage>("questions");
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
@@ -140,11 +140,7 @@ function Onboarding() {
   const back = () => {
     setDirection("back");
     if (step === 0) {
-      if (isEdit) {
-        navigate({ to: search.from });
-      } else {
-        setStage("register");
-      }
+      navigate({ to: isEdit ? search.from : "/dashboard" });
     } else {
       setStep(step - 1);
     }
@@ -191,10 +187,6 @@ function Onboarding() {
       </header>
 
       <main className="max-w-md mx-auto px-5 py-8">
-        {stage === "register" && (
-          <RegistrationForm onSubmit={() => setStage("questions")} />
-        )}
-
         {stage === "questions" && (
           <div>
             {/* Progress */}
@@ -415,58 +407,6 @@ function Onboarding() {
           </div>
         )}
       </main>
-    </div>
-  );
-}
-
-function RegistrationForm({ onSubmit }: { onSubmit: () => void }) {
-  return (
-    <div>
-      <h2 className="font-display text-4xl tracking-wide text-white">CREATE YOUR PROFILE</h2>
-      <p className="mt-2 text-sm text-neutral-400">
-        Save your progress and unlock your personalized plan.
-      </p>
-
-      <form
-        className="mt-8 space-y-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit();
-        }}
-      >
-        <div>
-          <label className="text-xs uppercase tracking-wider text-neutral-400">Email</label>
-          <input
-            type="email"
-            required
-            placeholder="you@example.com"
-            className="mt-1 w-full px-4 py-3 rounded-lg bg-[#111111] border border-[#1e1e1e] text-white placeholder:text-neutral-600 focus:outline-none focus:border-[#C8F135] transition-colors"
-          />
-        </div>
-        <div>
-          <label className="text-xs uppercase tracking-wider text-neutral-400">Password</label>
-          <input
-            type="password"
-            required
-            placeholder="••••••••"
-            className="mt-1 w-full px-4 py-3 rounded-lg bg-[#111111] border border-[#1e1e1e] text-white placeholder:text-neutral-600 focus:outline-none focus:border-[#C8F135] transition-colors"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
-        >
-          CREATE ACCOUNT
-        </button>
-
-        <p className="text-center text-sm text-neutral-500">
-          Already have an account?{" "}
-          <button type="button" className="text-neutral-300 hover:text-white underline">
-            Sign in
-          </button>
-        </p>
-      </form>
     </div>
   );
 }

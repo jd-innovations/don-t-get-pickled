@@ -328,7 +328,20 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
     }
   }, [msRemaining, phase, paused, open, beep]);
 
-  // Keyboard shortcuts
+  const skipExercise = useCallback(() => {
+    goNextExercise();
+  }, [goNextExercise]);
+
+  // Keyboard shortcuts — use refs so the latest handlers are always called
+  const skipExRef = useRef(skipExercise);
+  useEffect(() => {
+    skipExRef.current = skipExercise;
+  }, [skipExercise]);
+  const handleCloseRef = useRef(handleClose);
+  useEffect(() => {
+    handleCloseRef.current = handleClose;
+  }, [handleClose]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -336,19 +349,14 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
         e.preventDefault();
         setPaused((p) => !p);
       } else if (e.code === "ArrowRight") {
-        skipExercise();
+        skipExRef.current();
       } else if (e.code === "Escape") {
-        handleClose();
+        handleCloseRef.current();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
-
-  const skipExercise = useCallback(() => {
-    goNextExercise();
-  }, [goNextExercise]);
 
   const markDoneAndNext = useCallback(() => {
     if (current && parsed && !completedInSessionRef.current.has(current.id)) {

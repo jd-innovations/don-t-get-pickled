@@ -1,19 +1,46 @@
-## Goal
-Swap the brand logo asset for the new dark-background version and increase the rendered logo size by 50% across the app.
+# Bug Fix Plan
 
-## Changes
+Apply three targeted fixes across the codebase.
 
-**1. Asset swap** (already copied)
-- `src/assets/dgp-logo.png` replaced with the new artwork (white "DON'T GET" + lime "PICKLED", green pickle mascot on transparent/dark background). All existing imports continue to work — no import paths change.
+## Bug 1 — Remove fake registration form (`src/routes/onboarding.tsx`)
 
-**2. Resize `src/components/BrandLogo.tsx`**
-Bump every size by ~50% so the logo reads stronger in headers:
-- `sm`: `h-7` → `h-10` (28px → 40px)
-- `md`: `h-8` → `h-12` (32px → 48px)  ← used in all 5 app headers
-- `lg`: `h-10` → `h-[3.75rem]` (40px → 60px)  ← used on the auth screen
+The "register" stage renders a fake form (uncontrolled inputs, no auth call). Real auth lives in `/auth`, so remove this dead UI entirely.
 
-Header containers (`py-4`, ~56px+) accommodate the new `md` (48px) without clipping. The `md` lockup width becomes ~216px wide on a 375px mobile screen, which still leaves room for the right-side avatar/profile button.
+- Line 36: change `type Stage = "register" | "questions" | "done"` → `type Stage = "questions" | "done"`.
+- Line 87: change `useState<Stage>(isEdit ? "questions" : "register")` → `useState<Stage>("questions")`.
+- Lines 140–151 (`back()`): in the `step === 0` branch, remove the inner `isEdit` check and always navigate away — `navigate({ to: isEdit ? search.from : "/dashboard" })`. This eliminates the orphaned `setStage("register")` call.
+- Lines 194–196: delete the `{stage === "register" && <RegistrationForm ... />}` block.
+- Lines 422–472: delete the entire `RegistrationForm` component.
 
-## Notes
-- No other files need to change — every header already routes through `<BrandLogo />`.
-- The new artwork has a transparent/dark background, matching the `#0a0a0a` headers cleanly.
+## Bug 2 — Fix stale closure in keyboard shortcuts (`src/components/GuidedSession.tsx`)
+
+The `useEffect` at lines 332–347 depends only on `[open]` but calls `skipExercise` and `handleClose`, which capture `exIdx`/state at mount time. Pressing `ArrowRight` always advances from index 0.
+
+- Move the `skipExercise` `useCallback` (currently lines 349–351) to immediately before the keyboard `useEffect`.
+- Add ref-mirrors right before the keyboard effect:
+  ```ts
+  const skipExRef = useRef(skipExercise);
+  useEffect(() => { skipExRef.current = skipExercise; }, [skipExercise]);
+  const handleCloseRef = useRef(handleClose);
+  useEffect(() => { handleCloseRef.current = handleClose; }, [handleClose]);
+  ```
+- In the keyboard effect, call `skipExRef.current()` and `handleCloseRef.current()` and remove the `eslint-disable-next-line react-hooks/exhaustive-deps` comment. Dep array stays `[open]`, but it's now safe because refs always read the latest values.
+
+## Bug 3 — Replace stale "Sign-in coming soon" copy (`src/components/GenerateWarmupSheet.tsx`)
+
+Auth already exists. Replace the bottom paragraph with a real link to `/auth`.
+
+- Add `import { Link } from "@tanstack/react-router";` to the imports.
+- Replace the final `<p>Sign-in coming soon — your sessions will sync across devices.</p>` with:
+  ```tsx
+  <p className="text-[10px] text-neutral-600 text-center pt-2">
+    <Link to="/auth" className="text-[#C8F135] hover:underline">Sign in</Link>
+    {" "}to sync your sessions across devices.
+  </p>
+  ```
+
+## Verification
+
+- Onboarding loads straight into the questions stage; pressing Back on step 0 navigates to `/dashboard` (or `search.from` when editing).
+- In a guided session, pressing `ArrowRight` advances exercises sequentially (1 → 2 → 3…), not always from 1.
+- The Generate Warm-Up sheet shows a clickable "Sign in" link routing to `/auth`.
