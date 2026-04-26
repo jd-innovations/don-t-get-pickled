@@ -386,12 +386,12 @@ function Onboarding() {
                 Welcome Gift
               </p>
               <p className="font-display text-3xl tracking-wide text-white">
-                $10 GRIP DOCTOR CREDIT
+                20% OFF YOUR FIRST ORDER
               </p>
               <div className="mt-4 px-4 py-3 rounded-lg bg-[#0a0a0a] border border-dashed border-[#C8F135]/50">
                 <p className="text-xs text-neutral-400 mb-1">Your code</p>
                 <p className="font-mono font-bold tracking-widest text-[#C8F135]">
-                  PICKLED10
+                  NEWCUSTOMER20
                 </p>
               </div>
             </div>
