@@ -561,7 +561,8 @@ export function GuidedSession({ open, onClose, completed, onToggle, onOpenSummar
                 backgroundColor: barColor,
                 left: barAnchorRight ? "auto" : 0,
                 right: barAnchorRight ? 0 : "auto",
-                transition: "width 250ms linear",
+                transition: "width 250ms linear, background-color 350ms var(--ease-soft), box-shadow 350ms var(--ease-soft)",
+                boxShadow: `0 0 12px 1px ${barColor}66`,
               }}
             />
           </div>
