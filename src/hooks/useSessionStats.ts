@@ -43,6 +43,24 @@ export function addSession(rec: SessionRecord) {
   const all = readAll();
   all.push(rec);
   writeAll(all);
+  // Best-effort: mirror to Cloud if user is authenticated
+  if (typeof window !== "undefined") {
+    void mirrorToCloud(rec);
+  }
+}
+
+async function mirrorToCloud(rec: SessionRecord) {
+  try {
+    const [{ supabase }, { insertCloudSession }] = await Promise.all([
+      import("@/integrations/supabase/client"),
+      import("@/hooks/useCloudSessions"),
+    ]);
+    const { data } = await supabase.auth.getSession();
+    const uid = data.session?.user?.id;
+    if (uid) await insertCloudSession(uid, rec);
+  } catch {
+    // ignore
+  }
 }
 
 export type Totals = {
