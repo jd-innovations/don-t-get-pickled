@@ -253,6 +253,7 @@ function Dashboard() {
                 onClick={() => {
                   setTab(id);
                   if (id === "profile") navigate({ to: "/profile" });
+                  if (id === "schedule") navigate({ to: "/schedule" });
                 }}
                 className="flex flex-col items-center gap-1 px-4 py-1 press"
                 style={{
