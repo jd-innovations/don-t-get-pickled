@@ -100,7 +100,7 @@ function Onboarding() {
   const canProceed = () => {
     switch (step) {
       case 0:
-        return !!sex;
+        return !!gender;
       case 1:
         return !!age;
       case 2:
@@ -120,7 +120,7 @@ function Onboarding() {
     setDirection("forward");
     if (step === totalSteps - 1) {
       setProfile({
-        gender: sex,
+        gender: gender,
         ageRange: age,
         fitnessLevel: fitness,
         playFrequency: frequency,
@@ -228,23 +228,16 @@ function Onboarding() {
               className={direction === "forward" ? "anim-slide-in-right" : "anim-slide-in-left"}
             >
               {step === 0 && (
-                <Question title="WHAT'S YOUR BIOLOGICAL SEX?">
-                  <div className="grid grid-cols-2 gap-3">
-                    {sexOptions.slice(0, 2).map((opt) => (
+                <Question title="WHAT'S YOUR GENDER?">
+                  <div className="space-y-3">
+                    {genderOptions.map((opt) => (
                       <OptionCard
                         key={opt}
                         label={opt}
-                        selected={sex === opt}
-                        onClick={() => setSex(opt)}
+                        selected={gender === opt}
+                        onClick={() => setGender(opt)}
                       />
                     ))}
-                  </div>
-                  <div className="mt-3">
-                    <OptionCard
-                      label="Prefer Not to Say"
-                      selected={sex === "Prefer Not to Say"}
-                      onClick={() => setSex("Prefer Not to Say")}
-                    />
                   </div>
                 </Question>
               )}
