@@ -4,6 +4,7 @@ import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { exercises, type Phase } from "@/data/exercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import { useAuth } from "@/contexts/AuthContext";
 import pgdLogo from "@/assets/pgd-logo.png";
 
 export const Route = createFileRoute("/")({
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/")({
 function Landing() {
   const phases: Phase[] = ["Warm-Up", "Mobility", "Strength"];
   const { hasProfile } = useUserProfile();
+  const { user, signOut } = useAuth();
   const ctaRef = useRef<HTMLDivElement>(null);
 
   const scrollToCta = () => {
@@ -42,9 +44,29 @@ function Landing() {
           <span className="font-display text-xl tracking-wider text-[#C8F135]">
             DON'T GET PICKLED
           </span>
-          <button className="text-sm text-neutral-400 hover:text-white transition-colors story-link">
-            Sign In
-          </button>
+          {user ? (
+            <div className="flex items-center gap-3">
+              <Link
+                to="/profile"
+                className="text-sm text-neutral-400 hover:text-white transition-colors story-link"
+              >
+                Profile
+              </Link>
+              <button
+                onClick={() => signOut()}
+                className="text-xs text-neutral-500 hover:text-[#C8F135] transition-colors"
+              >
+                Sign Out
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/auth"
+              className="text-sm text-neutral-400 hover:text-white transition-colors story-link"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
       </header>
 
