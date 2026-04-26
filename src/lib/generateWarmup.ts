@@ -79,6 +79,7 @@ interface GenerateInput {
   focus: FocusTag;
   recentSessions: SessionRecord[];
   seed?: number;
+  size?: number;
 }
 
 function scoreExercise(
