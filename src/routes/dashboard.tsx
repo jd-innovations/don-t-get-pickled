@@ -45,7 +45,6 @@ function Dashboard() {
   const initial = (
     (user?.user_metadata?.display_name as string | undefined) ||
     user?.email ||
-    profile?.name ||
     "P"
   )
     .trim()
