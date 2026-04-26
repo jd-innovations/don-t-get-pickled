@@ -114,11 +114,13 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                   <button
                     key={tag}
                     onClick={() => setFocus(tag)}
-                    className="px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide transition border"
+                    className="px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide border press hover-lift"
                     style={{
                       backgroundColor: active ? "#C8F135" : "#111111",
                       color: active ? "#0a0a0a" : "#e5e5e5",
                       borderColor: active ? "#C8F135" : "#1e1e1e",
+                      transition: "background-color 0.25s var(--ease-soft), color 0.25s var(--ease-soft), border-color 0.25s var(--ease-soft), transform 0.25s var(--ease-spring)",
+                      transform: active ? "scale(1.06)" : "scale(1)",
                     }}
                   >
                     {tag}
