@@ -142,7 +142,7 @@ function Onboarding() {
   const back = () => {
     setDirection("back");
     if (step === 0) {
-      navigate({ to: isEdit ? search.from : "/dashboard" });
+      navigate({ to: isEdit ? search.from : "/" });
     } else {
       setStep(step - 1);
     }
