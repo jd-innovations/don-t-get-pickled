@@ -79,7 +79,7 @@ export function SessionSummary({
 
         {/* Recap banner */}
         {recap && (
-          <div className="mb-5 rounded-2xl border border-[#C8F135]/40 bg-[#C8F135]/5 p-4 relative">
+          <div className="mb-5 rounded-2xl border border-[#C8F135]/40 bg-[#C8F135]/5 p-4 relative anim-scale-in">
             <button
               onClick={onClearRecap}
               aria-label="Dismiss recap"
