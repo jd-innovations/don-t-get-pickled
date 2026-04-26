@@ -225,7 +225,7 @@ export function ExerciseCard({
                   e.stopPropagation();
                   onToggleComplete!(exercise.id);
                 }}
-                className="w-full rounded-lg py-3 font-display text-base tracking-wider transition-colors"
+                className="w-full rounded-lg py-3 font-display text-base tracking-wider transition-colors hover-lift press"
                 style={{
                   backgroundColor: completed ? "transparent" : "#C8F135",
                   border: `2px solid #C8F135`,
