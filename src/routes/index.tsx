@@ -4,6 +4,7 @@ import { ExerciseCard } from "@/components/ExerciseCard";
 import { PhaseDivider } from "@/components/PhaseDivider";
 import { exercises, type Phase } from "@/data/exercises";
 import { useUserProfile } from "@/contexts/UserProfileContext";
+import pgdLogo from "@/assets/pgd-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
