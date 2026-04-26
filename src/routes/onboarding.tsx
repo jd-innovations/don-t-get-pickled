@@ -181,7 +181,11 @@ function Onboarding() {
               Cancel
             </Link>
           ) : (
-            <Link to="/dashboard" className="text-sm text-neutral-400 hover:text-white">
+            <Link
+              to={user ? "/dashboard" : "/auth"}
+              search={user ? undefined : { redirect: "/dashboard" }}
+              className="text-sm text-neutral-400 hover:text-white"
+            >
               Skip for now
             </Link>
           )}
@@ -392,12 +396,25 @@ function Onboarding() {
               </div>
             </div>
 
+            {!user && (
+              <p
+                className="mt-6 text-xs text-neutral-400 anim-fade-in-up"
+                style={{ animationDelay: "560ms" }}
+              >
+                Create a free account to save your plan and unlock your dashboard.
+              </p>
+            )}
+
             <button
-              onClick={() => navigate({ to: "/dashboard" })}
+              onClick={() =>
+                user
+                  ? navigate({ to: "/dashboard" })
+                  : navigate({ to: "/auth", search: { redirect: "/dashboard" } })
+              }
               className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-fade-in-up"
               style={{ animationDelay: "640ms" }}
             >
-              VIEW MY PLAN
+              {user ? "VIEW MY PLAN" : "CREATE ACCOUNT TO CONTINUE"}
             </button>
           </div>
         )}
