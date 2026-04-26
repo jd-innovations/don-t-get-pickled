@@ -218,7 +218,7 @@ export function GenerateWarmupSheet({ open, onClose, onStart }: Props) {
                     generate(s);
                   }}
                   disabled={loading}
-                  className="py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] bg-[#111111] text-neutral-200 hover:border-[#C8F135]/40 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="py-3 rounded-lg font-display text-sm tracking-wider border border-[#1e1e1e] bg-[#111111] text-neutral-200 hover:border-[#C8F135]/40 transition disabled:opacity-50 flex items-center justify-center gap-2 hover-lift press"
                 >
                   <RefreshCw className="w-4 h-4" />
                   REGENERATE
