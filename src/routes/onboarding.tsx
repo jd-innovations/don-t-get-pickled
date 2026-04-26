@@ -367,7 +367,7 @@ function Onboarding() {
               disabled={!canProceed()}
               className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition hover-lift press"
             >
-              {step === totalSteps - 1 ? "FINISH" : "NEXT"}
+              {step === totalSteps - 1 ? (isEdit ? "SAVE CHANGES" : "FINISH") : "NEXT"}
             </button>
           </div>
         )}
