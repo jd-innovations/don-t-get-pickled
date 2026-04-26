@@ -328,7 +328,7 @@ function Onboarding() {
             <button
               onClick={next}
               disabled={!canProceed()}
-              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition"
+              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black disabled:opacity-30 disabled:cursor-not-allowed transition hover-lift press"
             >
               {step === totalSteps - 1 ? "FINISH" : "NEXT"}
             </button>
@@ -336,16 +336,25 @@ function Onboarding() {
         )}
 
         {stage === "done" && (
-          <div className="text-center py-8 animate-[slideInRight_0.4s_ease-out]">
-            <div className="text-7xl mb-6">🥒</div>
-            <h2 className="font-display text-4xl tracking-wide text-white">
+          <div className="text-center py-8">
+            <div className="text-7xl mb-6 anim-bounce-in">🥒</div>
+            <h2
+              className="font-display text-4xl tracking-wide text-white anim-fade-in-up"
+              style={{ animationDelay: "200ms" }}
+            >
               YOU WON'T GET PICKLED
             </h2>
-            <p className="mt-3 text-sm text-neutral-400">
+            <p
+              className="mt-3 text-sm text-neutral-400 anim-fade-in-up"
+              style={{ animationDelay: "320ms" }}
+            >
               Your personalized warm up plan is ready. Here's your welcome gift.
             </p>
 
-            <div className="mt-8 rounded-xl border border-[#C8F135]/40 bg-[#111111] p-6">
+            <div
+              className="mt-8 rounded-xl border border-[#C8F135]/40 bg-[#111111] p-6 anim-scale-in anim-pulse-glow"
+              style={{ animationDelay: "440ms" }}
+            >
               <p className="text-xs uppercase tracking-widest text-[#C8F135] mb-2">
                 Welcome Gift
               </p>
@@ -362,24 +371,14 @@ function Onboarding() {
 
             <button
               onClick={() => navigate({ to: "/dashboard" })}
-              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition"
+              className="mt-8 w-full py-3 rounded-lg font-display text-lg tracking-wider bg-[#C8F135] text-black hover:brightness-110 transition hover-lift press anim-fade-in-up"
+              style={{ animationDelay: "640ms" }}
             >
               VIEW MY PLAN
             </button>
           </div>
         )}
       </main>
-
-      <style>{`
-        @keyframes slideInRight {
-          from { opacity: 0; transform: translateX(24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInLeft {
-          from { opacity: 0; transform: translateX(-24px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-      `}</style>
     </div>
   );
 }
