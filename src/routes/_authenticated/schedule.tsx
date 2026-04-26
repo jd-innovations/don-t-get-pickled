@@ -239,7 +239,7 @@ function PreviewRow({ plan }: { plan: ReturnType<typeof buildPresetPlan> }) {
             className="w-1.5 h-1.5 rounded-full shrink-0"
             style={{ backgroundColor: phaseColor(p.exercise.phase) }}
           />
-          <span className="text-[10px] text-neutral-300 truncate max-w-[80px]">
+          <span className="text-[10px] text-neutral-300 truncate max-w-[110px]">
             {p.exercise.name}
           </span>
         </div>

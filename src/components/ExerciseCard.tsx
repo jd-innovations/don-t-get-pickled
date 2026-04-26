@@ -107,13 +107,15 @@ export function ExerciseCard({
         )}
         <div className={`flex-1 min-w-0 transition-opacity ${completed ? "opacity-50" : ""}`}>
           <h3
-            className={`font-display text-lg leading-tight tracking-wide text-white ${completed ? "line-through" : ""}`}
+            className={`font-display text-base leading-tight tracking-wide text-white ${completed ? "line-through" : ""}`}
           >
             {exercise.name}
           </h3>
-          <p className="text-xs text-neutral-400 mt-0.5 truncate">{exercise.muscles}</p>
+          <p className="text-xs text-neutral-400 mt-1 leading-snug break-words">
+            {exercise.muscles}
+          </p>
         </div>
-        <div className="flex flex-col items-end gap-1 flex-shrink-0">
+        <div className="flex flex-col items-end gap-1 flex-shrink-0 max-w-[92px]">
           {priority && (
             <span
               className="text-[9px] px-1.5 py-0.5 rounded font-bold tracking-wider"
@@ -130,7 +132,9 @@ export function ExerciseCard({
               FOCUS
             </span>
           )}
-          <span className="text-[10px] font-semibold text-neutral-300">{dose}</span>
+          <span className="text-[10px] font-semibold text-neutral-300 text-right leading-snug">
+            {dose}
+          </span>
           <span
             className="text-[10px] px-1.5 py-0.5 rounded font-medium"
             style={{ backgroundColor: `${color}22`, color }}
