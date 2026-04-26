@@ -3,9 +3,9 @@ import logo from "@/assets/dgp-logo.png";
 type Size = "sm" | "md" | "lg";
 
 const sizeMap: Record<Size, string> = {
-  sm: "h-10",
-  md: "h-12",
-  lg: "h-[3.75rem]",
+  sm: "h-[3.125rem]",
+  md: "h-[3.75rem]",
+  lg: "h-[4.6875rem]",
 };
 
 interface BrandLogoProps {
